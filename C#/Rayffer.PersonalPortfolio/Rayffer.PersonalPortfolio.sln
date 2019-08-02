@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.Extensions", "Rayffer.PersonalPortfolio.Extensions\Rayffer.PersonalPortfolio.Extensions.csproj", "{B3D6378E-B046-4E29-B351-11377CB37EED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.Types", "Rayffer.PersonalPortfolio.Types\Rayffer.PersonalPortfolio.Types.csproj", "{BE899210-2F08-41F4-8862-E94DFFBFF8DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.TestLaboratory", "Rayffer.PersonalPortfolio.TestLaboratory\Rayffer.PersonalPortfolio.TestLaboratory.csproj", "{006E2BBE-7C76-45D8-A64D-4EB716815F8D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{B3D6378E-B046-4E29-B351-11377CB37EED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3D6378E-B046-4E29-B351-11377CB37EED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3D6378E-B046-4E29-B351-11377CB37EED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE899210-2F08-41F4-8862-E94DFFBFF8DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE899210-2F08-41F4-8862-E94DFFBFF8DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE899210-2F08-41F4-8862-E94DFFBFF8DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE899210-2F08-41F4-8862-E94DFFBFF8DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{006E2BBE-7C76-45D8-A64D-4EB716815F8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{006E2BBE-7C76-45D8-A64D-4EB716815F8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{006E2BBE-7C76-45D8-A64D-4EB716815F8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{006E2BBE-7C76-45D8-A64D-4EB716815F8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
