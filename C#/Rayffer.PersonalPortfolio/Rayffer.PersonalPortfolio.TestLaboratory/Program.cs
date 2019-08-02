@@ -8,9 +8,6 @@ using Rayffer.PersonalPortfolio.Extensions;
 
 namespace Rayffer.PersonalPortfolio.TestLaboratory
 {
-    /// <summary>
-    /// This project is used to test various things as they are being developed
-    /// </summary>
     class Program
     {
         static void Main(string[] args)
