@@ -1,4 +1,4 @@
-# personalcurriculumreporsitory
+# Rayffer portfolio repository
 
 This repository is a place where I put the code I develop for various things, mainly C# and .NET, but there can be other stacks as well.
 
