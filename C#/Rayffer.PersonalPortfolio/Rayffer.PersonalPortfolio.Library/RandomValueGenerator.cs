@@ -26,7 +26,7 @@ namespace Rayffer.PersonalPortfolio.Library
         /// Calculates a random number between a maximum and an optionally specified minimum values.
         /// </summary>
         /// <param name="maxNumber">The upper bound (not inclusive) of the random value</param>.
-        /// <param name="minNumber">The optional lower bound (inclusive) of the random value, when not specified, the minimum vlaue is 0</param>.
+        /// <param name="minNumber">The optional lower bound (inclusive) of the random value, when not specified, the minimum value is 0</param>.
         /// <returns>The calcuated random value</returns>
         public static int GetRandomValue(int maxNumber, int minNumber = 0) => random.Next(minNumber, maxNumber);
     }
