@@ -17,7 +17,10 @@ namespace Rayffer.PersonalPortfolio.TestLaboratory
                 testList.Add(RandomValueGenerator.GetRandomValue(int.MaxValue, 0));
             }
 
+            BubbleSorter<long> sorter = new BubbleSorter<long>();
 
+            var ascendingSortedList = sorter.SortAscending(testList);
+            var descendingSortedList = sorter.SortDescending(testList);
             Console.ReadLine();
         }
     }
