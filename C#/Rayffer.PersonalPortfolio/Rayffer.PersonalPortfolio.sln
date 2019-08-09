@@ -11,6 +11,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.TestLaboratory", "Rayffer.PersonalPortfolio.TestLaboratory\Rayffer.PersonalPortfolio.TestLaboratory.csproj", "{006E2BBE-7C76-45D8-A64D-4EB716815F8D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.Generators", "Rayffer.PersonalPortfolio.Generators\Rayffer.PersonalPortfolio.Generators.csproj", "{E22CFD7A-27AC-47D6-9AEA-832B26CEA09A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.Providers", "Rayffer.PersonalPortfolio.Providers\Rayffer.PersonalPortfolio.Providers.csproj", "{11A35DD1-B6B5-4CC5-A268-4AC68419C3BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.ServiceClient", "Rayffer.PersonalPortfolio.ServiceClient\Rayffer.PersonalPortfolio.ServiceClient.csproj", "{6E433138-A863-4756-B94C-4F30266B738C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.Sorters", "Rayffer.PersonalPortfolio.Sorters\Rayffer.PersonalPortfolio.Sorters.csproj", "{8D295D79-673E-4162-9C3C-23C9AEC78BC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.ConjectureCalculators", "Rayffer.PersonalPortfolio.ConjectureCalculators\Rayffer.PersonalPortfolio.ConjectureCalculators.csproj", "{C76CEE9B-8B38-4974-B428-F300F172B6EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +43,26 @@ Global
 		{006E2BBE-7C76-45D8-A64D-4EB716815F8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{006E2BBE-7C76-45D8-A64D-4EB716815F8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{006E2BBE-7C76-45D8-A64D-4EB716815F8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E22CFD7A-27AC-47D6-9AEA-832B26CEA09A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E22CFD7A-27AC-47D6-9AEA-832B26CEA09A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E22CFD7A-27AC-47D6-9AEA-832B26CEA09A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E22CFD7A-27AC-47D6-9AEA-832B26CEA09A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11A35DD1-B6B5-4CC5-A268-4AC68419C3BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11A35DD1-B6B5-4CC5-A268-4AC68419C3BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11A35DD1-B6B5-4CC5-A268-4AC68419C3BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11A35DD1-B6B5-4CC5-A268-4AC68419C3BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E433138-A863-4756-B94C-4F30266B738C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E433138-A863-4756-B94C-4F30266B738C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E433138-A863-4756-B94C-4F30266B738C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E433138-A863-4756-B94C-4F30266B738C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D295D79-673E-4162-9C3C-23C9AEC78BC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D295D79-673E-4162-9C3C-23C9AEC78BC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D295D79-673E-4162-9C3C-23C9AEC78BC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D295D79-673E-4162-9C3C-23C9AEC78BC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C76CEE9B-8B38-4974-B428-F300F172B6EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C76CEE9B-8B38-4974-B428-F300F172B6EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C76CEE9B-8B38-4974-B428-F300F172B6EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C76CEE9B-8B38-4974-B428-F300F172B6EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
