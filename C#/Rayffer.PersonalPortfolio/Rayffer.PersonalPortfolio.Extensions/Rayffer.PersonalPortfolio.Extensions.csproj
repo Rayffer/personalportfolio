@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateTimeSchedulerExtension.cs" />
-    <Compile Include="EnumCollectionGeneratorExtension.cs" />
+    <Compile Include="EnumParserExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThreadSafeInvokeExtension.cs" />
   </ItemGroup>
