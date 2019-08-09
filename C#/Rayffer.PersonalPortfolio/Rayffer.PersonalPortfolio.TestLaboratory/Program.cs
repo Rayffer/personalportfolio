@@ -10,6 +10,15 @@ namespace Rayffer.PersonalPortfolio.TestLaboratory
     {
         private static void Main(string[] args)
         {
+            List<long> testList = new List<long>();
+
+            for (int i = 0; i < 100; i++)
+            {
+                testList.Add(RandomValueGenerator.GetRandomValue(int.MaxValue, 0));
+            }
+
+
+            Console.ReadLine();
         }
     }
 }

@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace Rayffer.PersonalPortfolio.Sorters
 {
-    public class MergeSorter<TypeToSort> : ISorter<TypeToSort> where TypeToSort : IComparable<TypeToSort>
+    public class MergeSorter<SortType> : ISorter<SortType> where SortType : IComparable<SortType>
     {
 
-        public IEnumerable<TypeToSort> SortAscending(IEnumerable<TypeToSort> listToSort)
+        public IEnumerable<SortType> SortAscending(IEnumerable<SortType> listToSort)
         {
             var listItems = listToSort.Count();
             if (listItems == 1)
@@ -24,11 +24,11 @@ namespace Rayffer.PersonalPortfolio.Sorters
             var sortedFirstHalfOfList = SortAscending(firstHalfOfList);
             var sortedSecondHalfOfList = SortAscending(secondHalfOfList);
 
-            List<TypeToSort> resultList = new List<TypeToSort>();
+            List<SortType> resultList = new List<SortType>();
             while (sortedFirstHalfOfList.Any() && sortedSecondHalfOfList.Any())
             {
-                TypeToSort firstElementOfFirstHalfList = sortedFirstHalfOfList.FirstOrDefault();
-                TypeToSort firstElementOfSecondHalfList = sortedSecondHalfOfList.FirstOrDefault();
+                SortType firstElementOfFirstHalfList = sortedFirstHalfOfList.FirstOrDefault();
+                SortType firstElementOfSecondHalfList = sortedSecondHalfOfList.FirstOrDefault();
 
                 if (firstElementOfFirstHalfList.CompareTo(firstElementOfSecondHalfList) < 0)
                 {
@@ -54,7 +54,7 @@ namespace Rayffer.PersonalPortfolio.Sorters
             return resultList;
         }
 
-        public IEnumerable<TypeToSort> SortDescending(IEnumerable<TypeToSort> listToSort)
+        public IEnumerable<SortType> SortDescending(IEnumerable<SortType> listToSort)
         {
             var listItems = listToSort.Count();
             if (listItems == 1)
@@ -70,11 +70,11 @@ namespace Rayffer.PersonalPortfolio.Sorters
             var sortedFirstHalfOfList = SortDescending(firstHalfOfList);
             var sortedSecondHalfOfList = SortDescending(secondHalfOfList);
 
-            List<TypeToSort> resultList = new List<TypeToSort>();
+            List<SortType> resultList = new List<SortType>();
             while (sortedFirstHalfOfList.Any() && sortedSecondHalfOfList.Any())
             {
-                TypeToSort firstElementOfFirstHalfList = sortedFirstHalfOfList.FirstOrDefault();
-                TypeToSort firstElementOfSecondHalfList = sortedSecondHalfOfList.FirstOrDefault();
+                SortType firstElementOfFirstHalfList = sortedFirstHalfOfList.FirstOrDefault();
+                SortType firstElementOfSecondHalfList = sortedSecondHalfOfList.FirstOrDefault();
 
                 if (firstElementOfFirstHalfList.CompareTo(firstElementOfSecondHalfList) > 0)
                 {

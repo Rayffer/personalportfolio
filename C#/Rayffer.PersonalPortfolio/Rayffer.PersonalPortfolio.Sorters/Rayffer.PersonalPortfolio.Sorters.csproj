@@ -41,8 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InsertionSorter.cs" />
     <Compile Include="Interfaces\ISorter.cs" />
-    <Compile Include="MergeSort.cs" />
+    <Compile Include="MergeSorter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

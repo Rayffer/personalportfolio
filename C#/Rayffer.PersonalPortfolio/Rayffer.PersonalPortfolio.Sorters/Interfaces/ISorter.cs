@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Rayffer.PersonalPortfolio.Sorters.Interfaces
 {
-    public interface ISorter<T>
+    public interface ISorter<SortType>
     {
-        IEnumerable<T> SortAscending(IEnumerable<T> listToSort);
-        IEnumerable<T> SortDescending(IEnumerable<T> listToSort);
+        IEnumerable<SortType> SortAscending(IEnumerable<SortType> listToSort);
+        IEnumerable<SortType> SortDescending(IEnumerable<SortType> listToSort);
     }
 }
