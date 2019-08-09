@@ -22,7 +22,7 @@ namespace Rayffer.PersonalPortfolio.ConjectureCalculators
                 while (conjectureValue > 1)
                 {
                     conjectureSteps.Add(conjectureValue);
-                    conjectureValue = conjectureValue % 2 == 0 ? conjectureValue / 2 : conjectureValue * 3;
+                    conjectureValue = conjectureValue % 2 == 0 ? conjectureValue / 2 : conjectureValue * 3 + 1;
                 }
             });
 
