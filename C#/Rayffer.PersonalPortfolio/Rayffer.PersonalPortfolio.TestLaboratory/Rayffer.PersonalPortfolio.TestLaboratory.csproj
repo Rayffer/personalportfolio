@@ -59,6 +59,14 @@
       <Project>{B3D6378E-B046-4E29-B351-11377CB37EED}</Project>
       <Name>Rayffer.PersonalPortfolio.Extensions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Rayffer.PersonalPortfolio.Generators\Rayffer.PersonalPortfolio.Generators.csproj">
+      <Project>{E22CFD7A-27AC-47D6-9AEA-832B26CEA09A}</Project>
+      <Name>Rayffer.PersonalPortfolio.Generators</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rayffer.PersonalPortfolio.Sorters\Rayffer.PersonalPortfolio.Sorters.csproj">
+      <Project>{8D295D79-673E-4162-9C3C-23C9AEC78BC5}</Project>
+      <Name>Rayffer.PersonalPortfolio.Sorters</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rayffer.PersonalPortfolio.Types\Rayffer.PersonalPortfolio.Types.csproj">
       <Project>{BE899210-2F08-41F4-8862-E94DFFBFF8DC}</Project>
       <Name>Rayffer.PersonalPortfolio.Types</Name>
