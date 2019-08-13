@@ -13,7 +13,7 @@ namespace Rayffer.PersonalPortfolio.Sorters
             int swapOperations = sortedList.Count - 1;
             for (int sortIteration = 0; sortIteration < swapOperations; sortIteration++)
             {
-                for (int sortIndex = 0; sortIndex < swapOperations; sortIndex++)
+                for (int sortIndex = sortIteration; sortIndex < swapOperations; sortIndex++)
                 {
                     SortType firstComparedElement = sortedList[sortIndex];
                     SortType secondComparedElement = sortedList[sortIndex + 1];
@@ -33,7 +33,7 @@ namespace Rayffer.PersonalPortfolio.Sorters
             int swapOperations = sortedList.Count - 1;
             for (int sortIteration = 0; sortIteration < swapOperations; sortIteration++)
             {
-                for (int sortIndex = 0; sortIndex < swapOperations; sortIndex++)
+                for (int sortIndex = sortIteration; sortIndex < swapOperations; sortIndex++)
                 {
                     SortType firstComparedElement = sortedList[sortIndex];
                     SortType secondComparedElement = sortedList[sortIndex + 1];
