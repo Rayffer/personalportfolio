@@ -17,7 +17,7 @@ namespace Rayffer.PersonalPortfolio.TestLaboratory
                 testList.Add(RandomValueGenerator.GetRandomValue(int.MaxValue, 0));
             }
 
-            CockTailSorter<long> sorter = new CockTailSorter<long>();
+            QuickSorter<long> sorter = new QuickSorter<long>(Sorters.Types.QuickSortPivotTypes.LeftmostPivot);
 
             var ascendingSortedList = sorter.SortAscending(testList);
             var descendingSortedList = sorter.SortDescending(testList);

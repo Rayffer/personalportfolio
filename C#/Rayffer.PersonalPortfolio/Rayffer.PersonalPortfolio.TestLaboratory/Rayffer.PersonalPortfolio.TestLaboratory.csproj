@@ -67,10 +67,6 @@
       <Project>{8D295D79-673E-4162-9C3C-23C9AEC78BC5}</Project>
       <Name>Rayffer.PersonalPortfolio.Sorters</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Rayffer.PersonalPortfolio.Types\Rayffer.PersonalPortfolio.Types.csproj">
-      <Project>{BE899210-2F08-41F4-8862-E94DFFBFF8DC}</Project>
-      <Name>Rayffer.PersonalPortfolio.Types</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />
