@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BubbleSorter.cs" />
+    <Compile Include="CockTailSorter.cs" />
     <Compile Include="InsertionSorter.cs" />
     <Compile Include="Interfaces\ISorter.cs" />
     <Compile Include="MergeSorter.cs" />
