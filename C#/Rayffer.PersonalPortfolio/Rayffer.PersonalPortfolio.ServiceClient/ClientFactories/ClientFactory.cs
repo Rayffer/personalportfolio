@@ -165,8 +165,6 @@ namespace Rayffer.PersonalPortfolio.ClientFactories
                 instance = container.Resolve<ServiceClientInterface>(registrationName);
             }
 
-            InstanceCreationLogging($"Resolving for registration name {registrationName ?? "Paramenter-Less-Constructor" }.");
-
             return instance;
         }
 

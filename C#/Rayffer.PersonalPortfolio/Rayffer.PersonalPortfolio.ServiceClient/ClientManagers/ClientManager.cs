@@ -96,7 +96,6 @@ namespace Rayffer.PersonalPortfolio.Managers
             }
             catch (Exception ex)
             {
-                this.WriteLogError(ex, $"Error in {new StackFrame(1).GetMethod().Name} while executing the request");
             }
             finally
             {
@@ -123,12 +122,10 @@ namespace Rayffer.PersonalPortfolio.Managers
             try
             {
                 var result = (TResult)functionToExecute(ClientInstance);
-                WriteLogInformation($"{functionToExecute?.ToString()} function executed.");
                 return result;
             }
             catch (Exception ex)
             {
-                this.WriteLogError(ex, $"Error in {new StackFrame(1).GetMethod().Name} while executing the {functionToExecute?.ToString()} function.");
             }
 
             return default(TResult);
@@ -146,11 +143,9 @@ namespace Rayffer.PersonalPortfolio.Managers
                     try
                     {
                         ClientInstance.Open();
-                        WriteLogInformation("The connection with the Service's client was opened.");
                     }
                     catch (Exception ex)
                     {
-                        this.WriteLogError(ex, $"Error in {new StackFrame(1).GetMethod().Name} while opening the connection to the service.");
                     }
                 }
             }
@@ -167,13 +162,10 @@ namespace Rayffer.PersonalPortfolio.Managers
                 {
                     try
                     {
-                        WriteLogInformation("Clossing the Service's client... {0}.", nameof(ClientInstance.State));
                         ClientInstance.Close();
-                        WriteLogInformation("Service's client closed.");
                     }
                     catch (Exception ex)
                     {
-                        this.WriteLogError(ex, $"Error in {new StackFrame(1).GetMethod().Name} while closing the connection to the service.");
                     }
                 }
             }
@@ -211,11 +203,7 @@ namespace Rayffer.PersonalPortfolio.Managers
                 /// Free unmanaged resources (unmanaged objects) and override a Finalizer below.
                 /// Set large fields to null.
 
-                WriteLogInformation("The Client's Manager signaled to be disposed");
-
                 CloseConnection();
-
-                WriteLogInformation("The Client's Manager have been disposed.");
             }
         }
 
