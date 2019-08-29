@@ -1,8 +1,10 @@
 ﻿using Rayffer.PersonalPortfolio.Generators;
+using Rayffer.PersonalPortfolio.QueueManagers;
 using Rayffer.PersonalPortfolio.Sorters;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 
 namespace Rayffer.PersonalPortfolio.TestLaboratory
 {
@@ -10,17 +12,21 @@ namespace Rayffer.PersonalPortfolio.TestLaboratory
     {
         private static void Main(string[] args)
         {
-            List<long> testList = new List<long>();
+            Semaphore semaphore = new Semaphore(1, 1);
+            BackgroundWorkerActionQueueManager actionQueueManager = new BackgroundWorkerActionQueueManager();
 
-            for (int i = 0; i < 100; i++)
-            {
-                testList.Add(RandomValueGenerator.GetRandomValue(int.MaxValue, 0));
-            }
+            actionQueueManager.EnqueueAction(() => semaphore.WaitOne());
+            actionQueueManager.EnqueueAction(() => Console.WriteLine("First console append"));
+            actionQueueManager.EnqueueAction(() => Thread.Sleep(2000));
+            actionQueueManager.EnqueueAction(() => Console.WriteLine("Second console append"));
+            actionQueueManager.EnqueueAction(() => semaphore.Release());
 
-            QuickSorter<long> sorter = new QuickSorter<long>(Sorters.Types.QuickSortPivotTypes.LeftmostPivot);
+            Thread.Sleep(500);
 
-            var ascendingSortedList = sorter.SortAscending(testList);
-            var descendingSortedList = sorter.SortDescending(testList);
+            semaphore.WaitOne();
+
+            Console.WriteLine("The backgroundworker has ended its tasks, press enter to exit");
+
             Console.ReadLine();
         }
     }

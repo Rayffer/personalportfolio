@@ -64,6 +64,10 @@
       <Project>{E22CFD7A-27AC-47D6-9AEA-832B26CEA09A}</Project>
       <Name>Rayffer.PersonalPortfolio.Generators</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Rayffer.PersonalPortfolio.QueueManagers\Rayffer.PersonalPortfolio.QueueManagers.csproj">
+      <Project>{A5F53D07-8EC2-459C-9974-C8339E5A27DA}</Project>
+      <Name>Rayffer.PersonalPortfolio.QueueManagers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rayffer.PersonalPortfolio.Sorters\Rayffer.PersonalPortfolio.Sorters.csproj">
       <Project>{8D295D79-673E-4162-9C3C-23C9AEC78BC5}</Project>
       <Name>Rayffer.PersonalPortfolio.Sorters</Name>
