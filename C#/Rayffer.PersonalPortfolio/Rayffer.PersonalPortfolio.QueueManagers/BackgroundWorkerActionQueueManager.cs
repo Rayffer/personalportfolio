@@ -59,6 +59,8 @@ namespace Rayffer.PersonalPortfolio.QueueManagers
                     backgroundWorker.CancelAsync();
                     cancellationTokenSource.Cancel();
                     backgroundWorker.DoWork -= BackgroundWorker_ManageQueue;
+                    cancellationTokenSource.Dispose();
+                    backgroundWorker.Dispose();
                 }
 
                 disposedValue = true;

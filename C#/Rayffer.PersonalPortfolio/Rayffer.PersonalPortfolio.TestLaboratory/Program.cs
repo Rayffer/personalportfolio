@@ -25,6 +25,8 @@ namespace Rayffer.PersonalPortfolio.TestLaboratory
 
             semaphore.WaitOne();
 
+            actionQueueManager.Dispose();
+            actionQueueManager = null;
             Console.WriteLine("The backgroundworker has ended its tasks, press enter to exit");
 
             Console.ReadLine();
