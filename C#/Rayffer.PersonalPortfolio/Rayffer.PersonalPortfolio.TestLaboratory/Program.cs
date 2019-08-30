@@ -1,6 +1,7 @@
 ﻿using Rayffer.PersonalPortfolio.Generators;
 using Rayffer.PersonalPortfolio.QueueManagers;
 using Rayffer.PersonalPortfolio.Sorters;
+using Rayffer.PersonalPortfolio.UnityFactory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,24 +13,12 @@ namespace Rayffer.PersonalPortfolio.TestLaboratory
     {
         private static void Main(string[] args)
         {
-            Semaphore semaphore = new Semaphore(1, 1);
-            BackgroundWorkerActionQueueManager actionQueueManager = new BackgroundWorkerActionQueueManager();
+            ServiceUnityFactory serviceUnityFactory = new ServiceUnityFactory();
 
-            actionQueueManager.EnqueueAction(() => semaphore.WaitOne());
-            actionQueueManager.EnqueueAction(() => Console.WriteLine("First console append"));
-            actionQueueManager.EnqueueAction(() => Thread.Sleep(2000));
-            actionQueueManager.EnqueueAction(() => Console.WriteLine("Second console append"));
-            actionQueueManager.EnqueueAction(() => semaphore.Release());
-
-            Thread.Sleep(500);
-
-            semaphore.WaitOne();
-
-            actionQueueManager.Dispose();
-            actionQueueManager = null;
-            Console.WriteLine("The backgroundworker has ended its tasks, press enter to exit");
-
-            Console.ReadLine();
+            var constructorInjectionService = serviceUnityFactory.GetServiceExample(UnityFactory.Types.ServiceExampleTypes.ConstructorDefinedInjections);
+            var propertyInjectionService = serviceUnityFactory.GetServiceExample(UnityFactory.Types.ServiceExampleTypes.PropertyDefinedInjections);
+            var defaultInjectionService = serviceUnityFactory.GetServiceExample(UnityFactory.Types.ServiceExampleTypes.UnityDefaultResolution);
+            var unityInjectionConstructorService = serviceUnityFactory.GetServiceExample(UnityFactory.Types.ServiceExampleTypes.UnityInjectionConstructor);
         }
     }
 }

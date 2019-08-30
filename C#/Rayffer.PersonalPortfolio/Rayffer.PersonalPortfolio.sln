@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Executable projects", "Exec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.HttpRequestViewer", "Rayffer.PersonalPortfolio.HttpRequestViewer\Rayffer.PersonalPortfolio.HttpRequestViewer.csproj", "{F2C35EAD-76B1-4FE2-A1D5-835BDCE87362}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.UnityFactory", "Rayffer.PersonalPortfolio.UnityFactory\Rayffer.PersonalPortfolio.UnityFactory.csproj", "{8A068AF3-F3BF-441D-96B3-ECEADF207B28}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{F2C35EAD-76B1-4FE2-A1D5-835BDCE87362}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2C35EAD-76B1-4FE2-A1D5-835BDCE87362}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2C35EAD-76B1-4FE2-A1D5-835BDCE87362}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A068AF3-F3BF-441D-96B3-ECEADF207B28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A068AF3-F3BF-441D-96B3-ECEADF207B28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A068AF3-F3BF-441D-96B3-ECEADF207B28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A068AF3-F3BF-441D-96B3-ECEADF207B28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +87,7 @@ Global
 		{C76CEE9B-8B38-4974-B428-F300F172B6EB} = {93F438BE-503B-48B8-9F7B-E5AB459C1B02}
 		{A5F53D07-8EC2-459C-9974-C8339E5A27DA} = {93F438BE-503B-48B8-9F7B-E5AB459C1B02}
 		{F2C35EAD-76B1-4FE2-A1D5-835BDCE87362} = {6B1E527F-B04B-4221-A58A-3304F9C267F2}
+		{8A068AF3-F3BF-441D-96B3-ECEADF207B28} = {93F438BE-503B-48B8-9F7B-E5AB459C1B02}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1532111B-D564-4C75-80F9-AE90D94412A0}

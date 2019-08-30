@@ -72,6 +72,10 @@
       <Project>{8D295D79-673E-4162-9C3C-23C9AEC78BC5}</Project>
       <Name>Rayffer.PersonalPortfolio.Sorters</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Rayffer.PersonalPortfolio.UnityFactory\Rayffer.PersonalPortfolio.UnityFactory.csproj">
+      <Project>{8A068AF3-F3BF-441D-96B3-ECEADF207B28}</Project>
+      <Name>Rayffer.PersonalPortfolio.UnityFactory</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />

@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8A068AF3-F3BF-441D-96B3-ECEADF207B28}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Rayffer.PersonalPortfolio.UnityFactory</RootNamespace>
+    <AssemblyName>Rayffer.PersonalPortfolio.UnityFactory</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.1\lib\net45\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.1\lib\net45\Unity.Container.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\LoggingDependencies\SerilogLogigngDependency.cs" />
+    <Compile Include="Classes\MappingDependencies\LinqMappingDependency.cs" />
+    <Compile Include="Classes\MappingDependencies\DapperMappingDependency.cs" />
+    <Compile Include="Classes\MappingDependencies\AutoMapperMappingDependency.cs" />
+    <Compile Include="Classes\DatabaseDependencies\EntityFrameworkDatabaseDependency.cs" />
+    <Compile Include="Classes\DatabaseDependencies\OracleDatabaseDependency.cs" />
+    <Compile Include="Classes\DatabaseDependencies\SqlDatabaseDependency.cs" />
+    <Compile Include="Classes\LoggingDependencies\Log4NetLoggingDependency.cs" />
+    <Compile Include="Classes\ServiceClientDependencies\RealServiceClientDependency.cs" />
+    <Compile Include="Classes\ServiceClientDependencies\WcfClientServiceClientDepency.cs" />
+    <Compile Include="Classes\ServiceExamples\ServiceExampleConstructorInjection.cs" />
+    <Compile Include="Classes\ServiceExamples\ServiceExamplePropertyInjection.cs" />
+    <Compile Include="Classes\ServiceExamples\ServiceExampleConstructorOverrideUnity.cs" />
+    <Compile Include="Classes\ServiceExamples\ServiceExampleUnityInjectionConstructor.cs" />
+    <Compile Include="ConfigureUnityFactory.cs" />
+    <Compile Include="Interfaces\IMappingDependency.cs" />
+    <Compile Include="Interfaces\IDatabaseDependency.cs" />
+    <Compile Include="Interfaces\ILoggingDependency.cs" />
+    <Compile Include="Interfaces\IServiceClientDependency.cs" />
+    <Compile Include="Interfaces\IServiceExample.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types\DatabaseDependencyTypes.cs" />
+    <Compile Include="Types\LoggingDependencyTypes.cs" />
+    <Compile Include="Types\MappingDependencyTypes.cs" />
+    <Compile Include="Types\ServiceClientDependencyTypes.cs" />
+    <Compile Include="Types\ServiceExampleTypes.cs" />
+    <Compile Include="ServiceUnityFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
