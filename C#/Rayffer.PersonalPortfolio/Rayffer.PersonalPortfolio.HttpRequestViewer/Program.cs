@@ -16,7 +16,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new WebApiExternalSimulator());
+            Application.Run(new HttpRequestViewerForm());
         }
     }
 }

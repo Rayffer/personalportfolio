@@ -1,6 +1,6 @@
 ﻿namespace Rayffer.PersonalPortfolio.HttpRequestViewer
 {
-    partial class WebApiExternalSimulator
+    partial class HttpRequestViewerForm
     {
         /// <summary>
         /// Required designer variable.

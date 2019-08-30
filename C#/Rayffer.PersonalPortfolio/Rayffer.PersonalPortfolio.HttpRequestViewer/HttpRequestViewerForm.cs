@@ -17,7 +17,7 @@ using System.Windows.Forms;
 
 namespace Rayffer.PersonalPortfolio.HttpRequestViewer
 {
-    public partial class WebApiExternalSimulator : Form
+    public partial class HttpRequestViewerForm : Form
     {
         private string validationNumber="";
         private string validationDateTime = "";
@@ -28,7 +28,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer
         private Thread clientCommunicationHandlerThread;
         private bool KillThreads = false;
 
-        public WebApiExternalSimulator()
+        public HttpRequestViewerForm()
         {
             InitializeComponent();
             SetHostUri();
