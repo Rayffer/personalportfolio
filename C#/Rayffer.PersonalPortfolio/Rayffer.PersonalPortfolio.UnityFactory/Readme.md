@@ -4,7 +4,7 @@ This project is a proof of concept of the various ways **unity can be used as a 
 
 By using unity as a factory the abstraction of said factory is very high, since unity constructs the classes from its dependencies which are registered in it, giving a **really high flexibility and ease of change** that conventional factories do not provide, while also **minimizing the code** that the factory requires.
 
-The resolution can be done through using any dependency resolution strategy:
+The resolution can be done using any dependency resolution strategy:
 
 * constructor injection.
 * property injection.
