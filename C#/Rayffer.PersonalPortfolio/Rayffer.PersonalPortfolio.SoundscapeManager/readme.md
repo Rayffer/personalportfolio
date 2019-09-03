@@ -1,8 +1,8 @@
-#Soundscape manager
+# Soundscape manager
 
 This project intends to give the user the capability of defining different soundscapes to recreate the ambience of a storm, a beach, a corridor or any other soundscape one can imagine.
 
-##Sound Effects
+## Sound Effects
 The backbone of the application, a sound effect is an audio file that plays a sound of a fireplace, a conversation, a wind rustling leaves, anything, it is up to the user to provide the sound effects he or she wants to use.
 
 The supportes audio formats are .mp3, .wav and .ogg (this one converts the files to mp3 and deletes the ogg file, so be careful about that).
@@ -24,7 +24,7 @@ If many sound are reproducing at the same time or the user can't find a sound th
 
 If the sound effects are saved in a directory in the computer other than the default one, the user can navigate to that directory by using the "Browse" button beside the label where the directory is displayed
 
-##Sound collections
+## Sound collections
 A sound collection is a group of sounds that the user can define to ease playing a desired sound effect on the fly.
 Selecting a sound collection will filter the displayed sound effects to show only those of the collection selected.
 
@@ -35,10 +35,18 @@ To select a sound collection, select a value of the combobox below the "Sound co
 
 If the sound collections are saved in a directory in the computer other than the default one, the user can navigate to that directory by using the "Browse" button beside the label where the directory is displayed
 
-##Soundscapes
+## Soundscapes
 A soundscape is a collection of sounds that when played, mimic the ambience of a fireplace inside a tavern or the mistery and dangers of a jungle at night for example.
 
 When saving a soundscape, only the sounds which are currently playing will be saved with their current configuration.
 Selecting a soundscape will inmediately load the setting to any sound effect that matches the name of those stored in the soundscape (if a sound is not present, the setting in the soundscape will be ignored), and start playing them.
 
 If the soundscapes are saved in a directory in the computer other than the default one, the user can navigate to that directory by using the "Browse" button beside the label where the directory is displayed
+
+### Default paths
+The application has some default paths present in its app.config file, listed in the following:
+
+* **AmbientSoundsLocation:** This setting controls the default directory in which to search sounds.
+* **SoundscapesLocation:** This setting controls the default directory in which soundscapes are stored and loaded from.
+* **SoundscapeCollectionLocation:** This setting controls the default directory in which sound collections are stored and loaded from.
+* **SupportedAudioExtensions:** This setting controls which audio files the application searchs to try and reproduce, any audio formats other than the specified will be ignored and currently only mp3, wav and ogg files have been tested and are the only ones that should work.
