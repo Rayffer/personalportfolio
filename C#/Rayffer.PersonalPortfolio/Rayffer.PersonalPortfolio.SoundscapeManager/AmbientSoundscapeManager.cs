@@ -25,13 +25,13 @@ namespace Rayffer.PersonalPortfolio.SoundscapeManager
             InitializeComponent();
             soundscapeExtension = ".jsonsoundscape";
             soundCollectionExtension = ".jsonsoundcollection";
-            currentDirectoryTextBox.Text = ConfigurationManager.AppSettings["AmbientSounds"];
+            currentDirectoryLabel.Text = ConfigurationManager.AppSettings["AmbientSounds"];
             generalVolumeControl = new WaveOutEvent();
             supportedAudioExtensions = ConfigurationManager.AppSettings["SupportedAudioExtensions"].Split(';').ToList();
             LoadSounds(ConfigurationManager.AppSettings["AmbientSounds"]);
-            savedSoundscapesDirectoryTextBox.Text = ConfigurationManager.AppSettings["SoundscapeConfigurationLocation"];
+            savedSoundscapesDirectoryLabel.Text = ConfigurationManager.AppSettings["SoundscapeConfigurationLocation"];
             LoadSoundscapes(ConfigurationManager.AppSettings["SoundscapeConfigurationLocation"]);
-            soundCollectionsDirectoryTextbox.Text = ConfigurationManager.AppSettings["SoundscapeCollectionLocation"];
+            soundCollectionsDirectoryLabel.Text = ConfigurationManager.AppSettings["SoundscapeCollectionLocation"];
             LoadSoundCollections(ConfigurationManager.AppSettings["SoundscapeCollectionLocation"]);
             listBoxSavedSoundScapes.SelectedIndexChanged += listBoxSavedSoundScapes_SelectedIndexChanged;
         }
@@ -55,7 +55,7 @@ namespace Rayffer.PersonalPortfolio.SoundscapeManager
         {
             ClearLayoutControlsSafe();
 
-            currentDirectoryTextBox.Text = selectedPath;
+            currentDirectoryLabel.Text = selectedPath;
 
             if (!System.IO.Directory.Exists(selectedPath))
                 System.IO.Directory.CreateDirectory(selectedPath);
@@ -74,7 +74,7 @@ namespace Rayffer.PersonalPortfolio.SoundscapeManager
         {
             soundscapeInformationBindingSource.DataSource = new List<SoundscapeInformation>();
 
-            savedSoundscapesDirectoryTextBox.Text = selectedPath;
+            savedSoundscapesDirectoryLabel.Text = selectedPath;
 
             if (!System.IO.Directory.Exists(selectedPath))
                 System.IO.Directory.CreateDirectory(selectedPath);
@@ -156,8 +156,8 @@ namespace Rayffer.PersonalPortfolio.SoundscapeManager
                     });
                 }
             }
-            JsonTools.WriteToJsonFile($"{savedSoundscapesDirectoryTextBox.Text}/{soundscapeInformation.Name}{soundscapeExtension}", soundscapeInformation, false);
-            LoadSoundscapes(savedSoundscapesDirectoryTextBox.Text);
+            JsonTools.WriteToJsonFile($"{savedSoundscapesDirectoryLabel.Text}/{soundscapeInformation.Name}{soundscapeExtension}", soundscapeInformation, false);
+            LoadSoundscapes(savedSoundscapesDirectoryLabel.Text);
 
             soundscapeNameTextBox.Text = string.Empty;
 
@@ -242,7 +242,7 @@ namespace Rayffer.PersonalPortfolio.SoundscapeManager
 
             soundCollectionBindingSource.DataSource = new List<SoundCollection>();
 
-            soundCollectionsDirectoryTextbox.Text = selectedPath;
+            soundCollectionsDirectoryLabel.Text = selectedPath;
 
             if (!System.IO.Directory.Exists(selectedPath))
                 System.IO.Directory.CreateDirectory(selectedPath);
@@ -275,8 +275,8 @@ namespace Rayffer.PersonalPortfolio.SoundscapeManager
             }
             if (soundCollection.SoundNames.Any())
             {
-                JsonTools.WriteToJsonFile($"{soundCollectionsDirectoryTextbox.Text}/{soundCollection.Name}{soundCollectionExtension}", soundCollection, false);
-                LoadSoundCollections(soundCollectionsDirectoryTextbox.Text);
+                JsonTools.WriteToJsonFile($"{soundCollectionsDirectoryLabel.Text}/{soundCollection.Name}{soundCollectionExtension}", soundCollection, false);
+                LoadSoundCollections(soundCollectionsDirectoryLabel.Text);
 
                 soundscapeNameTextBox.Text = string.Empty;
             }
@@ -330,7 +330,7 @@ namespace Rayffer.PersonalPortfolio.SoundscapeManager
                 DialogResult deleteResult = MessageBox.Show("Are you sure you want to delete this soundscape?", "Confirm soundscape deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (deleteResult == DialogResult.Yes)
                 {
-                    System.IO.File.Delete($"{savedSoundscapesDirectoryTextBox.Text}/{soundscapeInformation.Name}.jsonsoundscape");
+                    System.IO.File.Delete($"{savedSoundscapesDirectoryLabel.Text}/{soundscapeInformation.Name}.jsonsoundscape");
                     (soundscapeInformationBindingSource.DataSource as List<SoundscapeInformation>).Remove(soundscapeInformation);
                     soundscapeInformationBindingSource.ResetBindings(false);
                     foreach (AmbientSoundEffectPlayer soundInformation in soundsLayoutPanel.Controls)
