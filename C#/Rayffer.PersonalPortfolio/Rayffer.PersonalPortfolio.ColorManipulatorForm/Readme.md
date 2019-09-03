@@ -5,8 +5,8 @@ This project involves a form which performs color manipulation on an image, the 
 * Color rotation.
 * Color multiplication.
 * Color offsetting.
-* Alpha multiplication
-* Alpha offsetting
+* Alpha multiplication.
+* Alpha offsetting.
 
 All color multiplications are done on the red, green and blue axis.
 
