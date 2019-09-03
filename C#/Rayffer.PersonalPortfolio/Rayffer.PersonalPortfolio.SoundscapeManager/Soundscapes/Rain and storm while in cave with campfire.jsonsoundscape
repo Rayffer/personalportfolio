@@ -1,0 +1,23 @@
+{
+  "Name": "Rain and storm while in cave with campfire",
+  "SoundscapeSounds": [
+    {
+      "Name": "campfire1_lp",
+      "IsLooping": true,
+      "Volume": 30,
+      "IntervalSeconds": 0
+    },
+    {
+      "Name": "crucial_int_rainverb_med_loop",
+      "IsLooping": true,
+      "Volume": 6,
+      "IntervalSeconds": 0
+    },
+    {
+      "Name": "thunder_distant02",
+      "IsLooping": true,
+      "Volume": 10,
+      "IntervalSeconds": 1
+    }
+  ]
+}

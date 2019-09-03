@@ -1,0 +1,12 @@
+{
+  "Name": "Weather",
+  "SoundNames": [
+    "crucial_int_rainverb_med_loop",
+    "leaves_rustle02",
+    "rain_on_roofb",
+    "river_gentle_flow",
+    "thunder2",
+    "thunder_close02",
+    "thunder_distant02"
+  ]
+}

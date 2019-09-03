@@ -1,0 +1,29 @@
+{
+  "Name": "Town proximity campfire with rain in the night",
+  "SoundscapeSounds": [
+    {
+      "Name": "bell_midnight",
+      "IsLooping": true,
+      "Volume": 5,
+      "IntervalSeconds": 10
+    },
+    {
+      "Name": "campfire1_lp",
+      "IsLooping": true,
+      "Volume": 26,
+      "IntervalSeconds": 0
+    },
+    {
+      "Name": "leaves_rustle02",
+      "IsLooping": true,
+      "Volume": 3,
+      "IntervalSeconds": 4
+    },
+    {
+      "Name": "rain_on_roofb",
+      "IsLooping": true,
+      "Volume": 27,
+      "IntervalSeconds": 0
+    }
+  ]
+}

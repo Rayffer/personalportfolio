@@ -1,0 +1,29 @@
+{
+  "Name": "Woods ambience with river",
+  "SoundscapeSounds": [
+    {
+      "Name": "birdsong2",
+      "IsLooping": true,
+      "Volume": 14,
+      "IntervalSeconds": 3
+    },
+    {
+      "Name": "cicada1_lp",
+      "IsLooping": true,
+      "Volume": 10,
+      "IntervalSeconds": 0
+    },
+    {
+      "Name": "leaves_rustle02",
+      "IsLooping": true,
+      "Volume": 3,
+      "IntervalSeconds": 4
+    },
+    {
+      "Name": "pond_frogs_loop",
+      "IsLooping": true,
+      "Volume": 10,
+      "IntervalSeconds": 2
+    }
+  ]
+}

@@ -278,7 +278,7 @@ namespace Rayffer.PersonalPortfolio.SoundscapeManager
                 JsonTools.WriteToJsonFile($"{soundCollectionsDirectoryLabel.Text}/{soundCollection.Name}{soundCollectionExtension}", soundCollection, false);
                 LoadSoundCollections(soundCollectionsDirectoryLabel.Text);
 
-                soundscapeNameTextBox.Text = string.Empty;
+                soundCollectionNameTextBox.Text = string.Empty;
             }
             else
             {
