@@ -35,6 +35,7 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.selectDirectoryButton = new System.Windows.Forms.Button();
+            this.currentDirectoryLabel = new System.Windows.Forms.Label();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.deleteSoundScapeButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
@@ -43,8 +44,10 @@
             this.soundCollectionNameTextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.soundCollectionsDirectoryLabel = new System.Windows.Forms.Label();
             this.searchSoundCollectionDirectoryButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.savedSoundscapesDirectoryLabel = new System.Windows.Forms.Label();
             this.selectSavedSoundscapesButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.saveSoundscapeButton = new System.Windows.Forms.Button();
@@ -64,9 +67,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.soundCollectionsCombobox = new System.Windows.Forms.ComboBox();
             this.soundCollectionBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.currentDirectoryLabel = new System.Windows.Forms.Label();
-            this.soundCollectionsDirectoryLabel = new System.Windows.Forms.Label();
-            this.savedSoundscapesDirectoryLabel = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -157,6 +157,19 @@
             this.selectDirectoryButton.Text = "Browse";
             this.selectDirectoryButton.UseVisualStyleBackColor = true;
             this.selectDirectoryButton.Click += new System.EventHandler(this.selectDirectoryButton_Click);
+            // 
+            // currentDirectoryLabel
+            // 
+            this.currentDirectoryLabel.AutoEllipsis = true;
+            this.currentDirectoryLabel.AutoSize = true;
+            this.currentDirectoryLabel.BackColor = System.Drawing.Color.White;
+            this.currentDirectoryLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.currentDirectoryLabel.Location = new System.Drawing.Point(165, 5);
+            this.currentDirectoryLabel.Margin = new System.Windows.Forms.Padding(5);
+            this.currentDirectoryLabel.Name = "currentDirectoryLabel";
+            this.currentDirectoryLabel.Size = new System.Drawing.Size(943, 22);
+            this.currentDirectoryLabel.TabIndex = 3;
+            this.currentDirectoryLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tableLayoutPanel4
             // 
@@ -286,6 +299,19 @@
             this.tableLayoutPanel8.Size = new System.Drawing.Size(235, 30);
             this.tableLayoutPanel8.TabIndex = 23;
             // 
+            // soundCollectionsDirectoryLabel
+            // 
+            this.soundCollectionsDirectoryLabel.AutoEllipsis = true;
+            this.soundCollectionsDirectoryLabel.AutoSize = true;
+            this.soundCollectionsDirectoryLabel.BackColor = System.Drawing.Color.White;
+            this.soundCollectionsDirectoryLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.soundCollectionsDirectoryLabel.Location = new System.Drawing.Point(5, 5);
+            this.soundCollectionsDirectoryLabel.Margin = new System.Windows.Forms.Padding(5);
+            this.soundCollectionsDirectoryLabel.Name = "soundCollectionsDirectoryLabel";
+            this.soundCollectionsDirectoryLabel.Size = new System.Drawing.Size(162, 20);
+            this.soundCollectionsDirectoryLabel.TabIndex = 16;
+            this.soundCollectionsDirectoryLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // searchSoundCollectionDirectoryButton
             // 
             this.searchSoundCollectionDirectoryButton.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -313,6 +339,19 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel5.Size = new System.Drawing.Size(235, 30);
             this.tableLayoutPanel5.TabIndex = 20;
+            // 
+            // savedSoundscapesDirectoryLabel
+            // 
+            this.savedSoundscapesDirectoryLabel.AutoEllipsis = true;
+            this.savedSoundscapesDirectoryLabel.AutoSize = true;
+            this.savedSoundscapesDirectoryLabel.BackColor = System.Drawing.Color.White;
+            this.savedSoundscapesDirectoryLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.savedSoundscapesDirectoryLabel.Location = new System.Drawing.Point(5, 5);
+            this.savedSoundscapesDirectoryLabel.Margin = new System.Windows.Forms.Padding(5);
+            this.savedSoundscapesDirectoryLabel.Name = "savedSoundscapesDirectoryLabel";
+            this.savedSoundscapesDirectoryLabel.Size = new System.Drawing.Size(162, 20);
+            this.savedSoundscapesDirectoryLabel.TabIndex = 17;
+            this.savedSoundscapesDirectoryLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // selectSavedSoundscapesButton
             // 
@@ -533,42 +572,6 @@
             // soundCollectionBindingSource
             // 
             this.soundCollectionBindingSource.DataSource = typeof(Rayffer.PersonalPortfolio.SoundscapeManager.DTO.SoundCollection);
-            // 
-            // currentDirectoryLabel
-            // 
-            this.currentDirectoryLabel.AutoSize = true;
-            this.currentDirectoryLabel.BackColor = System.Drawing.Color.White;
-            this.currentDirectoryLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.currentDirectoryLabel.Location = new System.Drawing.Point(165, 5);
-            this.currentDirectoryLabel.Margin = new System.Windows.Forms.Padding(5);
-            this.currentDirectoryLabel.Name = "currentDirectoryLabel";
-            this.currentDirectoryLabel.Size = new System.Drawing.Size(943, 22);
-            this.currentDirectoryLabel.TabIndex = 3;
-            this.currentDirectoryLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // soundCollectionsDirectoryLabel
-            // 
-            this.soundCollectionsDirectoryLabel.AutoSize = true;
-            this.soundCollectionsDirectoryLabel.BackColor = System.Drawing.Color.White;
-            this.soundCollectionsDirectoryLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.soundCollectionsDirectoryLabel.Location = new System.Drawing.Point(5, 5);
-            this.soundCollectionsDirectoryLabel.Margin = new System.Windows.Forms.Padding(5);
-            this.soundCollectionsDirectoryLabel.Name = "soundCollectionsDirectoryLabel";
-            this.soundCollectionsDirectoryLabel.Size = new System.Drawing.Size(162, 20);
-            this.soundCollectionsDirectoryLabel.TabIndex = 16;
-            this.soundCollectionsDirectoryLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // savedSoundscapesDirectoryLabel
-            // 
-            this.savedSoundscapesDirectoryLabel.AutoSize = true;
-            this.savedSoundscapesDirectoryLabel.BackColor = System.Drawing.Color.White;
-            this.savedSoundscapesDirectoryLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.savedSoundscapesDirectoryLabel.Location = new System.Drawing.Point(5, 5);
-            this.savedSoundscapesDirectoryLabel.Margin = new System.Windows.Forms.Padding(5);
-            this.savedSoundscapesDirectoryLabel.Name = "savedSoundscapesDirectoryLabel";
-            this.savedSoundscapesDirectoryLabel.Size = new System.Drawing.Size(162, 20);
-            this.savedSoundscapesDirectoryLabel.TabIndex = 17;
-            this.savedSoundscapesDirectoryLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // AmbientSoundscapeManager
             // 
