@@ -25,12 +25,12 @@ namespace Rayffer.PersonalPortfolio.SoundscapeManager
             InitializeComponent();
             soundscapeExtension = ".jsonsoundscape";
             soundCollectionExtension = ".jsonsoundcollection";
-            currentDirectoryLabel.Text = ConfigurationManager.AppSettings["AmbientSounds"];
+            currentDirectoryLabel.Text = ConfigurationManager.AppSettings["AmbientSoundsLocation"];
             generalVolumeControl = new WaveOutEvent();
             supportedAudioExtensions = ConfigurationManager.AppSettings["SupportedAudioExtensions"].Split(';').ToList();
-            LoadSounds(ConfigurationManager.AppSettings["AmbientSounds"]);
-            savedSoundscapesDirectoryLabel.Text = ConfigurationManager.AppSettings["SoundscapeConfigurationLocation"];
-            LoadSoundscapes(ConfigurationManager.AppSettings["SoundscapeConfigurationLocation"]);
+            LoadSounds(ConfigurationManager.AppSettings["AmbientSoundsLocation"]);
+            savedSoundscapesDirectoryLabel.Text = ConfigurationManager.AppSettings["SoundscapesLocation"];
+            LoadSoundscapes(ConfigurationManager.AppSettings["SoundscapesLocation"]);
             soundCollectionsDirectoryLabel.Text = ConfigurationManager.AppSettings["SoundscapeCollectionLocation"];
             LoadSoundCollections(ConfigurationManager.AppSettings["SoundscapeCollectionLocation"]);
             listBoxSavedSoundScapes.SelectedIndexChanged += listBoxSavedSoundScapes_SelectedIndexChanged;
