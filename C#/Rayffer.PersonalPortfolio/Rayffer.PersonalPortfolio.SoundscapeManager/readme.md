@@ -42,3 +42,11 @@ When saving a soundscape, only the sounds which are currently playing will be sa
 Selecting a soundscape will inmediately load the setting to any sound effect that matches the name of those stored in the soundscape (if a sound is not present, the setting in the soundscape will be ignored), and start playing them.
 
 If the soundscapes are saved in a directory in the computer other than the default one, the user can navigate to that directory by using the "Browse" button beside the label where the directory is displayed
+
+### Default paths
+The application has some default paths present in its app.config file, listed in the following:
+
+* **AmbientSoundsLocation:** This setting controls the default directory in which to search sounds.
+* **SoundscapesLocation:** This setting controls the default directory in which soundscapes are stored and loaded from.
+* **SoundscapeCollectionLocation:** This setting controls the default directory in which sound collections are stored and loaded from.
+* **SupportedAudioExtensions:** This setting controls which audio files the application searchs to try and reproduce, any audio formats other than the specified will be ignored and currently only mp3, wav and ogg files have been tested and are the only ones that should work.
