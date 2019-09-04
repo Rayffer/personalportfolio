@@ -1,10 +1,12 @@
-﻿using Rayffer.PersonalPortfolio.Generators;
+﻿using Rayffer.PersonalPortfolio.ConjectureCalculators;
+using Rayffer.PersonalPortfolio.Generators;
 using Rayffer.PersonalPortfolio.QueueManagers;
 using Rayffer.PersonalPortfolio.Sorters;
 using Rayffer.PersonalPortfolio.UnityFactory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 
 namespace Rayffer.PersonalPortfolio.TestLaboratory
@@ -13,12 +15,9 @@ namespace Rayffer.PersonalPortfolio.TestLaboratory
     {
         private static void Main(string[] args)
         {
-            ServiceUnityFactory serviceUnityFactory = new ServiceUnityFactory();
+            var conjectureSteps = CollatzConjecture.CalculateSteps(150);
 
-            var constructorInjectionService = serviceUnityFactory.GetServiceExample(UnityFactory.Types.ServiceExampleTypes.ConstructorDefinedInjections);
-            var propertyInjectionService = serviceUnityFactory.GetServiceExample(UnityFactory.Types.ServiceExampleTypes.PropertyDefinedInjections);
-            var defaultInjectionService = serviceUnityFactory.GetServiceExample(UnityFactory.Types.ServiceExampleTypes.UnityDefaultResolution);
-            var unityInjectionConstructorService = serviceUnityFactory.GetServiceExample(UnityFactory.Types.ServiceExampleTypes.UnityInjectionConstructor);
+            Console.ReadLine();
         }
     }
 }

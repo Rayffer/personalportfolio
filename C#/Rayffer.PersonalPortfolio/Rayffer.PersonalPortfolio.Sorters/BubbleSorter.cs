@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Rayffer.PersonalPortfolio.Sorters
 {
     public class BubbleSorter<SortType> : ISorter<SortType> where SortType : IComparable<SortType>
     {
-        public IEnumerable<SortType> SortAscending(IEnumerable<SortType> listToSort)
+        public IEnumerable<SortType> SortAscending(IEnumerable<SortType> listToSort, int sleep = 0)
         {
             List<SortType> sortedList = listToSort.ToList();
             int swapOperations = sortedList.Count - 1;
@@ -22,12 +23,13 @@ namespace Rayffer.PersonalPortfolio.Sorters
                         sortedList[sortIndex] = secondComparedElement;
                         sortedList[sortIndex + 1] = firstComparedElement;
                     }
+                    Thread.Sleep(sleep);
                 }
             }
             return sortedList;
         }
 
-        public IEnumerable<SortType> SortDescending(IEnumerable<SortType> listToSort)
+        public IEnumerable<SortType> SortDescending(IEnumerable<SortType> listToSort, int sleep = 0)
         {
             List<SortType> sortedList = listToSort.ToList();
             int swapOperations = sortedList.Count - 1;
@@ -42,6 +44,7 @@ namespace Rayffer.PersonalPortfolio.Sorters
                         sortedList[sortIndex] = secondComparedElement;
                         sortedList[sortIndex + 1] = firstComparedElement;
                     }
+                    Thread.Sleep(sleep);
                 }
             }
             return sortedList;

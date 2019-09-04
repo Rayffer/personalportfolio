@@ -2,14 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Rayffer.PersonalPortfolio.Sorters
 {
     public class MergeSorter<SortType> : ISorter<SortType> where SortType : IComparable<SortType>
     {
-
-        public IEnumerable<SortType> SortAscending(IEnumerable<SortType> listToSort)
+        public IEnumerable<SortType> SortAscending(IEnumerable<SortType> listToSort, int sleep = 0)
         {
+            Thread.Sleep(sleep);
             var listItems = listToSort.Count();
             if (listItems == 1)
             {
@@ -54,8 +55,9 @@ namespace Rayffer.PersonalPortfolio.Sorters
             return resultList;
         }
 
-        public IEnumerable<SortType> SortDescending(IEnumerable<SortType> listToSort)
+        public IEnumerable<SortType> SortDescending(IEnumerable<SortType> listToSort, int sleep = 0)
         {
+            Thread.Sleep(sleep);
             var listItems = listToSort.Count();
             if (listItems == 1)
             {

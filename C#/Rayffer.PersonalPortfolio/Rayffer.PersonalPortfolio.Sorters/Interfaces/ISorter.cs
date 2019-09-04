@@ -8,7 +8,7 @@ namespace Rayffer.PersonalPortfolio.Sorters.Interfaces
 {
     public interface ISorter<SortType>
     {
-        IEnumerable<SortType> SortAscending(IEnumerable<SortType> listToSort);
-        IEnumerable<SortType> SortDescending(IEnumerable<SortType> listToSort);
+        IEnumerable<SortType> SortAscending(IEnumerable<SortType> listToSort, int sleep);
+        IEnumerable<SortType> SortDescending(IEnumerable<SortType> listToSort, int sleep);
     }
 }

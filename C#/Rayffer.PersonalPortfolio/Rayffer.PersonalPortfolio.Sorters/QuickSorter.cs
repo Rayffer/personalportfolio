@@ -3,6 +3,7 @@ using Rayffer.PersonalPortfolio.Sorters.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Rayffer.PersonalPortfolio.Sorters
 {
@@ -17,8 +18,9 @@ namespace Rayffer.PersonalPortfolio.Sorters
             randomizer = new Random();
         }
 
-        public IEnumerable<SortType> SortAscending(IEnumerable<SortType> listToSort)
+        public IEnumerable<SortType> SortAscending(IEnumerable<SortType> listToSort, int sleep = 0)
         {
+            Thread.Sleep(sleep);
             if (!listToSort.Any())
             {
                 return listToSort;
@@ -36,8 +38,9 @@ namespace Rayffer.PersonalPortfolio.Sorters
             return sortedElementsLessOrEqualThanPivot.Concat(sortedElementsGreaterThanPivot);
         }
 
-        public IEnumerable<SortType> SortDescending(IEnumerable<SortType> listToSort)
+        public IEnumerable<SortType> SortDescending(IEnumerable<SortType> listToSort, int sleep = 0)
         {
+            Thread.Sleep(sleep);
             if (!listToSort.Any())
             {
                 return listToSort;

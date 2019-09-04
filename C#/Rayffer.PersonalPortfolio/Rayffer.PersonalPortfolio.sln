@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.SoundscapeManager", "Rayffer.PersonalPortfolio.SoundscapeManager\Rayffer.PersonalPortfolio.SoundscapeManager.csproj", "{DD6A221D-B01B-4509-B47B-42D89074E671}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.TestWpfApp", "Rayffer.PersonalPortfolio.TestWpfApp\Rayffer.PersonalPortfolio.TestWpfApp.csproj", "{DD058451-7AA2-4C8E-9CAD-E76C7D011226}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{DD6A221D-B01B-4509-B47B-42D89074E671}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD6A221D-B01B-4509-B47B-42D89074E671}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD6A221D-B01B-4509-B47B-42D89074E671}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD058451-7AA2-4C8E-9CAD-E76C7D011226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD058451-7AA2-4C8E-9CAD-E76C7D011226}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD058451-7AA2-4C8E-9CAD-E76C7D011226}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD058451-7AA2-4C8E-9CAD-E76C7D011226}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,6 +108,7 @@ Global
 		{8A068AF3-F3BF-441D-96B3-ECEADF207B28} = {93F438BE-503B-48B8-9F7B-E5AB459C1B02}
 		{F8F3B8FC-08D5-472B-9E86-DEC8C9E9FC24} = {6B1E527F-B04B-4221-A58A-3304F9C267F2}
 		{DD6A221D-B01B-4509-B47B-42D89074E671} = {6B1E527F-B04B-4221-A58A-3304F9C267F2}
+		{DD058451-7AA2-4C8E-9CAD-E76C7D011226} = {6B1E527F-B04B-4221-A58A-3304F9C267F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1532111B-D564-4C75-80F9-AE90D94412A0}
