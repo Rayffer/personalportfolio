@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Rayffer.PersonalPortfolio.TestWpfApp
+namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
 {
     /// <summary>
     /// Interaction logic for App.xaml

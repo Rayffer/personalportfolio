@@ -31,7 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.SoundscapeManager", "Rayffer.PersonalPortfolio.SoundscapeManager\Rayffer.PersonalPortfolio.SoundscapeManager.csproj", "{DD6A221D-B01B-4509-B47B-42D89074E671}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.TestWpfApp", "Rayffer.PersonalPortfolio.TestWpfApp\Rayffer.PersonalPortfolio.TestWpfApp.csproj", "{DD058451-7AA2-4C8E-9CAD-E76C7D011226}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer", "Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer\Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer.csproj", "{DD058451-7AA2-4C8E-9CAD-E76C7D011226}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

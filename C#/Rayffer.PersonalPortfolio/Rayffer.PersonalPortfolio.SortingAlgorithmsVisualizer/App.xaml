@@ -1,7 +1,7 @@
-﻿<Application x:Class="Rayffer.PersonalPortfolio.TestWpfApp.App"
+﻿<Application x:Class="Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Rayffer.PersonalPortfolio.TestWpfApp"
+             xmlns:local="clr-namespace:Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          
