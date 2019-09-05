@@ -7,7 +7,7 @@ namespace Rayffer.PersonalPortfolio.QueueManagers
 {
     public class BackgroundWorkerActionQueueManager : IDisposable
     {
-        public bool IsBusy { get => backgroundWorker.IsBusy; }
+        public bool IsBusy { get; private set; }
 
         private BlockingCollection<Action> actionQueue;
         private readonly BackgroundWorker backgroundWorker;
@@ -35,7 +35,9 @@ namespace Rayffer.PersonalPortfolio.QueueManagers
                 Action actionToPerform = null;
                 try
                 {
+                    IsBusy = false;
                     actionToPerform = actionQueue.Take(cancellationTokenSource.Token);
+                    IsBusy = true;
                 }
                 catch (OperationCanceledException ex)
                 {
