@@ -8,7 +8,21 @@ namespace Rayffer.PersonalPortfolio.Sorters
 {
     public class InsertionSorter<SortType> : ISorter<SortType> where SortType : IComparable<SortType>
     {
-        public List<SortType> SortedList { get; private set; }
+        private readonly object LockObject = new object();
+
+        private List<SortType> _sortedList;
+
+        public List<SortType> SortedList
+        {
+            get
+            {
+                lock (LockObject)
+                {
+                    return _sortedList;
+                }
+            }
+            private set => _sortedList = value;
+        }
         public int CurrentSortedListIndex { get; private set; }
 
         public IEnumerable<SortType> SortAscending(IEnumerable<SortType> listToSort, int sleep = 0)

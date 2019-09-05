@@ -12,15 +12,18 @@ namespace Rayffer.PersonalPortfolio.Sorters
 
         private List<SortType> _sortedList;
 
-        public List<SortType> SortedList {
+        public List<SortType> SortedList
+        {
             get
             {
                 lock (LockObject)
                 {
-                    return _sortedList; 
+                    return _sortedList;
                 }
             }
-            private set => _sortedList = value; }
+            private set => _sortedList = value;
+        }
+
         public int CurrentSortedListIndex { get; private set; }
 
         public IEnumerable<SortType> SortAscending(IEnumerable<SortType> listToSort, int sleep = 0)
@@ -77,7 +80,6 @@ namespace Rayffer.PersonalPortfolio.Sorters
 
             Thread.Sleep(sleep);
 
-
             return resultList;
         }
 
@@ -116,12 +118,18 @@ namespace Rayffer.PersonalPortfolio.Sorters
                 }
             }
 
+            SortedList.RemoveAll(sortedItem => resultList.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
+            SortedList.InsertRange(0, resultList);
             if (sortedFirstHalfOfList.Any())
             {
+                SortedList.RemoveAll(sortedItem => sortedFirstHalfOfList.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
+                SortedList.InsertRange(resultList.Count(), sortedFirstHalfOfList);
                 resultList.AddRange(sortedFirstHalfOfList);
             }
             else
             {
+                SortedList.RemoveAll(sortedItem => sortedSecondHalfOfList.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
+                SortedList.InsertRange(resultList.Count(), sortedSecondHalfOfList);
                 resultList.AddRange(sortedSecondHalfOfList);
             }
 
