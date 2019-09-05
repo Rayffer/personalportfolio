@@ -17,23 +17,42 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
     {
         private readonly Regex numericRegex = new Regex("^\\d{0,}$");
 
-        private readonly BackgroundWorkerActionQueueManager cocktailSortActionQueueManager;
-        private readonly BackgroundWorkerActionQueueManager cocktailSortVisualisationActionQueueManager;
-        private readonly BackgroundWorkerActionQueueManager bubbleSortActionQueueManager;
-        private readonly BackgroundWorkerActionQueueManager bubbleSortVisualisationActionQueueManager;
-        private readonly BackgroundWorkerActionQueueManager insertionSortActionQueueManager;
-        private readonly BackgroundWorkerActionQueueManager insertionSortVisualisationActionQueueManager;
-        private readonly BackgroundWorkerActionQueueManager mergeSortActionQueueManager;
-        private readonly BackgroundWorkerActionQueueManager mergeSortVisualisationActionQueueManager;
-        private readonly BackgroundWorkerActionQueueManager quickSortActionQueueManager;
-        private readonly BackgroundWorkerActionQueueManager quickSortVisualisationActionQueueManager;
-        private readonly BackgroundWorkerActionQueueManager uiActionQueueManager;
+        private BackgroundWorkerActionQueueManager cocktailSortActionQueueManager;
+        private BackgroundWorkerActionQueueManager cocktailSortVisualisationActionQueueManager;
+        private BackgroundWorkerActionQueueManager bubbleSortActionQueueManager;
+        private BackgroundWorkerActionQueueManager bubbleSortVisualisationActionQueueManager;
+        private BackgroundWorkerActionQueueManager insertionSortActionQueueManager;
+        private BackgroundWorkerActionQueueManager insertionSortVisualisationActionQueueManager;
+        private BackgroundWorkerActionQueueManager mergeSortActionQueueManager;
+        private BackgroundWorkerActionQueueManager mergeSortVisualisationActionQueueManager;
+        private BackgroundWorkerActionQueueManager quickSortActionQueueManager;
+        private BackgroundWorkerActionQueueManager quickSortVisualisationActionQueueManager;
+        private BackgroundWorkerActionQueueManager uiActionQueueManager;
 
         private List<BackgroundWorkerActionQueueManager> sortingBackGroundWorkers;
 
         public MainWindow()
         {
             InitializeComponent();
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            performSortingsButton.IsEnabled = false;
+
+            if (!int.TryParse(sortElementsTextbox.Text, out int sortElements))
+                sortElements = 100;
+            if (!int.TryParse(stepDelayTextbox.Text, out int stepDelay))
+                stepDelay = 50;
+
+            List<int> listToSort = new List<int>();
+            for (int i = 0; i < sortElements; i++)
+            {
+                listToSort.Add(i + 1);
+            }
+
+            int[] arrayToSort = Shuffle(listToSort, new Random()).ToArray();
 
             cocktailSortActionQueueManager = new BackgroundWorkerActionQueueManager();
             cocktailSortVisualisationActionQueueManager = new BackgroundWorkerActionQueueManager();
@@ -60,24 +79,6 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                 quickSortActionQueueManager,
                 quickSortVisualisationActionQueueManager
             };
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            performSortingsButton.IsEnabled = false;
-
-            if (!int.TryParse(sortElementsTextbox.Text, out int sortElements))
-                sortElements = 100;
-            if (!int.TryParse(stepDelayTextbox.Text, out int stepDelay))
-                stepDelay = 50;
-
-            List<int> listToSort = new List<int>();
-            for (int i = 0; i < sortElements; i++)
-            {
-                listToSort.Add(i + 1);
-            }
-
-            int[] arrayToSort = Shuffle(listToSort, new Random()).ToArray();
 
             StartCockTailSort(stepDelay, listToSort, arrayToSort);
             StartBubbleSort(stepDelay, listToSort, arrayToSort);
@@ -96,7 +97,16 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                 {
                     performSortingsButton.IsEnabled = true;
                 });
+
+                sortingBackGroundWorkers.ForEach(worker =>
+                {
+                    worker.Dispose();
+                    worker = null;
+                });
+
+                sortingBackGroundWorkers.Clear();
             });
+
         }
 
         private void StartCockTailSort(int stepDelay, List<int> listToSort, int[] arrayToSort)
@@ -192,6 +202,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                         cocktailSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
                     });
                 }
+                cockTailSorter = null;
             });
         }
 
@@ -287,6 +298,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                         bubbleSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
                     });
                 }
+                bubbleSorter = null;
             });
         }
 
@@ -383,6 +395,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                         insertionSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
                     });
                 }
+                insertionSorter = null;
             });
         }
 
@@ -479,6 +492,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                         mergeSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
                     });
                 }
+                mergeSorter = null;
             });
         }
 
@@ -575,6 +589,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                         quickSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
                     });
                 }
+                quickSorter = null;
             });
         }
 
