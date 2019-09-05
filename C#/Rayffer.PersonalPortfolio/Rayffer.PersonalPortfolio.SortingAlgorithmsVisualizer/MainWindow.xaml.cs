@@ -92,7 +92,10 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                     Thread.Sleep(200);
                 }
 
-                performSortingsButton.IsEnabled = true;
+                performSortingsButton.Dispatcher.Invoke(() =>
+                {
+                    performSortingsButton.IsEnabled = true;
+                });
             });
         }
 
@@ -100,8 +103,6 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
         {
             CockTailSorter<int> cockTailSorter = new CockTailSorter<int>();
             bool cocktailSortHasEnded = false;
-
-            float borderSize = 0.5F * 100 / Math.Max(100, listToSort.Count);
 
             cocktailSortActionQueueManager.EnqueueAction(() =>
             {
@@ -146,7 +147,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                                 double pieceY = maxHeight - pieceHeight;
                                 double pieceX = tickWidth * j;
 
-                                drawingContext.DrawRectangle(colorBrush, new Pen(Brushes.Black, borderSize), new Rect(pieceX, pieceY, tickWidth, pieceHeight));
+                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
                             }
                             drawingContext.Close();
                         }
@@ -155,7 +156,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                 }
                 for (int i = 0; i < listToSort.Count; i++)
                 {
-                    Thread.Sleep(40);
+                    Thread.Sleep(2500 / listToSort.Count);
 
                     cocktailSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
                     {
@@ -184,7 +185,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                                 double pieceY = maxHeight - pieceHeight;
                                 double pieceX = tickWidth * j;
 
-                                drawingContext.DrawRectangle(colorBrush, new Pen(Brushes.Black, borderSize), new Rect(pieceX, pieceY, tickWidth, pieceHeight));
+                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
                             }
                             drawingContext.Close();
                         }
@@ -198,8 +199,6 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
         {
             BubbleSorter<int> bubbleSorter = new BubbleSorter<int>();
             bool bubbleSortHasEnded = false;
-
-            float borderSize = 0.5F * 100 / Math.Max(100, listToSort.Count);
 
             bubbleSortActionQueueManager.EnqueueAction(() =>
             {
@@ -243,7 +242,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                                 double pieceY = maxHeight - pieceHeight;
                                 double pieceX = tickWidth * j;
 
-                                drawingContext.DrawRectangle(colorBrush, new Pen(Brushes.Black, borderSize), new Rect(pieceX, pieceY, tickWidth, pieceHeight));
+                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
                             }
                             drawingContext.Close();
                         }
@@ -252,7 +251,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                 }
                 for (int i = 0; i < listToSort.Count; i++)
                 {
-                    Thread.Sleep(40);
+                    Thread.Sleep(2500 / listToSort.Count);
 
                     bubbleSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
                     {
@@ -281,7 +280,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                                 double pieceY = maxHeight - pieceHeight;
                                 double pieceX = tickWidth * j;
 
-                                drawingContext.DrawRectangle(colorBrush, new Pen(Brushes.Black, borderSize), new Rect(pieceX, pieceY, tickWidth, pieceHeight));
+                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
                             }
                             drawingContext.Close();
                         }
@@ -295,8 +294,6 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
         {
             InsertionSorter<int> insertionSorter = new InsertionSorter<int>();
             bool insertionSortHasEnded = false;
-
-            float borderSize = 0.5F * 100 / Math.Max(100, listToSort.Count);
 
             insertionSortActionQueueManager.EnqueueAction(() =>
             {
@@ -341,7 +338,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                                 double pieceY = maxHeight - pieceHeight;
                                 double pieceX = tickWidth * j;
 
-                                drawingContext.DrawRectangle(colorBrush, new Pen(Brushes.Black, borderSize), new Rect(pieceX, pieceY, tickWidth, pieceHeight));
+                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
                             }
                             drawingContext.Close();
                         }
@@ -350,7 +347,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                 }
                 for (int i = 0; i < listToSort.Count; i++)
                 {
-                    Thread.Sleep(40);
+                    Thread.Sleep(2500 / listToSort.Count);
 
                     insertionSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
                     {
@@ -379,7 +376,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                                 double pieceY = maxHeight - pieceHeight;
                                 double pieceX = tickWidth * j;
 
-                                drawingContext.DrawRectangle(colorBrush, new Pen(Brushes.Black, borderSize), new Rect(pieceX, pieceY, tickWidth, pieceHeight));
+                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
                             }
                             drawingContext.Close();
                         }
@@ -393,8 +390,6 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
         {
             MergeSorter<int> mergeSorter = new MergeSorter<int>();
             bool mergeSortHasEnded = false;
-
-            float borderSize = 0.5F * 100 / Math.Max(100, listToSort.Count);
 
             mergeSortActionQueueManager.EnqueueAction(() =>
             {
@@ -439,7 +434,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                                 double pieceY = maxHeight - pieceHeight;
                                 double pieceX = tickWidth * j;
 
-                                drawingContext.DrawRectangle(colorBrush, new Pen(Brushes.Black, borderSize), new Rect(pieceX, pieceY, tickWidth, pieceHeight));
+                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
                             }
                             drawingContext.Close();
                         }
@@ -448,7 +443,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                 }
                 for (int i = 0; i < listToSort.Count; i++)
                 {
-                    Thread.Sleep(40);
+                    Thread.Sleep(2500 / listToSort.Count);
 
                     mergeSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
                     {
@@ -477,7 +472,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                                 double pieceY = maxHeight - pieceHeight;
                                 double pieceX = tickWidth * j;
 
-                                drawingContext.DrawRectangle(colorBrush, new Pen(Brushes.Black, borderSize), new Rect(pieceX, pieceY, tickWidth, pieceHeight));
+                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
                             }
                             drawingContext.Close();
                         }
@@ -491,7 +486,6 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
         {
             QuickSorter<int> quickSorter = new QuickSorter<int>(Sorters.Types.QuickSortPivotTypes.RandomPivot);
             bool quickSorterHasEnded = false;
-            float borderSize = 0.5F * 100 / Math.Max(100, listToSort.Count);
 
             quickSortActionQueueManager.EnqueueAction(() =>
             {
@@ -536,7 +530,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                                 double pieceY = maxHeight - pieceHeight;
                                 double pieceX = tickWidth * j;
 
-                                drawingContext.DrawRectangle(colorBrush, new Pen(Brushes.Black, borderSize), new Rect(pieceX, pieceY, tickWidth, pieceHeight));
+                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
                             }
                             drawingContext.Close();
                         }
@@ -545,7 +539,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                 }
                 for (int i = 0; i < listToSort.Count; i++)
                 {
-                    Thread.Sleep(40);
+                    Thread.Sleep(2500 / listToSort.Count);
 
                     quickSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
                     {
@@ -574,7 +568,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                                 double pieceY = maxHeight - pieceHeight;
                                 double pieceX = tickWidth * j;
 
-                                drawingContext.DrawRectangle(colorBrush, new Pen(Brushes.Black, borderSize), new Rect(pieceX, pieceY, tickWidth, pieceHeight));
+                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
                             }
                             drawingContext.Close();
                         }
@@ -618,9 +612,9 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
         private void SortElementsTextbox_TextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
             if (int.TryParse(sortElementsTextbox.Text, out int sortElements)
-                && sortElements > 300)
+                && sortElements > 800)
             {
-                stepDelayTextbox.Text = "300";
+                stepDelayTextbox.Text = "800";
             }
         }
     }
