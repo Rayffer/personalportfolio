@@ -62,20 +62,23 @@ namespace Rayffer.PersonalPortfolio.Sorters
                     resultList.Add(firstElementOfSecondHalfList);
                 }
             }
+            lock (LockObject)
+            {
 
-            SortedList.RemoveAll(sortedItem => resultList.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
-            SortedList.InsertRange(0, resultList);
-            if (sortedFirstHalfOfList.Any())
-            {
-                SortedList.RemoveAll(sortedItem => sortedFirstHalfOfList.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
-                SortedList.InsertRange(resultList.Count(), sortedFirstHalfOfList);
-                resultList.AddRange(sortedFirstHalfOfList);
-            }
-            else
-            {
-                SortedList.RemoveAll(sortedItem => sortedSecondHalfOfList.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
-                SortedList.InsertRange(resultList.Count(), sortedSecondHalfOfList);
-                resultList.AddRange(sortedSecondHalfOfList);
+                SortedList.RemoveAll(sortedItem => resultList.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
+                SortedList.InsertRange(0, resultList);
+                if (sortedFirstHalfOfList.Any())
+                {
+                    SortedList.RemoveAll(sortedItem => sortedFirstHalfOfList.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
+                    SortedList.InsertRange(resultList.Count(), sortedFirstHalfOfList);
+                    resultList.AddRange(sortedFirstHalfOfList);
+                }
+                else
+                {
+                    SortedList.RemoveAll(sortedItem => sortedSecondHalfOfList.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
+                    SortedList.InsertRange(resultList.Count(), sortedSecondHalfOfList);
+                    resultList.AddRange(sortedSecondHalfOfList);
+                } 
             }
 
             Thread.Sleep(sleep);
@@ -117,20 +120,23 @@ namespace Rayffer.PersonalPortfolio.Sorters
                     resultList.Add(firstElementOfSecondHalfList);
                 }
             }
+            lock (LockObject)
+            {
 
-            SortedList.RemoveAll(sortedItem => resultList.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
-            SortedList.InsertRange(0, resultList);
-            if (sortedFirstHalfOfList.Any())
-            {
-                SortedList.RemoveAll(sortedItem => sortedFirstHalfOfList.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
-                SortedList.InsertRange(resultList.Count(), sortedFirstHalfOfList);
-                resultList.AddRange(sortedFirstHalfOfList);
-            }
-            else
-            {
-                SortedList.RemoveAll(sortedItem => sortedSecondHalfOfList.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
-                SortedList.InsertRange(resultList.Count(), sortedSecondHalfOfList);
-                resultList.AddRange(sortedSecondHalfOfList);
+                SortedList.RemoveAll(sortedItem => resultList.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
+                SortedList.InsertRange(0, resultList);
+                if (sortedFirstHalfOfList.Any())
+                {
+                    SortedList.RemoveAll(sortedItem => sortedFirstHalfOfList.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
+                    SortedList.InsertRange(resultList.Count(), sortedFirstHalfOfList);
+                    resultList.AddRange(sortedFirstHalfOfList);
+                }
+                else
+                {
+                    SortedList.RemoveAll(sortedItem => sortedSecondHalfOfList.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
+                    SortedList.InsertRange(resultList.Count(), sortedSecondHalfOfList);
+                    resultList.AddRange(sortedSecondHalfOfList);
+                }
             }
 
             return resultList;

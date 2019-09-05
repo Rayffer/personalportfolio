@@ -56,12 +56,15 @@ namespace Rayffer.PersonalPortfolio.Sorters
             IEnumerable<SortType> sortedElementsGreaterThanPivot = SortAscending(elementsGreaterThanPivot, sleep);
 
             sortedElementsLessOrEqualThanPivot.Add(listPivot);
-            
-            SortedList.RemoveAll(sortedItem => sortedElementsLessOrEqualThanPivot.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
-            SortedList.InsertRange(0, sortedElementsLessOrEqualThanPivot);
-            SortedList.RemoveAll(sortedItem => sortedElementsGreaterThanPivot.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
-            SortedList.InsertRange(sortedElementsLessOrEqualThanPivot.Count(), sortedElementsGreaterThanPivot);
+            lock (LockObject)
+            {
 
+                SortedList.RemoveAll(sortedItem => sortedElementsLessOrEqualThanPivot.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
+                SortedList.InsertRange(0, sortedElementsLessOrEqualThanPivot);
+                SortedList.RemoveAll(sortedItem => sortedElementsGreaterThanPivot.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
+                SortedList.InsertRange(sortedElementsLessOrEqualThanPivot.Count(), sortedElementsGreaterThanPivot);
+
+            }
             Thread.Sleep(sleep);
 
             return sortedElementsLessOrEqualThanPivot.Concat(sortedElementsGreaterThanPivot);
@@ -82,12 +85,13 @@ namespace Rayffer.PersonalPortfolio.Sorters
 
             IEnumerable<SortType> sortedElementsLessOrEqualThanPivot = SortDescending(elementsLessOrEqualThanPivot, sleep);
             List<SortType> sortedElementsGreaterThanPivot = SortDescending(elementsGreaterThanPivot, sleep).ToList();
-
-            SortedList.RemoveAll(sortedItem => sortedElementsLessOrEqualThanPivot.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
-            SortedList.InsertRange(0, sortedElementsLessOrEqualThanPivot);
-            SortedList.RemoveAll(sortedItem => sortedElementsGreaterThanPivot.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
-            SortedList.InsertRange(sortedElementsLessOrEqualThanPivot.Count(), sortedElementsGreaterThanPivot);
-
+            lock (LockObject)
+            {
+                SortedList.RemoveAll(sortedItem => sortedElementsLessOrEqualThanPivot.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
+                SortedList.InsertRange(0, sortedElementsLessOrEqualThanPivot);
+                SortedList.RemoveAll(sortedItem => sortedElementsGreaterThanPivot.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
+                SortedList.InsertRange(sortedElementsLessOrEqualThanPivot.Count(), sortedElementsGreaterThanPivot);
+            }
             Thread.Sleep(sleep);
 
             sortedElementsGreaterThanPivot.Add(listPivot);

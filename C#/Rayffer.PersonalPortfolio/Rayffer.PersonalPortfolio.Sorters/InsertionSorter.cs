@@ -35,10 +35,13 @@ namespace Rayffer.PersonalPortfolio.Sorters
                 CurrentSortedListIndex = listToSortIndex;
                 var elementToSort = listToSort.ElementAt(listToSortIndex);
                 Thread.Sleep(sleep);
-                SortedList.Remove(elementToSort);
-                int sortIndex = SortedList.FindIndex(listElement => listElement.CompareTo(elementToSort) >= 0);
-                CurrentSortedListIndex = sortIndex;
-                SortedList.Insert(sortIndex < 0 ? listSize - 1 : sortIndex, elementToSort);
+                lock (LockObject)
+                {
+                    SortedList.Remove(elementToSort);
+                    int sortIndex = SortedList.FindIndex(listElement => listElement.CompareTo(elementToSort) >= 0);
+                    CurrentSortedListIndex = sortIndex;
+                    SortedList.Insert(sortIndex < 0 ? listSize - 1 : sortIndex, elementToSort); 
+                }
                 Thread.Sleep(sleep);
             }
 
@@ -55,10 +58,13 @@ namespace Rayffer.PersonalPortfolio.Sorters
                 CurrentSortedListIndex = listToSortIndex;
                 var elementToSort = listToSort.ElementAt(listToSortIndex);
                 Thread.Sleep(sleep / 2);
-                SortedList.Remove(elementToSort);
-                int sortIndex = SortedList.FindIndex(listElement => listElement.CompareTo(elementToSort) < 0);
-                CurrentSortedListIndex = sortIndex;
-                SortedList.Insert(sortIndex < 0 ? listSize - 1 : sortIndex, elementToSort);
+                lock (LockObject)
+                {
+                    SortedList.Remove(elementToSort);
+                    int sortIndex = SortedList.FindIndex(listElement => listElement.CompareTo(elementToSort) < 0);
+                    CurrentSortedListIndex = sortIndex;
+                    SortedList.Insert(sortIndex < 0 ? listSize - 1 : sortIndex, elementToSort); 
+                }
                 Thread.Sleep(sleep / 2);
             }
 
