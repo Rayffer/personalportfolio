@@ -8,9 +8,27 @@ namespace Rayffer.PersonalPortfolio.Sorters
 {
     public class MergeSorter<SortType> : ISorter<SortType> where SortType : IComparable<SortType>
     {
+        private readonly object LockObject = new object();
+
+        private List<SortType> _sortedList;
+
+        public List<SortType> SortedList {
+            get
+            {
+                lock (LockObject)
+                {
+                    return _sortedList; 
+                }
+            }
+            private set => _sortedList = value; }
+        public int CurrentSortedListIndex { get; private set; }
+
         public IEnumerable<SortType> SortAscending(IEnumerable<SortType> listToSort, int sleep = 0)
         {
-            Thread.Sleep(sleep);
+            if (SortedList == null)
+            {
+                SortedList = listToSort.ToList();
+            }
             var listItems = listToSort.Count();
             if (listItems == 1)
             {
@@ -22,9 +40,8 @@ namespace Rayffer.PersonalPortfolio.Sorters
             var firstHalfOfList = listToSort.Take(listPivot);
             var secondHalfOfList = listToSort.Skip(listPivot);
 
-            var sortedFirstHalfOfList = SortAscending(firstHalfOfList);
-            var sortedSecondHalfOfList = SortAscending(secondHalfOfList);
-
+            var sortedFirstHalfOfList = SortAscending(firstHalfOfList, sleep);
+            var sortedSecondHalfOfList = SortAscending(secondHalfOfList, sleep);
             List<SortType> resultList = new List<SortType>();
             while (sortedFirstHalfOfList.Any() && sortedSecondHalfOfList.Any())
             {
@@ -43,14 +60,23 @@ namespace Rayffer.PersonalPortfolio.Sorters
                 }
             }
 
+            SortedList.RemoveAll(sortedItem => resultList.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
+            SortedList.InsertRange(0, resultList);
             if (sortedFirstHalfOfList.Any())
             {
+                SortedList.RemoveAll(sortedItem => sortedFirstHalfOfList.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
+                SortedList.InsertRange(resultList.Count(), sortedFirstHalfOfList);
                 resultList.AddRange(sortedFirstHalfOfList);
             }
             else
             {
+                SortedList.RemoveAll(sortedItem => sortedSecondHalfOfList.Any(sortedSubItem => sortedSubItem.Equals(sortedItem)));
+                SortedList.InsertRange(resultList.Count(), sortedSecondHalfOfList);
                 resultList.AddRange(sortedSecondHalfOfList);
             }
+
+            Thread.Sleep(sleep);
+
 
             return resultList;
         }
@@ -69,8 +95,8 @@ namespace Rayffer.PersonalPortfolio.Sorters
             var firstHalfOfList = listToSort.Take(listPivot);
             var secondHalfOfList = listToSort.Skip(listPivot);
 
-            var sortedFirstHalfOfList = SortDescending(firstHalfOfList);
-            var sortedSecondHalfOfList = SortDescending(secondHalfOfList);
+            var sortedFirstHalfOfList = SortDescending(firstHalfOfList, sleep);
+            var sortedSecondHalfOfList = SortDescending(secondHalfOfList, sleep);
 
             List<SortType> resultList = new List<SortType>();
             while (sortedFirstHalfOfList.Any() && sortedSecondHalfOfList.Any())

@@ -8,46 +8,51 @@ namespace Rayffer.PersonalPortfolio.Sorters
 {
     public class BubbleSorter<SortType> : ISorter<SortType> where SortType : IComparable<SortType>
     {
+        public List<SortType> SortedList { get; private set; }
+        public int CurrentSortedListIndex { get; private set; }
+
         public IEnumerable<SortType> SortAscending(IEnumerable<SortType> listToSort, int sleep = 0)
         {
-            List<SortType> sortedList = listToSort.ToList();
-            int swapOperations = sortedList.Count - 1;
+            SortedList = listToSort.ToList();
+            int swapOperations = SortedList.Count - 1;
             for (int sortIteration = 0; sortIteration < swapOperations; sortIteration++)
             {
-                for (int sortIndex = sortIteration; sortIndex < swapOperations; sortIndex++)
+                for (int sortIndex = 0; sortIndex < swapOperations - sortIteration; sortIndex++)
                 {
-                    SortType firstComparedElement = sortedList[sortIndex];
-                    SortType secondComparedElement = sortedList[sortIndex + 1];
+                    CurrentSortedListIndex = sortIndex;
+                    SortType firstComparedElement = SortedList[sortIndex];
+                    SortType secondComparedElement = SortedList[sortIndex + 1];
                     if (firstComparedElement.CompareTo(secondComparedElement) > 0)
                     {
-                        sortedList[sortIndex] = secondComparedElement;
-                        sortedList[sortIndex + 1] = firstComparedElement;
+                        SortedList[sortIndex] = secondComparedElement;
+                        SortedList[sortIndex + 1] = firstComparedElement;
                     }
                     Thread.Sleep(sleep);
                 }
             }
-            return sortedList;
+            return SortedList;
         }
 
         public IEnumerable<SortType> SortDescending(IEnumerable<SortType> listToSort, int sleep = 0)
         {
-            List<SortType> sortedList = listToSort.ToList();
-            int swapOperations = sortedList.Count - 1;
+            SortedList = listToSort.ToList();
+            int swapOperations = SortedList.Count - 1;
             for (int sortIteration = 0; sortIteration < swapOperations; sortIteration++)
             {
-                for (int sortIndex = sortIteration; sortIndex < swapOperations; sortIndex++)
+                for (int sortIndex = 0; sortIndex < swapOperations - sortIteration; sortIndex++)
                 {
-                    SortType firstComparedElement = sortedList[sortIndex];
-                    SortType secondComparedElement = sortedList[sortIndex + 1];
+                    CurrentSortedListIndex = sortIndex;
+                    SortType firstComparedElement = SortedList[sortIndex];
+                    SortType secondComparedElement = SortedList[sortIndex + 1];
                     if (firstComparedElement.CompareTo(secondComparedElement) < 0)
                     {
-                        sortedList[sortIndex] = secondComparedElement;
-                        sortedList[sortIndex + 1] = firstComparedElement;
+                        SortedList[sortIndex] = secondComparedElement;
+                        SortedList[sortIndex + 1] = firstComparedElement;
                     }
                     Thread.Sleep(sleep);
                 }
             }
-            return sortedList;
+            return SortedList;
         }
     }
 }
