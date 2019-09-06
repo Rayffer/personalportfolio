@@ -24,6 +24,8 @@
                 <ColumnDefinition MaxWidth="10"/>
                 <ColumnDefinition/>
                 <ColumnDefinition MaxWidth="10"/>
+                <ColumnDefinition/>
+                <ColumnDefinition MaxWidth="10"/>
                 <ColumnDefinition MaxWidth="130"/>
             </Grid.ColumnDefinitions>
             <StackPanel x:Name="cocktailSortStackPanelToDrawOn" Margin="0" Grid.Row="3" Grid.Column="2" Background="LightGray"/>
@@ -37,8 +39,9 @@
             <Label Content="Quick Sort" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Disabled" FontSize="22" FontWeight="Bold" Margin="0" Grid.Row="5" Grid.Column="2" Padding="0" BorderBrush="#FFBB1414" BorderThickness="0,0,0,2"/>
             <StackPanel x:Name="quickSortStackPanelToDrawOn" Margin="0" Grid.Row="6" Grid.Column="2" Background="LightGray"/>
             <StackPanel x:Name="mergeSortStackPanelToDrawOn" Margin="0" Grid.Row="6" Background="LightGray"/>
-            <Grid Grid.Column="6" Margin="0" Grid.Row="3" Grid.RowSpan="4" Background="#FFE3E3E3">
+            <Grid Grid.Column="10" Margin="0" Grid.Row="2" Grid.RowSpan="5" Background="#FFE3E3E3">
                 <Grid.RowDefinitions>
+                    <RowDefinition MaxHeight="35"/>
                     <RowDefinition MaxHeight="35" MinHeight="35"/>
                     <RowDefinition MaxHeight="35" MinHeight="35"/>
                     <RowDefinition MaxHeight="35" MinHeight="35"/>
@@ -49,15 +52,17 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition MaxWidth="130" Width="129*" MinWidth="130"/>
                 </Grid.ColumnDefinitions>
-                <Label Content="Step delay (ms)" Margin="0" VerticalContentAlignment="Center" FontSize="16" FontWeight="Bold"/>
-                <Label Content="Sort elements" Margin="0" VerticalContentAlignment="Center" FontSize="16" FontWeight="Bold" Grid.Row="2"/>
-                <TextBox x:Name="stepDelayTextbox" Margin="0" TextWrapping="Wrap" Text="50" VerticalContentAlignment="Center" Padding="3" Background="White" BorderThickness="2" PreviewTextInput="TextBox_PreviewTextInput" MaxLines="1" MaxLength="4" TextChanged="StepDelayTextbox_TextChanged" Grid.Row="1"/>
-                <TextBox x:Name="sortElementsTextbox" Margin="0" TextWrapping="Wrap" Text="100" VerticalContentAlignment="Center" Padding="3" Background="White" BorderThickness="2" PreviewTextInput="TextBox_PreviewTextInput" Grid.Row="3" MaxLines="1" MaxLength="4" TextInput="SortElementsTextbox_TextInput"/>
-                <Button x:Name="performSortingsButton" Content="Perform Sortings" Margin="0" Grid.Row="5" Background="#FFDDDDDD" Click="Button_Click"/>
+                <Label Content="Step delay (ms)" VerticalContentAlignment="Center" FontSize="16" FontWeight="Bold" Grid.Row="1"/>
+                <Label Content="Sort elements" VerticalContentAlignment="Center" FontSize="16" FontWeight="Bold" Grid.Row="3"/>
+                <TextBox x:Name="stepDelayTextbox" TextWrapping="Wrap" Text="50" VerticalContentAlignment="Center" Padding="3" Background="White" BorderThickness="2" PreviewTextInput="TextBox_PreviewTextInput" MaxLines="1" MaxLength="4" TextChanged="StepDelayTextbox_TextChanged" Grid.Row="2"/>
+                <TextBox x:Name="sortElementsTextbox" TextWrapping="Wrap" Text="100" VerticalContentAlignment="Center" Padding="3" Background="White" BorderThickness="2" PreviewTextInput="TextBox_PreviewTextInput" Grid.Row="4" MaxLines="1" MaxLength="4" TextInput="SortElementsTextbox_TextInput"/>
+                <Button x:Name="performSortingsButton" Content="Perform Sortings" Margin="0" Grid.Row="6" Background="#FFDDDDDD" Click="Button_Click"/>
+                <Label Content="Sort parameters" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Disabled" FontSize="16" FontWeight="Bold" Padding="0" BorderBrush="#FFBB1414" BorderThickness="0,0,0,2"/>
             </Grid>
             <Label Content="Selection Sort" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Disabled" FontSize="22" FontWeight="Bold" Margin="0" Grid.Row="5" Grid.Column="4" Padding="0" BorderBrush="#FFBB1414" BorderThickness="0,0,0,2"/>
             <StackPanel x:Name="selectionSortStackPanelToDrawOn" Margin="0" Grid.Row="6" Grid.Column="4" Background="LightGray"/>
-            <Label Content="Sort parameters" Margin="0" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Disabled" FontSize="16" FontWeight="Bold" Grid.Column="6" Padding="0" BorderBrush="#FFBB1414" BorderThickness="0,0,0,2"/>
+            <Label Content="Gnome Sort" Margin="0" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Disabled" FontSize="22" FontWeight="Bold" Grid.Column="6" Padding="0" BorderBrush="#FFBB1414" BorderThickness="0,0,0,2"/>
+            <StackPanel x:Name="gnomeSortStackPanelToDrawOn" Margin="0" Grid.Row="3" Grid.Column="6" Background="LightGray"/>
         </Grid>
 
     </Grid>

@@ -29,6 +29,8 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
         private BackgroundWorkerActionQueueManager quickSortVisualisationActionQueueManager;
         private BackgroundWorkerActionQueueManager selectionSortActionQueueManager;
         private BackgroundWorkerActionQueueManager selectionSortVisualisationActionQueueManager;
+        private BackgroundWorkerActionQueueManager gnomeSortActionQueueManager;
+        private BackgroundWorkerActionQueueManager gnomeSortVisualisationActionQueueManager;
         private BackgroundWorkerActionQueueManager uiActionQueueManager;
 
         private List<BackgroundWorkerActionQueueManager> sortingBackGroundWorkers;
@@ -49,6 +51,8 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
             quickSortVisualisationActionQueueManager = new BackgroundWorkerActionQueueManager();
             selectionSortActionQueueManager = new BackgroundWorkerActionQueueManager();
             selectionSortVisualisationActionQueueManager = new BackgroundWorkerActionQueueManager();
+            gnomeSortActionQueueManager = new BackgroundWorkerActionQueueManager();
+            gnomeSortVisualisationActionQueueManager = new BackgroundWorkerActionQueueManager();
             uiActionQueueManager = new BackgroundWorkerActionQueueManager();
 
             sortingBackGroundWorkers = new List<BackgroundWorkerActionQueueManager>()
@@ -64,7 +68,9 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                 quickSortActionQueueManager,
                 quickSortVisualisationActionQueueManager,
                 selectionSortActionQueueManager,
-                selectionSortVisualisationActionQueueManager
+                selectionSortVisualisationActionQueueManager,
+                gnomeSortActionQueueManager,
+                gnomeSortVisualisationActionQueueManager
             };
         }
 
@@ -77,11 +83,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
             if (!int.TryParse(stepDelayTextbox.Text, out int stepDelay))
                 stepDelay = 50;
 
-            List<int> listToSort = new List<int>();
-            for (int i = 0; i < sortElements; i++)
-            {
-                listToSort.Add(i + 1);
-            }
+            List<int> listToSort = Enumerable.Range(1, 100).ToList();
 
             int[] arrayToSort = Shuffle(listToSort, new Random()).ToArray();
 
@@ -91,6 +93,8 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
             StartMergeSort(stepDelay, listToSort, arrayToSort);
             StartQuickSorting(stepDelay, listToSort, arrayToSort);
             StartSelectionSorting(stepDelay, listToSort, arrayToSort);
+            StartGnomeSorting(stepDelay, listToSort, arrayToSort);
+
             uiActionQueueManager.EnqueueAction(() =>
             {
                 while (sortingBackGroundWorkers.Any(backGroundWorker => backGroundWorker.IsBusy))
@@ -121,7 +125,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
 
             cocktailSortVisualisationActionQueueManager.EnqueueAction(() =>
             {
-                Thread.Sleep(550);
+                Thread.Sleep(50);
                 double maxHeight = cocktailSortStackPanelToDrawOn.ActualHeight;
                 double maxWidth = cocktailSortStackPanelToDrawOn.ActualWidth;
                 double tickWidth = maxWidth / listToSort.Count;
@@ -218,7 +222,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
 
             bubbleSortVisualisationActionQueueManager.EnqueueAction(() =>
             {
-                Thread.Sleep(550);
+                Thread.Sleep(50);
                 double maxHeight = bubbleSortStackPanelToDrawOn.ActualHeight;
                 double maxWidth = bubbleSortStackPanelToDrawOn.ActualWidth;
                 double tickWidth = maxWidth / listToSort.Count;
@@ -314,7 +318,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
 
             insertionSortVisualisationActionQueueManager.EnqueueAction(() =>
             {
-                Thread.Sleep(550);
+                Thread.Sleep(50);
                 double maxHeight = insertionSortStackPanelToDrawOn.ActualHeight;
                 double maxWidth = insertionSortStackPanelToDrawOn.ActualWidth;
                 double tickWidth = maxWidth / listToSort.Count;
@@ -411,7 +415,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
 
             mergeSortVisualisationActionQueueManager.EnqueueAction(() =>
             {
-                Thread.Sleep(550);
+                Thread.Sleep(50);
                 double maxHeight = mergeSortStackPanelToDrawOn.ActualHeight;
                 double maxWidth = mergeSortStackPanelToDrawOn.ActualWidth;
                 double tickWidth = maxWidth / listToSort.Count;
@@ -686,6 +690,103 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                     });
                 }
                 selectionSorter = null;
+            });
+        }
+
+        private void StartGnomeSorting(int stepDelay, List<int> listToSort, int[] arrayToSort)
+        {
+            GnomeSorter<int> gnomeSorter = new GnomeSorter<int>();
+            bool gnomeSorterHasEnded = false;
+
+            gnomeSortActionQueueManager.EnqueueAction(() =>
+            {
+                gnomeSorter.SortAscending(arrayToSort.ToList().ToArray(), stepDelay / 10);
+                gnomeSorterHasEnded = true;
+            });
+
+            gnomeSortVisualisationActionQueueManager.EnqueueAction(() =>
+            {
+                Thread.Sleep(50);
+                double maxHeight = gnomeSortStackPanelToDrawOn.ActualHeight;
+                double maxWidth = gnomeSortStackPanelToDrawOn.ActualWidth;
+                double tickWidth = maxWidth / listToSort.Count;
+
+                while (!gnomeSorterHasEnded)
+                {
+                    Thread.Sleep(10);
+                    gnomeSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
+                    {
+                        gnomeSortStackPanelToDrawOn.Background = null;
+                        DrawingVisual drawingVisual = new DrawingVisual();
+                        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
+                        {
+                            drawingContext.DrawRectangle(Brushes.LightGray, null, new Rect(0, 0, maxWidth, maxHeight));
+                            for (int j = 0; j < listToSort.Count; j++)
+                            {
+                                double pieceHeight = maxHeight * gnomeSorter.SortedList[j] / arrayToSort.Length;
+
+                                Brush colorBrush = null;
+                                if (gnomeSorter.CurrentSortedListIndex == j)
+                                {
+                                    colorBrush = Brushes.OrangeRed;
+                                }
+                                else if (listToSort[j] == gnomeSorter.SortedList[j])
+                                {
+                                    colorBrush = Brushes.Aquamarine;
+                                }
+                                else
+                                {
+                                    colorBrush = Brushes.Maroon;
+                                }
+                                double pieceY = maxHeight - pieceHeight;
+                                double pieceX = tickWidth * j;
+
+                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
+                            }
+                            drawingContext.Close();
+                        }
+                        gnomeSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
+                    });
+                }
+                for (int i = 0; i < listToSort.Count; i++)
+                {
+                    Thread.Sleep(2500 / listToSort.Count);
+
+                    gnomeSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
+                    {
+                        gnomeSortStackPanelToDrawOn.Background = null;
+                        DrawingVisual drawingVisual = new DrawingVisual();
+                        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
+                        {
+                            drawingContext.DrawRectangle(Brushes.LightGray, null, new Rect(0, 0, maxWidth, maxHeight));
+                            for (int j = 0; j < listToSort.Count; j++)
+                            {
+                                double pieceHeight = maxHeight * gnomeSorter.SortedList[j] / arrayToSort.Length;
+
+                                Brush colorBrush = null;
+                                if (i == j)
+                                {
+                                    colorBrush = Brushes.OrangeRed;
+                                }
+                                else if (i < j)
+                                {
+                                    colorBrush = Brushes.Maroon;
+                                }
+                                else
+                                {
+                                    colorBrush = Brushes.Aquamarine;
+                                }
+                                double pieceY = maxHeight - pieceHeight;
+                                double pieceX = tickWidth * j;
+
+                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
+                            }
+                            drawingContext.Close();
+                        }
+                        gnomeSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
+                    });
+                }
+                gnomeSorter = null;
             });
         }
 
