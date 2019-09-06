@@ -27,6 +27,8 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
         private BackgroundWorkerActionQueueManager mergeSortVisualisationActionQueueManager;
         private BackgroundWorkerActionQueueManager quickSortActionQueueManager;
         private BackgroundWorkerActionQueueManager quickSortVisualisationActionQueueManager;
+        private BackgroundWorkerActionQueueManager selectionSortActionQueueManager;
+        private BackgroundWorkerActionQueueManager selectionSortVisualisationActionQueueManager;
         private BackgroundWorkerActionQueueManager uiActionQueueManager;
 
         private List<BackgroundWorkerActionQueueManager> sortingBackGroundWorkers;
@@ -35,6 +37,35 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
         {
             InitializeComponent();
 
+            cocktailSortActionQueueManager = new BackgroundWorkerActionQueueManager();
+            cocktailSortVisualisationActionQueueManager = new BackgroundWorkerActionQueueManager();
+            bubbleSortActionQueueManager = new BackgroundWorkerActionQueueManager();
+            bubbleSortVisualisationActionQueueManager = new BackgroundWorkerActionQueueManager();
+            insertionSortActionQueueManager = new BackgroundWorkerActionQueueManager();
+            insertionSortVisualisationActionQueueManager = new BackgroundWorkerActionQueueManager();
+            mergeSortActionQueueManager = new BackgroundWorkerActionQueueManager();
+            mergeSortVisualisationActionQueueManager = new BackgroundWorkerActionQueueManager();
+            quickSortActionQueueManager = new BackgroundWorkerActionQueueManager();
+            quickSortVisualisationActionQueueManager = new BackgroundWorkerActionQueueManager();
+            selectionSortActionQueueManager = new BackgroundWorkerActionQueueManager();
+            selectionSortVisualisationActionQueueManager = new BackgroundWorkerActionQueueManager();
+            uiActionQueueManager = new BackgroundWorkerActionQueueManager();
+
+            sortingBackGroundWorkers = new List<BackgroundWorkerActionQueueManager>()
+            {
+                cocktailSortActionQueueManager,
+                cocktailSortVisualisationActionQueueManager,
+                bubbleSortActionQueueManager,
+                bubbleSortVisualisationActionQueueManager,
+                insertionSortActionQueueManager,
+                insertionSortVisualisationActionQueueManager,
+                mergeSortActionQueueManager,
+                mergeSortVisualisationActionQueueManager,
+                quickSortActionQueueManager,
+                quickSortVisualisationActionQueueManager,
+                selectionSortActionQueueManager,
+                selectionSortVisualisationActionQueueManager
+            };
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -54,59 +85,27 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
 
             int[] arrayToSort = Shuffle(listToSort, new Random()).ToArray();
 
-            cocktailSortActionQueueManager = new BackgroundWorkerActionQueueManager();
-            cocktailSortVisualisationActionQueueManager = new BackgroundWorkerActionQueueManager();
-            bubbleSortActionQueueManager = new BackgroundWorkerActionQueueManager();
-            bubbleSortVisualisationActionQueueManager = new BackgroundWorkerActionQueueManager();
-            insertionSortActionQueueManager = new BackgroundWorkerActionQueueManager();
-            insertionSortVisualisationActionQueueManager = new BackgroundWorkerActionQueueManager();
-            mergeSortActionQueueManager = new BackgroundWorkerActionQueueManager();
-            mergeSortVisualisationActionQueueManager = new BackgroundWorkerActionQueueManager();
-            quickSortActionQueueManager = new BackgroundWorkerActionQueueManager();
-            quickSortVisualisationActionQueueManager = new BackgroundWorkerActionQueueManager();
-            uiActionQueueManager = new BackgroundWorkerActionQueueManager();
-
-            sortingBackGroundWorkers = new List<BackgroundWorkerActionQueueManager>()
-            {
-                cocktailSortActionQueueManager,
-                cocktailSortVisualisationActionQueueManager,
-                bubbleSortActionQueueManager,
-                bubbleSortVisualisationActionQueueManager,
-                insertionSortActionQueueManager,
-                insertionSortVisualisationActionQueueManager,
-                mergeSortActionQueueManager,
-                mergeSortVisualisationActionQueueManager,
-                quickSortActionQueueManager,
-                quickSortVisualisationActionQueueManager
-            };
-
             StartCockTailSort(stepDelay, listToSort, arrayToSort);
             StartBubbleSort(stepDelay, listToSort, arrayToSort);
             StartInsertionSort(stepDelay, listToSort, arrayToSort);
             StartMergeSort(stepDelay, listToSort, arrayToSort);
             StartQuickSorting(stepDelay, listToSort, arrayToSort);
-
+            StartSelectionSorting(stepDelay, listToSort, arrayToSort);
             uiActionQueueManager.EnqueueAction(() =>
             {
                 while (sortingBackGroundWorkers.Any(backGroundWorker => backGroundWorker.IsBusy))
                 {
                     Thread.Sleep(200);
                 }
+            });
 
+            uiActionQueueManager.EnqueueAction(() =>
+            {
                 performSortingsButton.Dispatcher.Invoke(() =>
                 {
                     performSortingsButton.IsEnabled = true;
                 });
-
-                sortingBackGroundWorkers.ForEach(worker =>
-                {
-                    worker.Dispose();
-                    worker = null;
-                });
-
-                sortingBackGroundWorkers.Clear();
             });
-
         }
 
         private void StartCockTailSort(int stepDelay, List<int> listToSort, int[] arrayToSort)
@@ -509,7 +508,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
 
             quickSortVisualisationActionQueueManager.EnqueueAction(() =>
             {
-                Thread.Sleep(550);
+                Thread.Sleep(50);
                 double maxHeight = quickSortStackPanelToDrawOn.ActualHeight;
                 double maxWidth = quickSortStackPanelToDrawOn.ActualWidth;
                 double tickWidth = maxWidth / listToSort.Count;
@@ -590,6 +589,103 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                     });
                 }
                 quickSorter = null;
+            });
+        }
+
+        private void StartSelectionSorting(int stepDelay, List<int> listToSort, int[] arrayToSort)
+        {
+            SelectionSorter<int> selectionSorter = new SelectionSorter<int>();
+            bool selectionSorterHasEnded = false;
+
+            selectionSortActionQueueManager.EnqueueAction(() =>
+            {
+                selectionSorter.SortAscending(arrayToSort.ToList().ToArray(), stepDelay);
+                selectionSorterHasEnded = true;
+            });
+
+            selectionSortVisualisationActionQueueManager.EnqueueAction(() =>
+            {
+                Thread.Sleep(50);
+                double maxHeight = selectionSortStackPanelToDrawOn.ActualHeight;
+                double maxWidth = selectionSortStackPanelToDrawOn.ActualWidth;
+                double tickWidth = maxWidth / listToSort.Count;
+
+                while (!selectionSorterHasEnded)
+                {
+                    Thread.Sleep(10);
+                    selectionSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
+                    {
+                        selectionSortStackPanelToDrawOn.Background = null;
+                        DrawingVisual drawingVisual = new DrawingVisual();
+                        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
+                        {
+                            drawingContext.DrawRectangle(Brushes.LightGray, null, new Rect(0, 0, maxWidth, maxHeight));
+                            for (int j = 0; j < listToSort.Count; j++)
+                            {
+                                double pieceHeight = maxHeight * selectionSorter.SortedList[j] / arrayToSort.Length;
+
+                                Brush colorBrush = null;
+                                if (selectionSorter.CurrentSortedListIndex == j)
+                                {
+                                    colorBrush = Brushes.OrangeRed;
+                                }
+                                else if (listToSort[j] == selectionSorter.SortedList[j])
+                                {
+                                    colorBrush = Brushes.Aquamarine;
+                                }
+                                else
+                                {
+                                    colorBrush = Brushes.Maroon;
+                                }
+                                double pieceY = maxHeight - pieceHeight;
+                                double pieceX = tickWidth * j;
+
+                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
+                            }
+                            drawingContext.Close();
+                        }
+                        selectionSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
+                    });
+                }
+                for (int i = 0; i < listToSort.Count; i++)
+                {
+                    Thread.Sleep(2500 / listToSort.Count);
+
+                    selectionSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
+                    {
+                        selectionSortStackPanelToDrawOn.Background = null;
+                        DrawingVisual drawingVisual = new DrawingVisual();
+                        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
+                        {
+                            drawingContext.DrawRectangle(Brushes.LightGray, null, new Rect(0, 0, maxWidth, maxHeight));
+                            for (int j = 0; j < listToSort.Count; j++)
+                            {
+                                double pieceHeight = maxHeight * selectionSorter.SortedList[j] / arrayToSort.Length;
+
+                                Brush colorBrush = null;
+                                if (i == j)
+                                {
+                                    colorBrush = Brushes.OrangeRed;
+                                }
+                                else if (i < j)
+                                {
+                                    colorBrush = Brushes.Maroon;
+                                }
+                                else
+                                {
+                                    colorBrush = Brushes.Aquamarine;
+                                }
+                                double pieceY = maxHeight - pieceHeight;
+                                double pieceX = tickWidth * j;
+
+                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
+                            }
+                            drawingContext.Close();
+                        }
+                        selectionSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
+                    });
+                }
+                selectionSorter = null;
             });
         }
 

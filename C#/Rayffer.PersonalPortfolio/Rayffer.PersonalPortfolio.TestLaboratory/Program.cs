@@ -15,7 +15,10 @@ namespace Rayffer.PersonalPortfolio.TestLaboratory
     {
         private static void Main(string[] args)
         {
-            var conjectureSteps = CollatzConjecture.CalculateSteps(150);
+            SelectionSorter<int> selectionSorter = new SelectionSorter<int>();
+
+            var asd = selectionSorter.SortAscending(Enumerable.Range(0, 100), 0);
+            var asd2 = selectionSorter.SortDescending(Enumerable.Range(0, 100), 0);
 
             Console.ReadLine();
         }
