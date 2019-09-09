@@ -90,10 +90,10 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
 
             int[] arrayToSort = Shuffle(listToSort, new Random()).ToArray();
 
-            //StartSort(new CockTailSorter<int>(), stepDelay / 10, listToSort, arrayToSort, cocktailSortActionQueueManager, cocktailSortVisualisationActionQueueManager, cocktailSortStackPanelToDrawOn);
-            //StartSort(new BubbleSorter<int>(), stepDelay / 10, listToSort, arrayToSort, bubbleSortActionQueueManager, bubbleSortVisualisationActionQueueManager, bubbleSortStackPanelToDrawOn);
-            //StartSort(new GnomeSorter<int>(), stepDelay / 10, listToSort, arrayToSort, gnomeSortActionQueueManager, gnomeSortVisualisationActionQueueManager, gnomeSortStackPanelToDrawOn);
-            //StartSort(new InsertionSorter<int>(), stepDelay, listToSort, arrayToSort, insertionSortActionQueueManager, insertionSortVisualisationActionQueueManager, insertionSortStackPanelToDrawOn);
+            StartSort(new CockTailSorter<int>(), stepDelay / 10, listToSort, arrayToSort, cocktailSortActionQueueManager, cocktailSortVisualisationActionQueueManager, cocktailSortStackPanelToDrawOn);
+            StartSort(new BubbleSorter<int>(), stepDelay / 10, listToSort, arrayToSort, bubbleSortActionQueueManager, bubbleSortVisualisationActionQueueManager, bubbleSortStackPanelToDrawOn);
+            StartSort(new GnomeSorter<int>(), stepDelay / 10, listToSort, arrayToSort, gnomeSortActionQueueManager, gnomeSortVisualisationActionQueueManager, gnomeSortStackPanelToDrawOn);
+            StartSort(new InsertionSorter<int>(), stepDelay, listToSort, arrayToSort, insertionSortActionQueueManager, insertionSortVisualisationActionQueueManager, insertionSortStackPanelToDrawOn);
             StartSort(new MergeSorter<int>(), stepDelay, listToSort, arrayToSort, mergeSortActionQueueManager, mergeSortVisualisationActionQueueManager, mergeSortStackPanelToDrawOn);
             StartSort(new QuickSorter<int>(Sorters.Types.QuickSortPivotTypes.LeftmostPivot),
                 stepDelay, listToSort, arrayToSort, quickSortActionQueueManager, quickSortVisualisationActionQueueManager, quickSortStackPanelToDrawOn);
@@ -166,7 +166,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                         }
                         visualisationStackPanel.Background = new DrawingBrush(drawingVisual.Drawing);
                     });
-                    visualisationStackPanel.Dispatcher.BeginInvoke(new Action(() => semaphore.Release()), DispatcherPriority.ContextIdle, null);
+                    visualisationStackPanel.Dispatcher.Invoke(new Action(() => semaphore.Release()), DispatcherPriority.ContextIdle, null);
                 }
                 DateTime endingVisualisationStart = DateTime.Now;
                 var timeBeforeSemaphore = DateTime.Now;
@@ -187,7 +187,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                         i += (int)stepsToSkip;
                     }
 
-                    visualisationStackPanel.Dispatcher.BeginInvoke(new Action(() =>
+                    visualisationStackPanel.Dispatcher.Invoke(new Action(() =>
                     {
                         visualisationStackPanel.Background = null;
                         DrawingVisual drawingVisual = new DrawingVisual();
