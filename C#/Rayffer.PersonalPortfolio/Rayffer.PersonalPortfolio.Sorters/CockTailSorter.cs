@@ -18,6 +18,7 @@ namespace Rayffer.PersonalPortfolio.Sorters
             int swapOperations = SortedList.Count - 1;
             for (int sortIteration = 0; sortIteration < swapOperations / 2; sortIteration++)
             {
+                bool swapped = false;
                 for (int sortIndex = sortIteration; sortIndex < swapOperations - sortIteration; sortIndex++)
                 {
                     CurrentSortedListIndex = sortIndex;
@@ -25,11 +26,14 @@ namespace Rayffer.PersonalPortfolio.Sorters
                     SortType secondComparedElement = SortedList[sortIndex + 1];
                     if (firstComparedElement.CompareTo(secondComparedElement) > 0)
                     {
+                        swapped = true;
                         SortedList[sortIndex] = secondComparedElement;
                         SortedList[sortIndex + 1] = firstComparedElement;
                     }
                     Thread.Sleep(sleep);
                 }
+                if (!swapped)
+                    break;
                 for (int sortIndex = swapOperations - sortIteration; sortIndex > sortIteration; sortIndex--)
                 {
                     CurrentSortedListIndex = sortIndex;
@@ -37,11 +41,14 @@ namespace Rayffer.PersonalPortfolio.Sorters
                     SortType secondComparedElement = SortedList[sortIndex - 1];
                     if (firstComparedElement.CompareTo(secondComparedElement) < 0)
                     {
+                        swapped = true;
                         SortedList[sortIndex] = secondComparedElement;
                         SortedList[sortIndex - 1] = firstComparedElement;
                     }
                     Thread.Sleep(sleep);
                 }
+                if (!swapped)
+                    break;
             }
             return SortedList;
         }
@@ -52,6 +59,7 @@ namespace Rayffer.PersonalPortfolio.Sorters
             int swapOperations = SortedList.Count - 1;
             for (int sortIteration = 0; sortIteration < swapOperations / 2; sortIteration++)
             {
+                bool swapped = false;
                 for (int sortIndex = sortIteration; sortIndex < swapOperations - sortIteration; sortIndex++)
                 {
                     CurrentSortedListIndex = sortIndex;
@@ -59,11 +67,14 @@ namespace Rayffer.PersonalPortfolio.Sorters
                     SortType secondComparedElement = SortedList[sortIndex + 1];
                     if (firstComparedElement.CompareTo(secondComparedElement) < 0)
                     {
+                        swapped = true;
                         SortedList[sortIndex] = secondComparedElement;
                         SortedList[sortIndex + 1] = firstComparedElement;
                     }
                     Thread.Sleep(sleep);
                 }
+                if (!swapped)
+                    break;
                 for (int sortIndex = swapOperations - sortIteration; sortIndex > sortIteration; sortIndex--)
                 {
                     CurrentSortedListIndex = sortIndex;
@@ -71,11 +82,14 @@ namespace Rayffer.PersonalPortfolio.Sorters
                     SortType secondComparedElement = SortedList[sortIndex - 1];
                     if (firstComparedElement.CompareTo(secondComparedElement) > 0)
                     {
+                        swapped = true;
                         SortedList[sortIndex] = secondComparedElement;
                         SortedList[sortIndex - 1] = firstComparedElement;
                     }
                     Thread.Sleep(sleep);
                 }
+                if (!swapped)
+                    break;
             }
             return SortedList;
         }
