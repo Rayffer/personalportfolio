@@ -19,8 +19,10 @@ namespace Rayffer.PersonalPortfolio.Sorters
             SortedList = listToSort.ToList();
             for (int sortIteration = 0; sortIteration < SortedList.Count; sortIteration++)
             {
+                CurrentSortedListIndex = sortIteration;
                 SortType minimumValue = SortedList.Skip(sortIteration).Min();
                 int minimumValueIndex = SortedList.IndexOf(minimumValue);
+                CurrentSortedListIndex = minimumValueIndex;
                 SortType valueToSwap = SortedList[minimumValueIndex];
                 SortedList[minimumValueIndex] = SortedList[sortIteration];
                 SortedList[sortIteration] = valueToSwap;
