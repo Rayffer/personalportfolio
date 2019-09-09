@@ -1,12 +1,15 @@
 ﻿using Rayffer.PersonalPortfolio.QueueManagers;
 using Rayffer.PersonalPortfolio.Sorters;
+using Rayffer.PersonalPortfolio.Sorters.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
 {
@@ -83,17 +86,18 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
             if (!int.TryParse(stepDelayTextbox.Text, out int stepDelay))
                 stepDelay = 50;
 
-            List<int> listToSort = Enumerable.Range(1, 100).ToList();
+            List<int> listToSort = Enumerable.Range(1, sortElements).ToList();
 
             int[] arrayToSort = Shuffle(listToSort, new Random()).ToArray();
 
-            StartCockTailSort(stepDelay, listToSort, arrayToSort);
-            StartBubbleSort(stepDelay, listToSort, arrayToSort);
-            StartInsertionSort(stepDelay, listToSort, arrayToSort);
-            StartMergeSort(stepDelay, listToSort, arrayToSort);
-            StartQuickSorting(stepDelay, listToSort, arrayToSort);
-            StartSelectionSorting(stepDelay, listToSort, arrayToSort);
-            StartGnomeSorting(stepDelay, listToSort, arrayToSort);
+            //StartSort(new CockTailSorter<int>(), stepDelay / 10, listToSort, arrayToSort, cocktailSortActionQueueManager, cocktailSortVisualisationActionQueueManager, cocktailSortStackPanelToDrawOn);
+            //StartSort(new BubbleSorter<int>(), stepDelay / 10, listToSort, arrayToSort, bubbleSortActionQueueManager, bubbleSortVisualisationActionQueueManager, bubbleSortStackPanelToDrawOn);
+            //StartSort(new GnomeSorter<int>(), stepDelay / 10, listToSort, arrayToSort, gnomeSortActionQueueManager, gnomeSortVisualisationActionQueueManager, gnomeSortStackPanelToDrawOn);
+            //StartSort(new InsertionSorter<int>(), stepDelay, listToSort, arrayToSort, insertionSortActionQueueManager, insertionSortVisualisationActionQueueManager, insertionSortStackPanelToDrawOn);
+            StartSort(new MergeSorter<int>(), stepDelay, listToSort, arrayToSort, mergeSortActionQueueManager, mergeSortVisualisationActionQueueManager, mergeSortStackPanelToDrawOn);
+            StartSort(new QuickSorter<int>(Sorters.Types.QuickSortPivotTypes.LeftmostPivot),
+                stepDelay, listToSort, arrayToSort, quickSortActionQueueManager, quickSortVisualisationActionQueueManager, quickSortStackPanelToDrawOn);
+            StartSort(new SelectionSorter<int>(), stepDelay, listToSort, arrayToSort, selectionSortActionQueueManager, selectionSortVisualisationActionQueueManager, selectionSortStackPanelToDrawOn);
 
             uiActionQueueManager.EnqueueAction(() =>
             {
@@ -112,682 +116,142 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
             });
         }
 
-        private void StartCockTailSort(int stepDelay, List<int> listToSort, int[] arrayToSort)
+        private void StartSort(
+            ISorter<int> sorter,
+            int stepDelay,
+            List<int> listToSort,
+            int[] arrayToSort,
+            BackgroundWorkerActionQueueManager sorterActionQueueManager,
+            BackgroundWorkerActionQueueManager sorterVisualizerActionQueueManager,
+            StackPanel visualisationStackPanel)
         {
-            CockTailSorter<int> cockTailSorter = new CockTailSorter<int>();
-            bool cocktailSortHasEnded = false;
+            int sortVisualizationDelay = Math.Max(17, (int)(10 * listToSort.Count() / 300F));
+            bool sorterHasEnded = false;
+            int maxListValue = arrayToSort.Max();
 
-            cocktailSortActionQueueManager.EnqueueAction(() =>
+            sorterActionQueueManager.EnqueueAction(() =>
             {
-                cockTailSorter.SortAscending(arrayToSort.ToList().ToArray(), stepDelay / 10);
-                cocktailSortHasEnded = true;
+                sorter.SortAscending(arrayToSort.ToList().ToArray(), stepDelay);
+                sorterHasEnded = true;
             });
 
-            cocktailSortVisualisationActionQueueManager.EnqueueAction(() =>
+            sorterVisualizerActionQueueManager.EnqueueAction(() =>
             {
                 Thread.Sleep(50);
-                double maxHeight = cocktailSortStackPanelToDrawOn.ActualHeight;
-                double maxWidth = cocktailSortStackPanelToDrawOn.ActualWidth;
+                double maxHeight = visualisationStackPanel.ActualHeight;
+                double maxWidth = visualisationStackPanel.ActualWidth;
                 double tickWidth = maxWidth / listToSort.Count;
-                while (!cocktailSortHasEnded)
+
+                Semaphore semaphore = new Semaphore(1, 1);
+                while (!sorterHasEnded)
                 {
-                    Thread.Sleep(10);
-                    cocktailSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
+                    semaphore.WaitOne();
+                    visualisationStackPanel.Dispatcher.Invoke(() =>
                     {
-                        cocktailSortStackPanelToDrawOn.Background = null;
+                        visualisationStackPanel.Background = null;
                         DrawingVisual drawingVisual = new DrawingVisual();
                         using (DrawingContext drawingContext = drawingVisual.RenderOpen())
                         {
                             drawingContext.DrawRectangle(Brushes.LightGray, null, new Rect(0, 0, maxWidth, maxHeight));
                             for (int j = 0; j < listToSort.Count; j++)
                             {
-                                double pieceHeight = maxHeight * cockTailSorter.SortedList[j] / arrayToSort.Length;
+                                Brush colorBrush = GetSortingColorBrush(sorter, listToSort, j);
 
-                                Brush colorBrush = null;
-
-                                if (cockTailSorter.CurrentSortedListIndex == j)
-                                {
-                                    colorBrush = Brushes.OrangeRed;
-                                }
-                                else if (listToSort[j] == cockTailSorter.SortedList[j])
-                                {
-                                    colorBrush = Brushes.Aquamarine;
-                                }
-                                else
-                                {
-                                    colorBrush = Brushes.Maroon;
-                                }
+                                double pieceHeight = maxHeight * sorter.SortedList[j] / (float)maxListValue;
                                 double pieceY = maxHeight - pieceHeight;
                                 double pieceX = tickWidth * j;
-
                                 drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
                             }
                             drawingContext.Close();
                         }
-                        cocktailSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
+                        visualisationStackPanel.Background = new DrawingBrush(drawingVisual.Drawing);
                     });
+                    visualisationStackPanel.Dispatcher.BeginInvoke(new Action(() => semaphore.Release()), DispatcherPriority.ContextIdle, null);
                 }
+                DateTime endingVisualisationStart = DateTime.Now;
+                var timeBeforeSemaphore = DateTime.Now;
                 for (int i = 0; i < listToSort.Count; i++)
                 {
-                    Thread.Sleep(2500 / listToSort.Count);
+                    semaphore.WaitOne();
+                    var timeAfterSemaphore = DateTime.Now;
 
-                    cocktailSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
+                    double sempahoreWaitMiliseconds = (timeAfterSemaphore - timeBeforeSemaphore).TotalMilliseconds;
+
+                    if (sempahoreWaitMiliseconds < (2500 / listToSort.Count()))
                     {
-                        cocktailSortStackPanelToDrawOn.Background = null;
+                        Thread.Sleep((int)(2500 / listToSort.Count() - sempahoreWaitMiliseconds));
+                    }
+                    else
+                    {
+                        var stepsToSkip = Math.Ceiling(sempahoreWaitMiliseconds / 2500 / listToSort.Count());
+                        i += (int)stepsToSkip;
+                    }
+
+                    visualisationStackPanel.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        visualisationStackPanel.Background = null;
                         DrawingVisual drawingVisual = new DrawingVisual();
                         using (DrawingContext drawingContext = drawingVisual.RenderOpen())
                         {
                             drawingContext.DrawRectangle(Brushes.LightGray, null, new Rect(0, 0, maxWidth, maxHeight));
                             for (int j = 0; j < listToSort.Count; j++)
                             {
-                                double pieceHeight = maxHeight * cockTailSorter.SortedList[j] / arrayToSort.Length;
+                                Brush colorBrush = GetCompletedSortingBrush(i, j);
 
-                                Brush colorBrush = null;
-                                if (i == j)
-                                {
-                                    colorBrush = Brushes.OrangeRed;
-                                }
-                                else if (i < j)
-                                {
-                                    colorBrush = Brushes.Maroon;
-                                }
-                                else
-                                {
-                                    colorBrush = Brushes.Aquamarine;
-                                }
+                                double pieceHeight = maxHeight * sorter.SortedList[j] / maxListValue;
                                 double pieceY = maxHeight - pieceHeight;
                                 double pieceX = tickWidth * j;
-
                                 drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
                             }
                             drawingContext.Close();
                         }
-                        cocktailSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
-                    });
+                        timeBeforeSemaphore = DateTime.Now;
+                        visualisationStackPanel.Background = new DrawingBrush(drawingVisual.Drawing);
+                    }), DispatcherPriority.Send);
+
+                    visualisationStackPanel.Dispatcher.Invoke(new Action(() => semaphore.Release()), DispatcherPriority.ContextIdle, null);
                 }
-                cockTailSorter = null;
+                sorter = null;
+                DateTime endingVisualisationEnd = DateTime.Now;
             });
         }
 
-        private void StartBubbleSort(int stepDelay, List<int> listToSort, int[] arrayToSort)
+        private Brush GetCompletedSortingBrush(int i, int j)
         {
-            BubbleSorter<int> bubbleSorter = new BubbleSorter<int>();
-            bool bubbleSortHasEnded = false;
-
-            bubbleSortActionQueueManager.EnqueueAction(() =>
+            Brush colorBrush;
+            if (i == j)
             {
-                bubbleSorter.SortAscending(arrayToSort.ToList().ToArray(), stepDelay / 10);
-                bubbleSortHasEnded = true;
-            });
-
-            bubbleSortVisualisationActionQueueManager.EnqueueAction(() =>
+                colorBrush = Brushes.OrangeRed;
+            }
+            else if (i > j)
             {
-                Thread.Sleep(50);
-                double maxHeight = bubbleSortStackPanelToDrawOn.ActualHeight;
-                double maxWidth = bubbleSortStackPanelToDrawOn.ActualWidth;
-                double tickWidth = maxWidth / listToSort.Count;
-                while (!bubbleSortHasEnded)
-                {
-                    Thread.Sleep(10);
-                    bubbleSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
-                    {
-                        bubbleSortStackPanelToDrawOn.Background = null;
-                        DrawingVisual drawingVisual = new DrawingVisual();
-                        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
-                        {
-                            drawingContext.DrawRectangle(Brushes.LightGray, null, new Rect(0, 0, maxWidth, maxHeight));
-                            for (int j = 0; j < listToSort.Count; j++)
-                            {
-                                double pieceHeight = maxHeight * bubbleSorter.SortedList[j] / arrayToSort.Length;
+                colorBrush = Brushes.Aquamarine;
+            }
+            else
+            {
+                colorBrush = Brushes.Maroon;
+            }
 
-                                Brush colorBrush = null;
-                                if (bubbleSorter.CurrentSortedListIndex == j)
-                                {
-                                    colorBrush = Brushes.OrangeRed;
-                                }
-                                else if (listToSort[j] == bubbleSorter.SortedList[j])
-                                {
-                                    colorBrush = Brushes.Aquamarine;
-                                }
-                                else
-                                {
-                                    colorBrush = Brushes.Maroon;
-                                }
-                                double pieceY = maxHeight - pieceHeight;
-                                double pieceX = tickWidth * j;
-
-                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
-                            }
-                            drawingContext.Close();
-                        }
-                        bubbleSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
-                    });
-                }
-                for (int i = 0; i < listToSort.Count; i++)
-                {
-                    Thread.Sleep(2500 / listToSort.Count);
-
-                    bubbleSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
-                    {
-                        bubbleSortStackPanelToDrawOn.Background = null;
-                        DrawingVisual drawingVisual = new DrawingVisual();
-                        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
-                        {
-                            drawingContext.DrawRectangle(Brushes.LightGray, null, new Rect(0, 0, maxWidth, maxHeight));
-                            for (int j = 0; j < listToSort.Count; j++)
-                            {
-                                double pieceHeight = maxHeight * bubbleSorter.SortedList[j] / arrayToSort.Length;
-
-                                Brush colorBrush = null;
-                                if (i == j)
-                                {
-                                    colorBrush = Brushes.OrangeRed;
-                                }
-                                else if (i < j)
-                                {
-                                    colorBrush = Brushes.Maroon;
-                                }
-                                else
-                                {
-                                    colorBrush = Brushes.Aquamarine;
-                                }
-                                double pieceY = maxHeight - pieceHeight;
-                                double pieceX = tickWidth * j;
-
-                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
-                            }
-                            drawingContext.Close();
-                        }
-                        bubbleSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
-                    });
-                }
-                bubbleSorter = null;
-            });
+            return colorBrush;
         }
 
-        private void StartInsertionSort(int stepDelay, List<int> listToSort, int[] arrayToSort)
+        private Brush GetSortingColorBrush(ISorter<int> sorter, List<int> listToSort, int j)
         {
-            InsertionSorter<int> insertionSorter = new InsertionSorter<int>();
-            bool insertionSortHasEnded = false;
-
-            insertionSortActionQueueManager.EnqueueAction(() =>
+            Brush colorBrush;
+            if (sorter.CurrentSortedListIndex == j)
             {
-                insertionSorter.SortAscending(arrayToSort.ToList().ToArray(), stepDelay);
-                insertionSortHasEnded = true;
-            });
-
-            insertionSortVisualisationActionQueueManager.EnqueueAction(() =>
+                colorBrush = Brushes.OrangeRed;
+            }
+            else if (listToSort[j].CompareTo(sorter.SortedList[j]) == 0)
             {
-                Thread.Sleep(50);
-                double maxHeight = insertionSortStackPanelToDrawOn.ActualHeight;
-                double maxWidth = insertionSortStackPanelToDrawOn.ActualWidth;
-                double tickWidth = maxWidth / listToSort.Count;
-
-                while (!insertionSortHasEnded)
-                {
-                    Thread.Sleep(10);
-                    insertionSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
-                    {
-                        insertionSortStackPanelToDrawOn.Background = null;
-                        DrawingVisual drawingVisual = new DrawingVisual();
-                        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
-                        {
-                            drawingContext.DrawRectangle(Brushes.LightGray, null, new Rect(0, 0, maxWidth, maxHeight));
-                            for (int j = 0; j < listToSort.Count; j++)
-                            {
-                                double pieceHeight = maxHeight * insertionSorter.SortedList[j] / arrayToSort.Length;
-
-                                Brush colorBrush = null;
-                                if (insertionSorter.CurrentSortedListIndex == j)
-                                {
-                                    colorBrush = Brushes.OrangeRed;
-                                }
-                                else if (listToSort[j] == insertionSorter.SortedList[j])
-                                {
-                                    colorBrush = Brushes.Aquamarine;
-                                }
-                                else
-                                {
-                                    colorBrush = Brushes.Maroon;
-                                }
-                                double pieceY = maxHeight - pieceHeight;
-                                double pieceX = tickWidth * j;
-
-                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
-                            }
-                            drawingContext.Close();
-                        }
-                        insertionSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
-                    });
-                }
-                for (int i = 0; i < listToSort.Count; i++)
-                {
-                    Thread.Sleep(2500 / listToSort.Count);
-
-                    insertionSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
-                    {
-                        insertionSortStackPanelToDrawOn.Background = null;
-                        DrawingVisual drawingVisual = new DrawingVisual();
-                        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
-                        {
-                            drawingContext.DrawRectangle(Brushes.LightGray, null, new Rect(0, 0, maxWidth, maxHeight));
-                            for (int j = 0; j < listToSort.Count; j++)
-                            {
-                                double pieceHeight = maxHeight * insertionSorter.SortedList[j] / arrayToSort.Length;
-
-                                Brush colorBrush = null;
-                                if (i == j)
-                                {
-                                    colorBrush = Brushes.OrangeRed;
-                                }
-                                else if (i < j)
-                                {
-                                    colorBrush = Brushes.Maroon;
-                                }
-                                else
-                                {
-                                    colorBrush = Brushes.Aquamarine;
-                                }
-                                double pieceY = maxHeight - pieceHeight;
-                                double pieceX = tickWidth * j;
-
-                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
-                            }
-                            drawingContext.Close();
-                        }
-                        insertionSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
-                    });
-                }
-                insertionSorter = null;
-            });
-        }
-
-        private void StartMergeSort(int stepDelay, List<int> listToSort, int[] arrayToSort)
-        {
-            MergeSorter<int> mergeSorter = new MergeSorter<int>();
-            bool mergeSortHasEnded = false;
-
-            mergeSortActionQueueManager.EnqueueAction(() =>
+                colorBrush = Brushes.Aquamarine;
+            }
+            else
             {
-                mergeSorter.SortAscending(arrayToSort.ToList().ToArray(), stepDelay);
-                mergeSortHasEnded = true;
-            });
+                colorBrush = Brushes.Maroon;
+            }
 
-            mergeSortVisualisationActionQueueManager.EnqueueAction(() =>
-            {
-                Thread.Sleep(50);
-                double maxHeight = mergeSortStackPanelToDrawOn.ActualHeight;
-                double maxWidth = mergeSortStackPanelToDrawOn.ActualWidth;
-                double tickWidth = maxWidth / listToSort.Count;
-
-                while (!mergeSortHasEnded)
-                {
-                    Thread.Sleep(10);
-                    mergeSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
-                    {
-                        mergeSortStackPanelToDrawOn.Background = null;
-                        DrawingVisual drawingVisual = new DrawingVisual();
-                        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
-                        {
-                            drawingContext.DrawRectangle(Brushes.LightGray, null, new Rect(0, 0, maxWidth, maxHeight));
-                            for (int j = 0; j < listToSort.Count; j++)
-                            {
-                                double pieceHeight = maxHeight * mergeSorter.SortedList[j] / arrayToSort.Length;
-
-                                Brush colorBrush = null;
-                                if (mergeSorter.CurrentSortedListIndex == j)
-                                {
-                                    colorBrush = Brushes.OrangeRed;
-                                }
-                                else if (listToSort[j] == mergeSorter.SortedList[j])
-                                {
-                                    colorBrush = Brushes.Aquamarine;
-                                }
-                                else
-                                {
-                                    colorBrush = Brushes.Maroon;
-                                }
-                                double pieceY = maxHeight - pieceHeight;
-                                double pieceX = tickWidth * j;
-
-                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
-                            }
-                            drawingContext.Close();
-                        }
-                        mergeSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
-                    });
-                }
-                for (int i = 0; i < listToSort.Count; i++)
-                {
-                    Thread.Sleep(2500 / listToSort.Count);
-
-                    mergeSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
-                    {
-                        mergeSortStackPanelToDrawOn.Background = null;
-                        DrawingVisual drawingVisual = new DrawingVisual();
-                        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
-                        {
-                            drawingContext.DrawRectangle(Brushes.LightGray, null, new Rect(0, 0, maxWidth, maxHeight));
-                            for (int j = 0; j < listToSort.Count; j++)
-                            {
-                                double pieceHeight = maxHeight * mergeSorter.SortedList[j] / arrayToSort.Length;
-
-                                Brush colorBrush = null;
-                                if (i == j)
-                                {
-                                    colorBrush = Brushes.OrangeRed;
-                                }
-                                else if (i < j)
-                                {
-                                    colorBrush = Brushes.Maroon;
-                                }
-                                else
-                                {
-                                    colorBrush = Brushes.Aquamarine;
-                                }
-                                double pieceY = maxHeight - pieceHeight;
-                                double pieceX = tickWidth * j;
-
-                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
-                            }
-                            drawingContext.Close();
-                        }
-                        mergeSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
-                    });
-                }
-                mergeSorter = null;
-            });
-        }
-
-        private void StartQuickSorting(int stepDelay, List<int> listToSort, int[] arrayToSort)
-        {
-            QuickSorter<int> quickSorter = new QuickSorter<int>(Sorters.Types.QuickSortPivotTypes.RandomPivot);
-            bool quickSorterHasEnded = false;
-
-            quickSortActionQueueManager.EnqueueAction(() =>
-            {
-                quickSorter.SortAscending(arrayToSort.ToList().ToArray(), stepDelay);
-                quickSorterHasEnded = true;
-            });
-
-            quickSortVisualisationActionQueueManager.EnqueueAction(() =>
-            {
-                Thread.Sleep(50);
-                double maxHeight = quickSortStackPanelToDrawOn.ActualHeight;
-                double maxWidth = quickSortStackPanelToDrawOn.ActualWidth;
-                double tickWidth = maxWidth / listToSort.Count;
-
-                while (!quickSorterHasEnded)
-                {
-                    Thread.Sleep(10);
-                    quickSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
-                    {
-                        quickSortStackPanelToDrawOn.Background = null;
-                        DrawingVisual drawingVisual = new DrawingVisual();
-                        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
-                        {
-                            drawingContext.DrawRectangle(Brushes.LightGray, null, new Rect(0, 0, maxWidth, maxHeight));
-                            for (int j = 0; j < listToSort.Count; j++)
-                            {
-                                double pieceHeight = maxHeight * quickSorter.SortedList[j] / arrayToSort.Length;
-
-                                Brush colorBrush = null;
-                                if (quickSorter.CurrentSortedListIndex == j)
-                                {
-                                    colorBrush = Brushes.OrangeRed;
-                                }
-                                else if (listToSort[j] == quickSorter.SortedList[j])
-                                {
-                                    colorBrush = Brushes.Aquamarine;
-                                }
-                                else
-                                {
-                                    colorBrush = Brushes.Maroon;
-                                }
-                                double pieceY = maxHeight - pieceHeight;
-                                double pieceX = tickWidth * j;
-
-                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
-                            }
-                            drawingContext.Close();
-                        }
-                        quickSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
-                    });
-                }
-                for (int i = 0; i < listToSort.Count; i++)
-                {
-                    Thread.Sleep(2500 / listToSort.Count);
-
-                    quickSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
-                    {
-                        quickSortStackPanelToDrawOn.Background = null;
-                        DrawingVisual drawingVisual = new DrawingVisual();
-                        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
-                        {
-                            drawingContext.DrawRectangle(Brushes.LightGray, null, new Rect(0, 0, maxWidth, maxHeight));
-                            for (int j = 0; j < listToSort.Count; j++)
-                            {
-                                double pieceHeight = maxHeight * quickSorter.SortedList[j] / arrayToSort.Length;
-
-                                Brush colorBrush = null;
-                                if (i == j)
-                                {
-                                    colorBrush = Brushes.OrangeRed;
-                                }
-                                else if (i < j)
-                                {
-                                    colorBrush = Brushes.Maroon;
-                                }
-                                else
-                                {
-                                    colorBrush = Brushes.Aquamarine;
-                                }
-                                double pieceY = maxHeight - pieceHeight;
-                                double pieceX = tickWidth * j;
-
-                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
-                            }
-                            drawingContext.Close();
-                        }
-                        quickSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
-                    });
-                }
-                quickSorter = null;
-            });
-        }
-
-        private void StartSelectionSorting(int stepDelay, List<int> listToSort, int[] arrayToSort)
-        {
-            SelectionSorter<int> selectionSorter = new SelectionSorter<int>();
-            bool selectionSorterHasEnded = false;
-
-            selectionSortActionQueueManager.EnqueueAction(() =>
-            {
-                selectionSorter.SortAscending(arrayToSort.ToList().ToArray(), stepDelay);
-                selectionSorterHasEnded = true;
-            });
-
-            selectionSortVisualisationActionQueueManager.EnqueueAction(() =>
-            {
-                Thread.Sleep(50);
-                double maxHeight = selectionSortStackPanelToDrawOn.ActualHeight;
-                double maxWidth = selectionSortStackPanelToDrawOn.ActualWidth;
-                double tickWidth = maxWidth / listToSort.Count;
-
-                while (!selectionSorterHasEnded)
-                {
-                    Thread.Sleep(10);
-                    selectionSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
-                    {
-                        selectionSortStackPanelToDrawOn.Background = null;
-                        DrawingVisual drawingVisual = new DrawingVisual();
-                        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
-                        {
-                            drawingContext.DrawRectangle(Brushes.LightGray, null, new Rect(0, 0, maxWidth, maxHeight));
-                            for (int j = 0; j < listToSort.Count; j++)
-                            {
-                                double pieceHeight = maxHeight * selectionSorter.SortedList[j] / arrayToSort.Length;
-
-                                Brush colorBrush = null;
-                                if (selectionSorter.CurrentSortedListIndex == j)
-                                {
-                                    colorBrush = Brushes.OrangeRed;
-                                }
-                                else if (listToSort[j] == selectionSorter.SortedList[j])
-                                {
-                                    colorBrush = Brushes.Aquamarine;
-                                }
-                                else
-                                {
-                                    colorBrush = Brushes.Maroon;
-                                }
-                                double pieceY = maxHeight - pieceHeight;
-                                double pieceX = tickWidth * j;
-
-                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
-                            }
-                            drawingContext.Close();
-                        }
-                        selectionSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
-                    });
-                }
-                for (int i = 0; i < listToSort.Count; i++)
-                {
-                    Thread.Sleep(2500 / listToSort.Count);
-
-                    selectionSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
-                    {
-                        selectionSortStackPanelToDrawOn.Background = null;
-                        DrawingVisual drawingVisual = new DrawingVisual();
-                        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
-                        {
-                            drawingContext.DrawRectangle(Brushes.LightGray, null, new Rect(0, 0, maxWidth, maxHeight));
-                            for (int j = 0; j < listToSort.Count; j++)
-                            {
-                                double pieceHeight = maxHeight * selectionSorter.SortedList[j] / arrayToSort.Length;
-
-                                Brush colorBrush = null;
-                                if (i == j)
-                                {
-                                    colorBrush = Brushes.OrangeRed;
-                                }
-                                else if (i < j)
-                                {
-                                    colorBrush = Brushes.Maroon;
-                                }
-                                else
-                                {
-                                    colorBrush = Brushes.Aquamarine;
-                                }
-                                double pieceY = maxHeight - pieceHeight;
-                                double pieceX = tickWidth * j;
-
-                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
-                            }
-                            drawingContext.Close();
-                        }
-                        selectionSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
-                    });
-                }
-                selectionSorter = null;
-            });
-        }
-
-        private void StartGnomeSorting(int stepDelay, List<int> listToSort, int[] arrayToSort)
-        {
-            GnomeSorter<int> gnomeSorter = new GnomeSorter<int>();
-            bool gnomeSorterHasEnded = false;
-
-            gnomeSortActionQueueManager.EnqueueAction(() =>
-            {
-                gnomeSorter.SortAscending(arrayToSort.ToList().ToArray(), stepDelay / 10);
-                gnomeSorterHasEnded = true;
-            });
-
-            gnomeSortVisualisationActionQueueManager.EnqueueAction(() =>
-            {
-                Thread.Sleep(50);
-                double maxHeight = gnomeSortStackPanelToDrawOn.ActualHeight;
-                double maxWidth = gnomeSortStackPanelToDrawOn.ActualWidth;
-                double tickWidth = maxWidth / listToSort.Count;
-
-                while (!gnomeSorterHasEnded)
-                {
-                    Thread.Sleep(10);
-                    gnomeSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
-                    {
-                        gnomeSortStackPanelToDrawOn.Background = null;
-                        DrawingVisual drawingVisual = new DrawingVisual();
-                        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
-                        {
-                            drawingContext.DrawRectangle(Brushes.LightGray, null, new Rect(0, 0, maxWidth, maxHeight));
-                            for (int j = 0; j < listToSort.Count; j++)
-                            {
-                                double pieceHeight = maxHeight * gnomeSorter.SortedList[j] / arrayToSort.Length;
-
-                                Brush colorBrush = null;
-                                if (gnomeSorter.CurrentSortedListIndex == j)
-                                {
-                                    colorBrush = Brushes.OrangeRed;
-                                }
-                                else if (listToSort[j] == gnomeSorter.SortedList[j])
-                                {
-                                    colorBrush = Brushes.Aquamarine;
-                                }
-                                else
-                                {
-                                    colorBrush = Brushes.Maroon;
-                                }
-                                double pieceY = maxHeight - pieceHeight;
-                                double pieceX = tickWidth * j;
-
-                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
-                            }
-                            drawingContext.Close();
-                        }
-                        gnomeSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
-                    });
-                }
-                for (int i = 0; i < listToSort.Count; i++)
-                {
-                    Thread.Sleep(2500 / listToSort.Count);
-
-                    gnomeSortStackPanelToDrawOn.Dispatcher.Invoke(() =>
-                    {
-                        gnomeSortStackPanelToDrawOn.Background = null;
-                        DrawingVisual drawingVisual = new DrawingVisual();
-                        using (DrawingContext drawingContext = drawingVisual.RenderOpen())
-                        {
-                            drawingContext.DrawRectangle(Brushes.LightGray, null, new Rect(0, 0, maxWidth, maxHeight));
-                            for (int j = 0; j < listToSort.Count; j++)
-                            {
-                                double pieceHeight = maxHeight * gnomeSorter.SortedList[j] / arrayToSort.Length;
-
-                                Brush colorBrush = null;
-                                if (i == j)
-                                {
-                                    colorBrush = Brushes.OrangeRed;
-                                }
-                                else if (i < j)
-                                {
-                                    colorBrush = Brushes.Maroon;
-                                }
-                                else
-                                {
-                                    colorBrush = Brushes.Aquamarine;
-                                }
-                                double pieceY = maxHeight - pieceHeight;
-                                double pieceX = tickWidth * j;
-
-                                drawingContext.DrawRectangle(colorBrush, null, new Rect(pieceX, pieceY, tickWidth, pieceHeight));
-                            }
-                            drawingContext.Close();
-                        }
-                        gnomeSortStackPanelToDrawOn.Background = new DrawingBrush(drawingVisual.Drawing);
-                    });
-                }
-                gnomeSorter = null;
-            });
+            return colorBrush;
         }
 
         public IEnumerable<T> Shuffle<T>(IEnumerable<T> source, Random rng)
@@ -826,7 +290,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
             if (int.TryParse(sortElementsTextbox.Text, out int sortElements)
                 && sortElements > 800)
             {
-                stepDelayTextbox.Text = "800";
+                sortElementsTextbox.Text = "800";
             }
         }
     }
