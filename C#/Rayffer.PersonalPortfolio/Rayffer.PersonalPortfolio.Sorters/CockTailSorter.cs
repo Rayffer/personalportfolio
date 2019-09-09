@@ -34,6 +34,7 @@ namespace Rayffer.PersonalPortfolio.Sorters
                 }
                 if (!swapped)
                     break;
+                swapped = false;
                 for (int sortIndex = swapOperations - sortIteration; sortIndex > sortIteration; sortIndex--)
                 {
                     CurrentSortedListIndex = sortIndex;
@@ -75,6 +76,7 @@ namespace Rayffer.PersonalPortfolio.Sorters
                 }
                 if (!swapped)
                     break;
+                swapped = false;
                 for (int sortIndex = swapOperations - sortIteration; sortIndex > sortIteration; sortIndex--)
                 {
                     CurrentSortedListIndex = sortIndex;
