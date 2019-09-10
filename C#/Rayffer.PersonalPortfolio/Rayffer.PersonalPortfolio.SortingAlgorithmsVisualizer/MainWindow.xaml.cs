@@ -183,7 +183,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                     }
                     else
                     {
-                        var stepsToSkip = Math.Ceiling(sempahoreWaitMiliseconds / 2500 / listToSort.Count());
+                        var stepsToSkip = Math.Ceiling(sempahoreWaitMiliseconds / (2500 / listToSort.Count()));
                         i += (int)stepsToSkip;
                     }
 
@@ -208,7 +208,7 @@ namespace Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer
                         timeBeforeSemaphore = DateTime.Now;
                         visualisationStackPanel.Background = new DrawingBrush(drawingVisual.Drawing);
                     }), DispatcherPriority.Send);
-
+                    
                     visualisationStackPanel.Dispatcher.Invoke(new Action(() => semaphore.Release()), DispatcherPriority.ContextIdle, null);
                 }
                 sorter = null;
