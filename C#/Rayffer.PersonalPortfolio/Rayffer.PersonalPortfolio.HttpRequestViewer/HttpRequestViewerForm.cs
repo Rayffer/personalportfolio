@@ -19,10 +19,6 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer
 {
     public partial class HttpRequestViewerForm : Form
     {
-        private string validationNumber="";
-        private string validationDateTime = "";
-
-
         private TcpListener tcpListener;
         private Thread listenThread;
         private Thread clientCommunicationHandlerThread;
@@ -130,9 +126,6 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer
                 
 
                 string body = responseBodyTextBox.Text;
-                body = body.Replace("InfoResponse","ValidationResponse");
-                body =body.Replace("ValidationNumber\":$", string.Format("ValidationNumber\":{0}", validationNumber));
-                body = body.Replace("ValidationDateTime\":$", string.Format("ValidationDateTime\":{0}", validationDateTime));
                 string statusLine = "HTTP/1.1 200 OK\r\n";
                 string contentType = "Content-Type: application/json\r\n";
                 string contentLength = $"Content-Length: {body.Length}\r\n\r\n";
@@ -162,8 +155,6 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer
 
             string text = encoder.GetString(message.ToArray(), 0, message.Length) + Environment.NewLine;
 
-            validationNumber=getValidationNumber(text);
-            validationDateTime = getValidationDateTime(text);
             var lines = text.Split(new string[] { "\r\n" }, StringSplitOptions.None);
             string contentLengthInfo = lines.Where(line => line.ToUpper().Contains("CONTENT-LENGTH")).FirstOrDefault();
             if (string.IsNullOrEmpty(contentLengthInfo))
@@ -192,37 +183,6 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer
                 RequestImage = imageBytes != null ? (new ImageConverter().IsValid(imageBytes) ? (Image)(new ImageConverter().ConvertFrom(imageBytes)) : null) : null
             };
             ShowRequest(request);
-        }
-
-        private string getValidationNumber(string text)
-        {
-            try
-            {
-                var txt = text.Substring(text.IndexOf("ValidationNumber")).Split(',')[0];
-                txt= txt.Split(':')[1];
-
-                  return txt;
-            }
-            catch(Exception ex)
-            {
-
-            }
-            return "";
-        }
-        private string getValidationDateTime(string text)
-        {
-            try
-            {
-                var txt = text.Substring(text.IndexOf("ValidationDateTime")).Split(',')[0];
-                txt = txt.Split('\"')[2];
-
-                return "\"" + txt + "\"";
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return "";
         }
 
         private delegate void ShowRequestInvoke(RequestInformation request);
