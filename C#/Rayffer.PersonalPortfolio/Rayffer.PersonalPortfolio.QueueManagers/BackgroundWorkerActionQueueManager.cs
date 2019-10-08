@@ -15,20 +15,19 @@ namespace Rayffer.PersonalPortfolio.QueueManagers
 
         private readonly BlockingCollection<Action> actionQueue;
         private readonly BackgroundWorker backgroundWorker;
-        private readonly CancellationTokenSource cancellationTokenSource;
+        private CancellationTokenSource cancellationTokenSource;
         public RunWorkerCompletedEventHandler runWorkerCompletedEventHandler;
 
         public BackgroundWorkerActionQueueManager()
         {
             backgroundWorker = new BackgroundWorker();
             actionQueue = new BlockingCollection<Action>();
-            cancellationTokenSource = new CancellationTokenSource();
             backgroundWorker.WorkerSupportsCancellation = true;
             backgroundWorker.DoWork += BackgroundWorker_ManageQueue;
         }
 
         /// <summary>
-        /// In case the user desires to recieve an event when an exception is thrown to manage it or the backgroundworker finishes its tasks.
+        /// This constructor provides the option to be notified with an event when an action has finished due to an exception
         /// </summary>
         /// <param name="runWorkerCompletedEventHandler">
         /// The method that will handle the completion of the background worker work or exception that has been thrown
@@ -68,6 +67,7 @@ namespace Rayffer.PersonalPortfolio.QueueManagers
                 try
                 {
                     IsBusy = false;
+                    cancellationTokenSource = new CancellationTokenSource();
                     actionToPerform = actionQueue.Take(cancellationTokenSource.Token);
                     IsBusy = true;
                 }
