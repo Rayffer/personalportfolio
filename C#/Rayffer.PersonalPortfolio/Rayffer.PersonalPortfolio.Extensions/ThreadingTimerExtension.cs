@@ -12,7 +12,7 @@ public static class TimerExtensions
     public static void SetNextExecution(this System.Threading.Timer timer, TimeSpan executionTime)
     {
         timer.Change(
-            executionTime.Milliseconds,
+            (int)executionTime.TotalMilliseconds,
             System.Threading.Timeout.Infinite);
     }
 }
