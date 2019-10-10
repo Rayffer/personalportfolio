@@ -3,6 +3,8 @@
 https://www.learningsomethingnew.com/how-to-use-two-versions-of-the-same-dll-in-the-same-project<br>
 https://docs.microsoft.com/es-es/dotnet/csharp/language-reference/compiler-options/reference-compiler-option
 # Web pages with resources
+### WPF tutorials
+http://www.wpftutorial.net/Images.html
 ### Regex testers
 http://regexstorm.net/<br>
 https://www.regextester.com/
