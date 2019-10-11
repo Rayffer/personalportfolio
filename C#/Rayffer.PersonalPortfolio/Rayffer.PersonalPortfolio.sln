@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer", "Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer\Rayffer.PersonalPortfolio.SortingAlgorithmsVisualizer.csproj", "{DD058451-7AA2-4C8E-9CAD-E76C7D011226}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rayffer.PersonalPortfolio.HttpRequestViewer.WPF", "Rayffer.PersonalPortfolio.HttpRequestViewer.WPF\Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.csproj", "{CE16C50B-0B8C-47DF-BAA1-DFB8CD977D32}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{DD058451-7AA2-4C8E-9CAD-E76C7D011226}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD058451-7AA2-4C8E-9CAD-E76C7D011226}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD058451-7AA2-4C8E-9CAD-E76C7D011226}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE16C50B-0B8C-47DF-BAA1-DFB8CD977D32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE16C50B-0B8C-47DF-BAA1-DFB8CD977D32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE16C50B-0B8C-47DF-BAA1-DFB8CD977D32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE16C50B-0B8C-47DF-BAA1-DFB8CD977D32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +115,7 @@ Global
 		{F8F3B8FC-08D5-472B-9E86-DEC8C9E9FC24} = {6B1E527F-B04B-4221-A58A-3304F9C267F2}
 		{DD6A221D-B01B-4509-B47B-42D89074E671} = {6B1E527F-B04B-4221-A58A-3304F9C267F2}
 		{DD058451-7AA2-4C8E-9CAD-E76C7D011226} = {6B1E527F-B04B-4221-A58A-3304F9C267F2}
+		{CE16C50B-0B8C-47DF-BAA1-DFB8CD977D32} = {6B1E527F-B04B-4221-A58A-3304F9C267F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1532111B-D564-4C75-80F9-AE90D94412A0}

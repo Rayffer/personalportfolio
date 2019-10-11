@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control.RequestSnifferControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control"
+             mc:Ignorable="d" Background="#00000000">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid Margin="0" Grid.RowSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition MaxWidth="10"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid Margin="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition MaxHeight="30" MinHeight="30"/>
+                    <RowDefinition MaxHeight="30" MinHeight="30"/>
+                    <RowDefinition MaxHeight="30" MinHeight="30"/>
+                    <RowDefinition MaxHeight="30" MinHeight="30"/>
+                    <RowDefinition MaxHeight="30" MinHeight="30"/>
+                    <RowDefinition MaxHeight="30" MinHeight="30"/>
+                    <RowDefinition Height="4*"/>
+                    <RowDefinition Height="6*"/>
+                    <RowDefinition Height="11*"/>
+                    <RowDefinition MaxHeight="30" MinHeight="30"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition MaxWidth="150"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Base address:" Margin="0,2,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top"/>
+                <Label Content="Endpoint name:" Margin="0,2,0,0" VerticalContentAlignment="Center" Grid.Row="1" VerticalAlignment="Top"/>
+                <Label Content="Host port:" Margin="0,2,0,0" VerticalContentAlignment="Center" Grid.Row="2" VerticalAlignment="Top"/>
+                <Label Content="Host URL:" Margin="0,2,0,0" VerticalContentAlignment="Center" Grid.Row="3" VerticalAlignment="Top"/>
+                <Label Content="Reception date:" Margin="0,2,0,0" VerticalContentAlignment="Center" Grid.Row="4" VerticalAlignment="Top"/>
+                <Label Content="Published method:" Margin="0,2,0,0" VerticalContentAlignment="Center" Grid.Row="5" VerticalAlignment="Top"/>
+                <Label Content="Request header:" Margin="0,2,0,0" VerticalContentAlignment="Center" Grid.Row="6" VerticalAlignment="Top"/>
+                <Label Content="Request body:" Margin="0,2,0,0" VerticalContentAlignment="Center" Grid.Row="7" VerticalAlignment="Top"/>
+                <Label Content="Request Image:" Margin="0,2,0,0" VerticalContentAlignment="Center" Grid.Row="8" VerticalAlignment="Top"/>
+                <Grid Grid.Column="1" Margin="0" Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition MaxWidth="100" MinWidth="100"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="portNumberTextBox" Margin="2" TextWrapping="Wrap" VerticalContentAlignment="Center" MaxLines="1" PreviewTextInput="PortNumberTextBox_PreviewTextInput" TextChanged="PortNumberTextBox_TextChanged" Text="3000"/>
+                    <Button x:Name="startLogButton" Content="Start logging" Grid.Column="1" Margin="2" Click="StartLogButton_Click"/>
+                </Grid>
+                <TextBox x:Name="textBoxHostURL" Margin="2" TextWrapping="Wrap" VerticalContentAlignment="Center" MaxLines="1" Grid.Column="1" Grid.Row="3" IsReadOnly="True" Background="#FFF4F4F4"/>
+                <TextBox x:Name="textBoxReceptionDate" Margin="2" TextWrapping="Wrap" VerticalContentAlignment="Center" MaxLines="1" Grid.Column="1" Grid.Row="4" IsReadOnly="True" Background="#FFF4F4F4"/>
+                <TextBox x:Name="textBoxPublishedMethod" Margin="2" TextWrapping="Wrap" VerticalContentAlignment="Center" MaxLines="1" Grid.Column="1" Grid.Row="5" IsReadOnly="True" Background="#FFF4F4F4"/>
+                <TextBox x:Name="textBoxRequestHeader" Margin="2" TextWrapping="Wrap" Grid.Column="1" Grid.Row="6" IsReadOnly="True" Background="#FFF4F4F4" VerticalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True"/>
+                <TextBox x:Name="textBoxRequestBody" Margin="2" TextWrapping="Wrap" Grid.Column="1" Grid.Row="7" IsReadOnly="True" Background="#FFF4F4F4" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Visible"/>
+                <TextBox x:Name="textBoxEndpointName" Margin="2" TextWrapping="Wrap" VerticalContentAlignment="Center" MaxLines="1" Grid.Column="1" Grid.Row="1" TextChanged="TextBoxEndpointName_TextChanged"/>
+                <TextBox x:Name="textBoxBaseAddress" Margin="2" TextWrapping="Wrap" VerticalContentAlignment="Center" MaxLines="1" Grid.Column="1" TextChanged="TextBoxBaseAddress_TextChanged"/>
+                <Image x:Name="requestImage" Grid.Column="1" Margin="2" Grid.Row="8"/>
+                <Grid Grid.ColumnSpan="2" Margin="0" Grid.Row="9">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="firstReceivedRequestButton" Content="&lt;&lt;" Margin="2" Click="FirstReceivedRequestButton_Click"/>
+                    <Button x:Name="previousReceivedRequestButton" Content="&lt;" Grid.Column="1" Margin="2" Click="PreviousReceivedRequestButton_Click"/>
+                    <Button x:Name="nextReceivedRequestButton" Content="&gt;" Grid.Column="3" Margin="2" Click="NextReceivedRequestButton_Click"/>
+                    <Button x:Name="lastReceivedRequestButton" Content="&gt;&gt;" Grid.Column="4" Margin="2" Click="LastReceivedRequestButton_Click"/>
+                    <Label x:Name="receivedRequestsPagingLabel" Content="" Grid.Column="2" Margin="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="White" Padding="0"/>
+                </Grid>
+            </Grid>
+            <Grid Margin="0" Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition MaxWidth="150"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition MaxHeight="30"/>
+                    <RowDefinition/>
+                    <RowDefinition MaxHeight="20" MinHeight="20"/>
+                    <RowDefinition MaxHeight="30"/>
+                </Grid.RowDefinitions>
+                <Label Content="Saved response bodies:" Margin="0,2,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top"/>
+                <Label Content="Response body:" Margin="0,2,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Grid.Row="1"/>
+                <Grid Margin="0" Grid.Row="3" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition MaxWidth="100" MinWidth="100"/>
+                        <ColumnDefinition MaxWidth="100" MinWidth="100"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="createOrSaveResponseButton" Content="Create / Save" Grid.Column="1" Margin="2" Click="CreateOrSaveResponseButton_Click"/>
+                    <Button x:Name="deleteResponseButton" Content="Delete response" Grid.Column="2" Margin="2" Click="DeleteResponseButton_Click"/>
+                    <TextBox x:Name="responseNameToSaveTextBox" Margin="2" TextWrapping="Wrap" Width="316" VerticalContentAlignment="Center" MaxLines="1" MaxLength="150"/>
+                </Grid>
+                <ComboBox x:Name="responseBodiesComboBox" Grid.Column="1" Margin="2" SelectionChanged="ResponseBodiesComboBox_SelectionChanged"/>
+                <TextBox x:Name="responseBodyTextBox" Margin="2" TextWrapping="Wrap" Grid.Column="1" Grid.Row="1" AcceptsReturn="True" AcceptsTab="True"/>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</UserControl>
