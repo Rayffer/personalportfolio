@@ -38,6 +38,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
         private string validationNumber;
         private string validationDateTime;
         private readonly string snifferPath;
+        private readonly System.Windows.Media.Color controlBackGroundColor;
 
         #endregion Fields and properties
 
@@ -49,6 +50,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
             _regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text
             HandlePagingButtonEnabling();
             UpdatePagingLabel();
+            controlBackGroundColor = (this.Background as SolidColorBrush).Color;
         }
 
         public RequestSnifferControl(string snifferName) : this()
@@ -254,7 +256,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
 
             this.Dispatcher.Invoke(() =>
             {
-                ColorAnimation colorAnimationUserControl = new ColorAnimation(Colors.LawnGreen, (this.Background as SolidColorBrush).Color, new Duration(TimeSpan.FromSeconds(1)));
+                ColorAnimation colorAnimationUserControl = new ColorAnimation(Colors.LawnGreen, controlBackGroundColor, new Duration(TimeSpan.FromSeconds(0.4F)));
                 this.Background.BeginAnimation(SolidColorBrush.ColorProperty, colorAnimationUserControl);
                 HandlePagingButtonEnabling();
             });

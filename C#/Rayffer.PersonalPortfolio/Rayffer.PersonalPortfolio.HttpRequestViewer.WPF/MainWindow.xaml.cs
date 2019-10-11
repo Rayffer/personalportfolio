@@ -24,7 +24,12 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF
             requestSnifferControls = new List<RequestSnifferControl>() { };
             excludedDirectoriesRegex = new Regex("([a-z])|([A-Z])|([0-9])");
 
-            foreach (var sniffer in  Directory.GetDirectories(Path.Combine(Directory.GetCurrentDirectory(), "Sniffers")))
+            string pathDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Sniffers");
+            if (!Directory.Exists(pathDirectory))
+            {
+                Directory.CreateDirectory(pathDirectory);
+            }
+            foreach (var sniffer in  Directory.GetDirectories(pathDirectory))
             {
                 var snifferDirectory = Path.GetFileName(sniffer);
                 TabItem tab = new TabItem();
@@ -53,11 +58,20 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF
 
         private void RemoveSnifferButton_Click(object sender, RoutedEventArgs e)
         {
-            mainTabControl.Items.Remove(mainTabControl.SelectedItem as TabItem);
+            var tabItemToRemove = mainTabControl.SelectedItem as TabItem;
+            mainTabControl.Items.Remove(tabItemToRemove);
+            var snifferToRemove = requestSnifferControls.FirstOrDefault(sniffer => sniffer.Name.Equals(tabItemToRemove.Header.ToString()));
+            snifferToRemove?.ControlShutdown();
+
         }
 
         private void AddSnifferButton_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(snifferNameTextBox.Text))
+            {
+                MessageBox.Show("Please specify a name for the sniffer");
+                return;
+            }
             var tabs = FindVisualChildren<TabItem>(mainTabControl);
             if (tabs.Any(searchingTab => searchingTab.Header.Equals(snifferNameTextBox.Text)))
             {
