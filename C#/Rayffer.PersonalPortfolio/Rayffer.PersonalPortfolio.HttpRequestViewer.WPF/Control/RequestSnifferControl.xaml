@@ -51,7 +51,7 @@
                 </Grid>
                 <TextBox x:Name="textBoxHostURL" Margin="2" TextWrapping="Wrap" VerticalContentAlignment="Center" MaxLines="1" Grid.Column="1" Grid.Row="3" IsReadOnly="True" Background="#FFF4F4F4"/>
                 <TextBox x:Name="textBoxReceptionDate" Margin="2" TextWrapping="Wrap" VerticalContentAlignment="Center" MaxLines="1" Grid.Column="1" Grid.Row="4" IsReadOnly="True" Background="#FFF4F4F4"/>
-                <TextBox x:Name="textBoxPublishedMethod" Margin="2" TextWrapping="Wrap" VerticalContentAlignment="Center" MaxLines="1" Grid.Column="1" Grid.Row="5" IsReadOnly="True" Background="#FFF4F4F4"/>
+                <TextBox x:Name="textBoxPublishedMethod" Margin="2" TextWrapping="Wrap" VerticalContentAlignment="Center" MaxLines="1" Grid.Column="1" Grid.Row="5" IsReadOnly="True" Background="#FFF4F4F4" FontWeight="Bold"/>
                 <TextBox x:Name="textBoxRequestHeader" Margin="2" TextWrapping="Wrap" Grid.Column="1" Grid.Row="6" IsReadOnly="True" Background="#FFF4F4F4" VerticalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True"/>
                 <TextBox x:Name="textBoxRequestBody" Margin="2" TextWrapping="Wrap" Grid.Column="1" Grid.Row="7" IsReadOnly="True" Background="#FFF4F4F4" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Visible"/>
                 <TextBox x:Name="textBoxEndpointName" Margin="2" TextWrapping="Wrap" VerticalContentAlignment="Center" MaxLines="1" Grid.Column="1" Grid.Row="1" TextChanged="TextBoxEndpointName_TextChanged"/>
@@ -79,13 +79,14 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition MaxHeight="30"/>
+                    <RowDefinition MaxHeight="30"/>
                     <RowDefinition/>
                     <RowDefinition MaxHeight="20" MinHeight="20"/>
                     <RowDefinition MaxHeight="30"/>
                 </Grid.RowDefinitions>
                 <Label Content="Saved response bodies:" Margin="0,2,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top"/>
-                <Label Content="Response body:" Margin="0,2,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Grid.Row="1"/>
-                <Grid Margin="0" Grid.Row="3" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                <Label Content="Response body:" Margin="0,2,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Grid.Row="2"/>
+                <Grid Margin="0" Grid.Row="4" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition MaxWidth="100" MinWidth="100"/>
@@ -95,8 +96,10 @@
                     <Button x:Name="deleteResponseButton" Content="Delete response" Grid.Column="2" Margin="2" Click="DeleteResponseButton_Click"/>
                     <TextBox x:Name="responseNameToSaveTextBox" Margin="2" TextWrapping="Wrap" Width="316" VerticalContentAlignment="Center" MaxLines="1" MaxLength="150"/>
                 </Grid>
-                <ComboBox x:Name="responseBodiesComboBox" Grid.Column="1" Margin="2" SelectionChanged="ResponseBodiesComboBox_SelectionChanged"/>
-                <TextBox x:Name="responseBodyTextBox" Margin="2" TextWrapping="Wrap" Grid.Column="1" Grid.Row="1" AcceptsReturn="True" AcceptsTab="True"/>
+                <ComboBox x:Name="responseBodiesComboBox" Grid.Column="1" Margin="2" SelectionChanged="ResponseBodiesComboBox_SelectionChanged" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="responseBodyTextBox" Margin="2" TextWrapping="Wrap" Grid.Column="1" Grid.Row="2" AcceptsReturn="True" AcceptsTab="True"/>
+                <Label Content="Saved response bodies:" Margin="0,2,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Grid.Row="1"/>
+                <ComboBox x:Name="responseBodyTypeComboBox" Grid.Column="1" Margin="2" Grid.Row="1" SelectionChanged="ResponseBodyTypeComboBox_SelectionChanged" VerticalContentAlignment="Center"/>
             </Grid>
         </Grid>
 

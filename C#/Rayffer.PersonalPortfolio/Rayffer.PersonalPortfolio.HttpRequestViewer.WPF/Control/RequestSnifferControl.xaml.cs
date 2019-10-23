@@ -1,7 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
+using Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.DocumentParsers;
 using Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.DTOs;
+using Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Tools;
+using Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -28,7 +32,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
         #region Fields and properties
 
         private List<RequestInformation> receivedRequests;
-        private Dictionary<string, string> methodsResponseDictionary = new Dictionary<string, string>();
+        private Dictionary<string, List<ResponseInformation>> methodsResponseDictionary = new Dictionary<string, List<ResponseInformation>>();
         private int receivedRequestIndex;
         private Regex _regex;
         private TcpListener tcpListener;
@@ -48,10 +52,13 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
             SetHostUri();
             receivedRequests = new List<RequestInformation>();
             _regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text
+            GenerateAndBindResponseBodyTypes();
             HandlePagingButtonEnabling();
             UpdatePagingLabel();
             controlBackGroundColor = (this.Background as SolidColorBrush).Color;
         }
+
+        #region Public methods
 
         public RequestSnifferControl(string snifferName) : this()
         {
@@ -59,11 +66,11 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
             Name = snifferName;
             if (Directory.Exists(snifferPath))
             {
-                foreach (var item in Directory.GetFiles(snifferPath))
+                foreach (var fileName in Directory.GetFiles(snifferPath))
                 {
-                    string fileName = Path.GetFileNameWithoutExtension(item);
-                    responseBodiesComboBox.Items.Add(fileName);
-                    methodsResponseDictionary.Add(fileName, File.ReadAllText(item));
+                    string responseName = Path.GetFileNameWithoutExtension(fileName);
+                    responseBodiesComboBox.Items.Add(responseName);
+                    methodsResponseDictionary.Add(responseName, JsonParser.ReadFromJsonFile<List<ResponseInformation>>(fileName));
                 }
                 responseBodiesComboBox.SelectedIndex = 0;
             }
@@ -72,8 +79,6 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
                 Directory.CreateDirectory(snifferPath);
             }
         }
-
-        #region Public methods
 
         public void ControlShutdown()
         {
@@ -93,6 +98,13 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
         #endregion Public methods
 
         #region Private methods
+
+        private void GenerateAndBindResponseBodyTypes()
+        {
+            var responseBodyTypes = EnumCollectionGenerator.GenerateEnumMembers<ResponseBodyTypes>();
+            responseBodyTypeComboBox.ItemsSource = responseBodyTypes;
+            responseBodyTypeComboBox.SelectedIndex = 0;
+        }
 
         private string GetHostName(string ipAddress)
         {
@@ -145,7 +157,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
             using (NetworkStream clientStream = tcpClient.GetStream())
             {
                 List<byte> message = new List<byte>();
-                while (clientStream.DataAvailable && tcpClient.Connected && !KillThreads)
+                while (!message.Any() || (clientStream.DataAvailable && tcpClient.Connected && !KillThreads))
                 {
                     try
                     {
@@ -157,7 +169,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
                         break;
                     }
                     if (!clientStream.DataAvailable)
-                        Thread.Sleep(500);
+                        Thread.Sleep(100);
                 }
                 if (!tcpClient.Connected || KillThreads)
                     return;
@@ -174,17 +186,32 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
                 ASCIIEncoding encoder = new ASCIIEncoding();
 
                 string body = string.Empty;
-                if (methodsResponseDictionary.ContainsKey(request.PublishedMethod?.Split('/').Last()?.Split('?').First() ?? string.Empty))
-                {
-                    body = methodsResponseDictionary[request.PublishedMethod.Split('/').Last()?.Split('?').First()];
-                }
-                else
-                {
-                    body = responseBodyTextBox.Dispatcher.Invoke(() =>
+                body =
+                    responseBodyTypeComboBox.Dispatcher.Invoke(() =>
                     {
-                        return responseBodyTextBox.Text;
+                        string requestBody = string.Empty;
+                        try
+                        {
+                            if (methodsResponseDictionary.ContainsKey(request.PublishedMethod?.Split('/').Last()?.Split('?').First() ?? string.Empty))
+                            {
+                                requestBody =
+                                    methodsResponseDictionary[request.PublishedMethod.Split('/').Last()?.Split('?').First()]
+                                    .FirstOrDefault(responseBody => responseBody.ResponseBodyType == ((ResponseBodyTypes)responseBodyTypeComboBox.SelectedItem))
+                                    ?.ResponseBody;
+                            }
+                            if (string.IsNullOrEmpty(requestBody))
+                            {
+                                requestBody = responseBodyTextBox.Dispatcher.Invoke(() => responseBodyTextBox.Text);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine(ex.Message);
+                            throw;
+                        }
+
+                        return requestBody;
                     });
-                }
                 body = body.Replace("InfoResponse", "ValidationResponse");
                 body = body.Replace("ValidationNumber\":$", string.Format("ValidationNumber\":{0}", validationNumber));
                 body = body.Replace("ValidationDateTime\":$", string.Format("ValidationDateTime\":{0}", validationDateTime));
@@ -246,6 +273,10 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
                 RequestHeader = string.Join(Environment.NewLine, lines.Take(lines.ToList().IndexOf(string.Empty))),
                 RequestImageBytes = (imageBytes != null && new ImageConverter().IsValid(imageBytes)) ? imageBytes : null
             };
+            if (receivedRequests.Count >= 50)
+            {
+                receivedRequests.Remove(receivedRequests.First());
+            }
             receivedRequests.Add(request);
 
             if (receivedRequestIndex >= receivedRequests.Count() - 1)
@@ -254,12 +285,14 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
                 ShowRequest(request);
             }
 
-            this.Dispatcher.Invoke(() =>
-            {
-                ColorAnimation colorAnimationUserControl = new ColorAnimation(Colors.LawnGreen, controlBackGroundColor, new Duration(TimeSpan.FromSeconds(0.4F)));
-                this.Background.BeginAnimation(SolidColorBrush.ColorProperty, colorAnimationUserControl);
-                HandlePagingButtonEnabling();
-            });
+            this.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render,
+                (Action)(() =>
+                {
+                    ColorAnimation colorAnimationUserControl = new ColorAnimation(Colors.LawnGreen, controlBackGroundColor, new Duration(TimeSpan.FromSeconds(0.4F)));
+                    this.Background.BeginAnimation(SolidColorBrush.ColorProperty, colorAnimationUserControl);
+
+                    HandlePagingButtonEnabling();
+                }));
             UpdatePagingLabel();
             return request;
         }
@@ -268,10 +301,13 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
         {
             try
             {
-                var txt = text.Substring(text.IndexOf("ValidationNumber")).Split(',')[0];
-                txt = txt.Split(':')[1];
+                if (text.IndexOf("ValidationNumber") >= 0)
+                {
+                    var txt = text.Substring(text.IndexOf("ValidationNumber")).Split(',')[0];
+                    txt = txt.Split(':')[1];
 
-                return txt;
+                    return txt;
+                }
             }
             catch (Exception ex)
             {
@@ -283,10 +319,13 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
         {
             try
             {
-                var txt = text.Substring(text.IndexOf("ValidationDateTime")).Split(',')[0];
-                txt = txt.Split('\"')[2];
+                if (text.IndexOf("ValidationDateTime") >= 0)
+                {
+                    var txt = text.Substring(text.IndexOf("ValidationDateTime")).Split(',')[0];
+                    txt = txt.Split('\"')[2];
 
-                return "\"" + txt + "\"";
+                    return "\"" + txt + "\"";
+                }
             }
             catch (Exception ex)
             {
@@ -390,12 +429,20 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
                 if (MessageBox.Show("A file with the same method response name already exists, do you want to overwrite it?", string.Empty, MessageBoxButton.YesNo) == MessageBoxResult.No)
                     return;
             }
+            if (!methodsResponseDictionary.ContainsKey(responseNameToSaveTextBox.Text))
+            {
+                methodsResponseDictionary[responseNameToSaveTextBox.Text] = new List<ResponseInformation>() { };
+            }
+            if (methodsResponseDictionary[responseNameToSaveTextBox.Text].Any(responseBody => responseBody.ResponseBodyType == (ResponseBodyTypes)responseBodyTypeComboBox.SelectedItem))
+            {
+                methodsResponseDictionary[responseNameToSaveTextBox.Text].Remove(methodsResponseDictionary[responseNameToSaveTextBox.Text].FirstOrDefault(responseBody => responseBody.ResponseBodyType == (ResponseBodyTypes)responseBodyTypeComboBox.SelectedItem));
+            }
+            methodsResponseDictionary[responseNameToSaveTextBox.Text].Add(new ResponseInformation() { ResponseBodyType = (ResponseBodyTypes)responseBodyTypeComboBox.SelectedItem, ResponseBody = responseBodyTextBox.Text });
             if (!responseBodiesComboBox.Items.OfType<string>().Any(item => item.Equals(responseNameToSaveTextBox.Text)))
             {
                 responseBodiesComboBox.Items.Add(responseNameToSaveTextBox.Text);
             }
-            File.WriteAllText(filePath, responseBodyTextBox.Text);
-            methodsResponseDictionary[responseNameToSaveTextBox.Text] = responseBodyTextBox.Text;
+            JsonParser.WriteToJsonFile<List<ResponseInformation>>(filePath, methodsResponseDictionary[responseNameToSaveTextBox.Text]);
             MessageBox.Show("Response saved succesfully");
         }
 
@@ -433,8 +480,17 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
         {
             if (responseBodiesComboBox.Items.Count > 0)
             {
-                responseBodyTextBox.Text = methodsResponseDictionary[responseBodiesComboBox.SelectedItem as string];
-                responseNameToSaveTextBox.Text = responseBodiesComboBox.SelectedItem as string;
+                if (responseBodiesComboBox.SelectedItem != null)
+                {
+                    responseBodyTextBox.Text = methodsResponseDictionary[responseBodiesComboBox.SelectedItem as string]
+                        .FirstOrDefault(responseBody => responseBody.ResponseBodyType == ((ResponseBodyTypes)responseBodyTypeComboBox.SelectedItem))
+                        ?.ResponseBody;
+                    responseNameToSaveTextBox.Text = responseBodiesComboBox.SelectedItem as string;
+                }
+                else
+                {
+                    responseBodiesComboBox.SelectedIndex = 0;
+                }
             }
         }
 
@@ -485,6 +541,16 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
         {
             receivedRequestIndex = receivedRequests.Count();
             PerformPaging();
+        }
+
+        private void ResponseBodyTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (responseBodiesComboBox.Items.Count > 0)
+            {
+                responseBodyTextBox.Text = methodsResponseDictionary[responseBodiesComboBox.SelectedItem as string]
+                .FirstOrDefault(responseBody => responseBody.ResponseBodyType == ((ResponseBodyTypes)responseBodyTypeComboBox.SelectedItem))
+                ?.ResponseBody;
+            }
         }
 
         #endregion Control events

@@ -23,13 +23,12 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF
             InitializeComponent();
             requestSnifferControls = new List<RequestSnifferControl>() { };
             excludedDirectoriesRegex = new Regex("([a-z])|([A-Z])|([0-9])");
-
             string pathDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Sniffers");
             if (!Directory.Exists(pathDirectory))
             {
                 Directory.CreateDirectory(pathDirectory);
             }
-            foreach (var sniffer in  Directory.GetDirectories(pathDirectory))
+            foreach (var sniffer in Directory.GetDirectories(pathDirectory))
             {
                 var snifferDirectory = Path.GetFileName(sniffer);
                 TabItem tab = new TabItem();
@@ -45,7 +44,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            requestSnifferControls.ForEach(sniffer =>
+            requestSnifferControls.AsParallel().ForAll(sniffer =>
             {
                 sniffer.ControlShutdown();
             });
@@ -62,7 +61,6 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF
             mainTabControl.Items.Remove(tabItemToRemove);
             var snifferToRemove = requestSnifferControls.FirstOrDefault(sniffer => sniffer.Name.Equals(tabItemToRemove.Header.ToString()));
             snifferToRemove?.ControlShutdown();
-
         }
 
         private void AddSnifferButton_Click(object sender, RoutedEventArgs e)
@@ -87,8 +85,6 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF
             requestSnifferControls.Add(control);
             mainTabControl.Items.Add(tab);
             mainTabControl.SelectedItem = tab;
-
-
         }
 
         public IEnumerable<T> FindVisualChildren<T>(DependencyObject obj) where T : DependencyObject
