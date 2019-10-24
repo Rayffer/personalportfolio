@@ -42,6 +42,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
         private string validationNumber;
         private string validationDateTime;
         private readonly BrushConverter brushConverter;
+        private readonly System.Windows.Media.ColorConverter colorConverter;
         private readonly string snifferPath;
         private readonly System.Windows.Media.Color controlBackGroundColor;
 
@@ -57,7 +58,9 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
             HandlePagingButtonEnabling();
             UpdatePagingLabel();
             brushConverter = new BrushConverter();
+            colorConverter = new System.Windows.Media.ColorConverter();
             controlBackGroundColor = (this.Background as SolidColorBrush).Color;
+            responseBodyTextBox.Background = new SolidColorBrush(Colors.White);
         }
 
         #region Public methods
@@ -596,11 +599,13 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
         {
             if (JsonStringValidator.IsJsonCompliant((sender as TextBox)?.Text ?? string.Empty))
             {
-                (sender as TextBox).Background = (System.Windows.Media.Brush)brushConverter.ConvertFromString("#FFFFFFFF");
+                ColorAnimation colorAnimationUserControl = new ColorAnimation(((sender as TextBox).Background as SolidColorBrush).Color, (System.Windows.Media.Color)colorConverter.ConvertFromInvariantString("#FFFFFFFF"), new Duration(TimeSpan.FromSeconds(0.2F)));
+                (sender as TextBox).Background.BeginAnimation(SolidColorBrush.ColorProperty, colorAnimationUserControl);
             }
             else
             {
-                (sender as TextBox).Background = (System.Windows.Media.Brush)brushConverter.ConvertFromString("#55B22222");
+                ColorAnimation colorAnimationUserControl = new ColorAnimation(((sender as TextBox).Background as SolidColorBrush).Color, (System.Windows.Media.Color)colorConverter.ConvertFromInvariantString("#55B22222"), new Duration(TimeSpan.FromSeconds(0.2F)));
+                (sender as TextBox).Background.BeginAnimation(SolidColorBrush.ColorProperty, colorAnimationUserControl);
             }
         }
     }
