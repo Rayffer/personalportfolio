@@ -94,12 +94,13 @@
                     </Grid.ColumnDefinitions>
                     <Button x:Name="createOrSaveResponseButton" Content="Create / Save" Grid.Column="1" Margin="2" Click="CreateOrSaveResponseButton_Click"/>
                     <Button x:Name="deleteResponseButton" Content="Delete response" Grid.Column="2" Margin="2" Click="DeleteResponseButton_Click"/>
-                    <TextBox x:Name="responseNameToSaveTextBox" Margin="2" TextWrapping="Wrap" Width="316" VerticalContentAlignment="Center" MaxLines="1" MaxLength="150"/>
+                    <TextBox x:Name="responseNameToSaveTextBox" Margin="2" TextWrapping="Wrap" VerticalContentAlignment="Center" MaxLines="1" MaxLength="150"/>
                 </Grid>
                 <ComboBox x:Name="responseBodiesComboBox" Grid.Column="1" Margin="2" SelectionChanged="ResponseBodiesComboBox_SelectionChanged" VerticalContentAlignment="Center"/>
-                <TextBox x:Name="responseBodyTextBox" Margin="2" TextWrapping="Wrap" Grid.Column="1" Grid.Row="2" AcceptsReturn="True" AcceptsTab="True"/>
+                <TextBox x:Name="responseBodyTextBox" Margin="2" TextWrapping="Wrap" Grid.Column="1" Grid.Row="2" AcceptsReturn="True" AcceptsTab="True" LostFocus="ResponseBodyTextBox_LostFocus"/>
                 <Label Content="Saved response bodies:" Margin="0,2,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Grid.Row="1"/>
                 <ComboBox x:Name="responseBodyTypeComboBox" Grid.Column="1" Margin="2" Grid.Row="1" SelectionChanged="ResponseBodyTypeComboBox_SelectionChanged" VerticalContentAlignment="Center"/>
+                <CheckBox x:Name="forceCurrentResponseCheckBox" Content="Use current response" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top" Margin="10,26,0,0" Width="150"/>
             </Grid>
         </Grid>
 

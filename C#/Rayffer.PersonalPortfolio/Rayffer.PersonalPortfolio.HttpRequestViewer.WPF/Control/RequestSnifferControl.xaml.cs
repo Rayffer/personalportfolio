@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.DocumentParsers;
 using Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.DTOs;
-using Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Tools;
 using Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Types;
+using Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Validators;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -41,6 +41,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
         private bool KillThreads = false;
         private string validationNumber;
         private string validationDateTime;
+        private readonly BrushConverter brushConverter;
         private readonly string snifferPath;
         private readonly System.Windows.Media.Color controlBackGroundColor;
 
@@ -55,6 +56,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
             GenerateAndBindResponseBodyTypes();
             HandlePagingButtonEnabling();
             UpdatePagingLabel();
+            brushConverter = new BrushConverter();
             controlBackGroundColor = (this.Background as SolidColorBrush).Color;
         }
 
@@ -66,13 +68,29 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
             Name = snifferName;
             if (Directory.Exists(snifferPath))
             {
-                foreach (var fileName in Directory.GetFiles(snifferPath))
+                var httpPortFile = Path.Combine(snifferPath, "httpPortFile.config");
+                if (File.Exists(httpPortFile))
+                {
+                    portNumberTextBox.Text = System.IO.File.ReadAllText(httpPortFile);
+                }
+                foreach (var fileName in Directory.GetFiles(snifferPath, "*.json"))
                 {
                     string responseName = Path.GetFileNameWithoutExtension(fileName);
-                    responseBodiesComboBox.Items.Add(responseName);
-                    methodsResponseDictionary.Add(responseName, JsonParser.ReadFromJsonFile<List<ResponseInformation>>(fileName));
+                    try
+                    {
+                        methodsResponseDictionary.Add(responseName, JsonParser.ReadFromJsonFile<List<ResponseInformation>>(fileName));
+                        responseBodiesComboBox.Items.Add(responseName);
+
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show($"A response body is not valid, response name: {fileName}");
+                    }
                 }
-                responseBodiesComboBox.SelectedIndex = 0;
+                if (responseBodiesComboBox.Items.Count > 0)
+                {
+                    responseBodiesComboBox.SelectedIndex = 0;
+                }
             }
             else
             {
@@ -101,7 +119,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
 
         private void GenerateAndBindResponseBodyTypes()
         {
-            var responseBodyTypes = EnumCollectionGenerator.GenerateEnumMembers<ResponseBodyTypes>();
+            var responseBodyTypes = new List<ResponseBodyTypes>() { ResponseBodyTypes.Ok, ResponseBodyTypes.Error };
             responseBodyTypeComboBox.ItemsSource = responseBodyTypes;
             responseBodyTypeComboBox.SelectedIndex = 0;
         }
@@ -125,7 +143,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
 
         private void SetHostUri()
         {
-            this.textBoxHostURL.Text = $"{(string.IsNullOrEmpty(textBoxBaseAddress.Text) ? GetHostName("127.0.0.1") : textBoxBaseAddress.Text)}:{portNumberTextBox.Text}/{textBoxEndpointName.Text}";
+            this.textBoxHostURL.Text = $"http://{(string.IsNullOrEmpty(textBoxBaseAddress.Text) ? GetHostName("127.0.0.1") : textBoxBaseAddress.Text)}:{portNumberTextBox.Text}/{textBoxEndpointName.Text}";
         }
 
         private void ThreadProcSafe()
@@ -192,7 +210,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
                         string requestBody = string.Empty;
                         try
                         {
-                            if (methodsResponseDictionary.ContainsKey(request.PublishedMethod?.Split('/').Last()?.Split('?').First() ?? string.Empty))
+                            if (!(forceCurrentResponseCheckBox.IsChecked ?? false) && methodsResponseDictionary.ContainsKey(request.PublishedMethod?.Split('/').Last()?.Split('?').First() ?? string.Empty))
                             {
                                 requestBody =
                                     methodsResponseDictionary[request.PublishedMethod.Split('/').Last()?.Split('?').First()]
@@ -423,6 +441,11 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
 
         private void CreateOrSaveResponseButton_Click(object sender, RoutedEventArgs e)
         {
+            if (!JsonStringValidator.IsJsonCompliant(responseBodyTextBox.Text))
+            {
+                MessageBox.Show($"The json in the textbox cannot be parsed, please fix the following error and try again: \r\n {JsonStringValidator.ErrorMessage}");
+                return;
+            }
             string filePath = Path.Combine(snifferPath, $"{ responseNameToSaveTextBox.Text}.json");
             if (File.Exists(filePath))
             {
@@ -471,6 +494,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
                 MessageBox.Show($"The port was occupied, so the free port {portNumber} has been automatically selected");
                 portNumberTextBox.Text = portNumber.ToString();
             }
+            System.IO.File.WriteAllText(Path.Combine(snifferPath, "httpPortFile.config"), portNumberTextBox.Text);
             this.tcpListener = new TcpListener(IPAddress.Any, portNumber);
             this.listenThread = new Thread(new ThreadStart(ThreadProcSafe));
             this.listenThread.Start();
@@ -565,6 +589,18 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
                 foreach (DependencyObject child in LogicalTreeHelper.GetChildren(obj).OfType<DependencyObject>())
                     foreach (T c in FindVisualChildren<T>(child))
                         yield return c;
+            }
+        }
+
+        private void ResponseBodyTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (JsonStringValidator.IsJsonCompliant((sender as TextBox)?.Text ?? string.Empty))
+            {
+                (sender as TextBox).Background = (System.Windows.Media.Brush)brushConverter.ConvertFromString("#FFFFFFFF");
+            }
+            else
+            {
+                (sender as TextBox).Background = (System.Windows.Media.Brush)brushConverter.ConvertFromString("#55B22222");
             }
         }
     }
