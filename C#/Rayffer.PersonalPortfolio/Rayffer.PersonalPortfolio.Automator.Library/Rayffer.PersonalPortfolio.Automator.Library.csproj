@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>7.1</LangVersion>
+    <Configurations>Debug;Release;lcloud;Staging;Test;Test_Bridge;Test_Parking</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="DTO\**" />
+    <EmbeddedResource Remove="DTO\**" />
+    <None Remove="DTO\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="log4net" Version="2.0.3" />
+    <PackageReference Include="Moq" Version="4.12.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.6.1" />
+    <PackageReference Include="Unity" Version="5.4.0" />
+  </ItemGroup>
+
+</Project>
