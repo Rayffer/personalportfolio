@@ -1,5 +1,4 @@
-﻿using Parkare.Lince.AutoSync.Services.ObserverLibrary;
-using System;
+﻿using System;
 
 namespace Rayffer.PersonalPortfolio.Automator.ConsoleTest
 {

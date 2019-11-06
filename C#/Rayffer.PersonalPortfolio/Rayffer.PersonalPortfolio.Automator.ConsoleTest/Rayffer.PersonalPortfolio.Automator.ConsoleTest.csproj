@@ -97,10 +97,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Parkare.Lince.Observer.Services.ObserverService.Library\Parkare.Lince.AutoSync.Services.ObserverLibrary.csproj">
-      <Project>{A00CA71D-D558-4499-AEC5-953C502E8F7A}</Project>
-      <Name>Parkare.Lince.AutoSync.Services.ObserverLibrary</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
