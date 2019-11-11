@@ -10,11 +10,14 @@ http://regexstorm.net/<br>
 https://www.regextester.com/
 ### Entity Framework
 https://stackoverflow.com/questions/24684914/get-entity-framework-6-use-nolock-in-its-underneath-select-statements
-##### Folder check regex
+#### Folder check regex
 https://www.regextester.com/104339
 ### Beautifiers
 https://beautifier.io/<br>
 https://codebeautify.org/xmlviewer
+### MockQueryable
+https://github.com/romantitov/MockQueryable
+
 
 ### Console commands
 ##### Windows CMD
