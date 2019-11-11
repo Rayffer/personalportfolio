@@ -17,8 +17,6 @@ https://beautifier.io/<br>
 https://codebeautify.org/xmlviewer
 ### MockQueryable
 https://github.com/romantitov/MockQueryable
-
-
 ### Console commands
 ##### Windows CMD
 https://ss64.com/nt/
