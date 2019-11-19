@@ -34,16 +34,17 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
         private List<RequestInformation> receivedRequests;
         private Dictionary<string, List<ResponseInformation>> methodsResponseDictionary = new Dictionary<string, List<ResponseInformation>>();
         private int receivedRequestIndex;
-        private Regex _regex;
+        private Regex isNumericRegex;
         private TcpListener tcpListener;
         private Thread listenThread;
         private Thread clientCommunicationHandlerThread;
         private bool KillThreads = false;
         private string validationNumber;
         private string validationDateTime;
+        private readonly ASCIIEncoding encoder;
         private readonly BrushConverter brushConverter;
-        private readonly System.Windows.Media.ColorConverter colorConverter;
         private readonly string snifferPath;
+        private readonly System.Windows.Media.ColorConverter colorConverter;
         private readonly System.Windows.Media.Color controlBackGroundColor;
 
         #endregion Fields and properties
@@ -53,7 +54,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
             InitializeComponent();
             SetHostUri();
             receivedRequests = new List<RequestInformation>();
-            _regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text
+            isNumericRegex = new Regex("[^0-9.-]+");
             GenerateAndBindResponseBodyTypes();
             HandlePagingButtonEnabling();
             UpdatePagingLabel();
@@ -61,6 +62,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
             colorConverter = new System.Windows.Media.ColorConverter();
             controlBackGroundColor = (this.Background as SolidColorBrush).Color;
             responseBodyTextBox.Background = new SolidColorBrush(Colors.White);
+            encoder = new ASCIIEncoding();
         }
 
         #region Public methods
@@ -83,17 +85,13 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
                     {
                         methodsResponseDictionary.Add(responseName, JsonParser.ReadFromJsonFile<List<ResponseInformation>>(fileName));
                         responseBodiesComboBox.Items.Add(responseName);
-
                     }
                     catch (Exception)
                     {
                         MessageBox.Show($"A response body is not valid, response name: {fileName}");
                     }
                 }
-                if (responseBodiesComboBox.Items.Count > 0)
-                {
-                    responseBodiesComboBox.SelectedIndex = 0;
-                }
+                responseBodiesComboBox.SelectedIndex = 0;
             }
             else
             {
@@ -178,82 +176,107 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
             using (NetworkStream clientStream = tcpClient.GetStream())
             {
                 List<byte> message = new List<byte>();
-                while (!message.Any() || (clientStream.DataAvailable && tcpClient.Connected && !KillThreads))
+                RequestInformation request = null;
+                int retries = 0;
+                while (request == null && retries < 3)
                 {
-                    try
+                    while (!message.Any() || ((tcpClient.Available > 0 || clientStream.DataAvailable) && tcpClient.Connected && !KillThreads))
                     {
-                        byte byteToAdd = (byte)clientStream.ReadByte();
-                        message.Add(byteToAdd);
-                    }
-                    catch
-                    {
-                        break;
-                    }
-                    if (!clientStream.DataAvailable)
-                        Thread.Sleep(100);
-                }
-                if (!tcpClient.Connected || KillThreads)
-                    return;
-
-                RequestInformation request = new RequestInformation();
-                try
-                {
-                    request = ProcessRequest(message.ToArray());
-                }
-                catch (Exception)
-                {
-                    // Para evitar que pete en directo
-                }
-                ASCIIEncoding encoder = new ASCIIEncoding();
-
-                string body = string.Empty;
-                body =
-                    responseBodyTypeComboBox.Dispatcher.Invoke(() =>
-                    {
-                        string requestBody = string.Empty;
                         try
                         {
-                            if (!(forceCurrentResponseCheckBox.IsChecked ?? false) && methodsResponseDictionary.ContainsKey(request.PublishedMethod?.Split('/').Last()?.Split('?').First() ?? string.Empty))
-                            {
-                                requestBody =
-                                    methodsResponseDictionary[request.PublishedMethod.Split('/').Last()?.Split('?').First()]
-                                    .FirstOrDefault(responseBody => responseBody.ResponseBodyType == ((ResponseBodyTypes)responseBodyTypeComboBox.SelectedItem))
-                                    ?.ResponseBody;
-                            }
-                            if (string.IsNullOrEmpty(requestBody))
-                            {
-                                requestBody = responseBodyTextBox.Dispatcher.Invoke(() => responseBodyTextBox.Text);
-                            }
+                            int byteToAdd = clientStream.ReadByte();
+                            if (byteToAdd == -1)
+                                break;
+                            message.Add((byte)byteToAdd);
                         }
-                        catch (Exception ex)
+                        catch
                         {
-                            Debug.WriteLine(ex.Message);
-                            throw;
+                            break;
                         }
+                        if (!clientStream.DataAvailable)
+                            Thread.Sleep(100);
+                    }
+                    try
+                    {
+                        request = ProcessRequest(message.ToArray());
+                    }
+                    catch (Exception)
+                    {
+                        retries++;
+                        Thread.Sleep(200);
+                        continue;
+                        // Reintentamos el parseo del método
+                    }
+                }
+                
+                if (!tcpClient.Connected || KillThreads)
+                    return;
+                if (request != null)
+                {
+                    string body = string.Empty;
+                    body =
+                        responseBodyTypeComboBox.Dispatcher.Invoke(() =>
+                        {
+                            string requestBody = string.Empty;
+                            try
+                            {
+                                if (!(forceCurrentResponseCheckBox.IsChecked ?? false) && methodsResponseDictionary.ContainsKey(request.PublishedMethod?.Split('/').Last()?.Split('?').First() ?? string.Empty))
+                                {
+                                    requestBody =
+                                        methodsResponseDictionary[request.PublishedMethod.Split('/').Last()?.Split('?').First()]
+                                        .FirstOrDefault(responseBody => responseBody.ResponseBodyType == ((ResponseBodyTypes)responseBodyTypeComboBox.SelectedItem))
+                                        ?.ResponseBody;
+                                }
+                                if (string.IsNullOrEmpty(requestBody))
+                                {
+                                    requestBody = responseBodyTextBox.Dispatcher.Invoke(() => responseBodyTextBox.Text);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.WriteLine(ex.Message);
+                                throw;
+                            }
 
-                        return requestBody;
-                    });
-                body = body.Replace("InfoResponse", "ValidationResponse");
-                body = body.Replace("ValidationNumber\":$", string.Format("ValidationNumber\":{0}", validationNumber));
-                body = body.Replace("ValidationDateTime\":$", string.Format("ValidationDateTime\":{0}", validationDateTime));
-                string statusLine = "HTTP/1.1 200 OK\r\n";
-                string contentType = "Content-Type: application/json\r\n";
-                string contentLength = $"Content-Length: {body.Length}\r\n\r\n";
+                            return requestBody;
+                        });
+                    body = body.Replace("InfoResponse", "ValidationResponse");
+                    body = body.Replace("ValidationNumber\":$", string.Format("ValidationNumber\":{0}", validationNumber));
+                    body = body.Replace("ValidationDateTime\":$", string.Format("ValidationDateTime\":{0}", validationDateTime));
+                    string statusLine = "HTTP/1.1 200 OK\r\n";
+                    string contentType = "Content-Type: application/json\r\n";
+                    string contentLength = $"Content-Length: {body.Length}\r\n\r\n";
 
-                clientStream.Write(encoder.GetBytes(statusLine), 0, statusLine.Length);
-                clientStream.Write(encoder.GetBytes(contentType), 0, contentType.Length);
-                clientStream.Write(encoder.GetBytes(contentLength), 0, contentLength.Length);
-                clientStream.Write(encoder.GetBytes(body), 0, body.Length);
-                Thread.Sleep(100);
+                    clientStream.Write(encoder.GetBytes(statusLine), 0, statusLine.Length);
+                    clientStream.Write(encoder.GetBytes(contentType), 0, contentType.Length);
+                    clientStream.Write(encoder.GetBytes(contentLength), 0, contentLength.Length);
+                    clientStream.Write(encoder.GetBytes(body), 0, body.Length);
+                    Thread.Sleep(100);
 
-                statusLine = null;
-                contentType = null;
-                contentLength = null;
-                body = null;
+                    statusLine = null;
+                    contentType = null;
+                    contentLength = null;
+                    body = null;
+                }
+                else
+                {
+                    string body = "The request has no content";
+                    string statusLine = "HTTP/1.1 204 NoContent\r\n";
+                    string contentType = "Content-Type: application/json\r\n";
+                    string contentLength = $"Content-Length: {body.Length}\r\n\r\n";
 
+                    clientStream.Write(encoder.GetBytes(statusLine), 0, statusLine.Length);
+                    clientStream.Write(encoder.GetBytes(contentType), 0, contentType.Length);
+                    clientStream.Write(encoder.GetBytes(contentLength), 0, contentLength.Length);
+                    clientStream.Write(encoder.GetBytes(body), 0, body.Length);
+
+                    statusLine = null;
+                    contentType = null;
+                    contentLength = null;
+                    body = null;
+                }
                 message.Clear();
                 message = null;
-                encoder = null;
                 tcpClient.Close();
             }
             GC.Collect();
@@ -270,9 +293,20 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
             var lines = text.Split(new string[] { "\r\n" }, StringSplitOptions.None);
             string contentLengthInfo = lines.Where(line => line.ToUpper().Contains("CONTENT-LENGTH")).FirstOrDefault();
             if (string.IsNullOrEmpty(contentLengthInfo))
-                return new RequestInformation();
-            var requestBody = lines.Skip(lines.ToList().IndexOf(string.Empty));
-            var jsonFields = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(string.Join("\r\n", requestBody));
+                throw new ArgumentException();
+            var requestBody = lines.Skip(lines.ToList().IndexOf(string.Empty)).Where(line => !string.IsNullOrEmpty(line));
+            if (!requestBody.Any())
+                throw new ArgumentException();
+            dynamic jsonFields;
+            try
+            {
+                jsonFields = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(string.Join("\r\n", requestBody));
+            }
+            catch (Exception)
+            {
+                // Si el json está mal formateado y no se puede deserializar
+                return null;
+            }
             byte[] imageBytes = null;
             IDictionary<string, JToken> Jsondata = JObject.Parse(string.Join("\r\n", requestBody));
             foreach (KeyValuePair<string, JToken> element in Jsondata)
@@ -435,7 +469,7 @@ namespace Rayffer.PersonalPortfolio.HttpRequestViewer.WPF.Control
 
         private bool IsTextAllowed(string text)
         {
-            return !_regex.IsMatch(text);
+            return !isNumericRegex.IsMatch(text);
         }
 
         #endregion Private methods
