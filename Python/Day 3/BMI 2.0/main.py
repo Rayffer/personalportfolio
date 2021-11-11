@@ -16,11 +16,11 @@ print(f"Your bmi is: {bmi}")
 
 if (bmi < 18.5):
     print("You are underweight")
-elif (bmi >= 18.5 and bmi < 25):
+elif (bmi < 25):
     print("You are normal weighted")
-elif (bmi >= 25 and bmi < 30):
+elif (bmi < 30):
     print("You are overweight")
-elif (bmi >= 30 and bmi < 35):
+elif (bmi < 35):
     print("You are obese")
 elif (bmi >= 35):
     print("You are morbidly obese")
