@@ -12,7 +12,7 @@ love_score = 0
 for letter in love_letters:
     love_score += your_name.count(letter) + their_name.count(letter)
 
-score = true_score * 10 + love_score
+score = int(str(true_score) + str(love_score))
 suffix = ""
 if (score < 10 or score > 90):
     suffix = ", you go together like coke and mentos"
