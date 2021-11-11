@@ -2,12 +2,17 @@ print("Welcome to the Love Calculator")
 your_name = input("What is your name?").lower()
 their_name = input("What is their name?").lower()
 
-letters = ['t', 'r', 'u', 'e', 'l', 'o', 'v', 'e']
+true_letters = ['t', 'r', 'u', 'e']
+true_score = 0
+for letter in true_letters:
+    true_score += your_name.count(letter) + their_name.count(letter)
 
-score = 0
-for letter in letters:
-    score += your_name.count(letter) + their_name.count(letter)
+love_letters = ['l', 'o', 'v', 'e']
+love_score = 0
+for letter in love_letters:
+    love_score += your_name.count(letter) + their_name.count(letter)
 
+score = true_score * 10 + love_score
 suffix = ""
 if (score < 10 or score > 90):
     suffix = ", you go together like coke and mentos"
