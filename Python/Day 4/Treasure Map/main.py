@@ -1,8 +1,8 @@
 print("Welcome to the Treasure Map")
 
-row_1 = ["🗌", "🗌", "🗌"]
-row_2 = ["🗌", "🗌", "🗌"]
-row_3 = ["🗌", "🗌", "🗌"]
+row_1 = ["⬜️", "⬜️", "⬜️"]
+row_2 = ["⬜️", "⬜️", "⬜️"]
+row_3 = ["⬜️", "⬜️", "⬜️"]
 
 map = [ row_1, row_2, row_3 ]
 print(f"{row_1}\n{row_2}\n{row_3}")
