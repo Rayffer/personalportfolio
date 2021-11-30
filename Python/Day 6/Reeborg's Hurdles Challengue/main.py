@@ -4,6 +4,7 @@ def turn_right():
     turn_left()
     
 def jump():
+    move()
     turn_left()
     move()
     turn_right()
@@ -12,15 +13,9 @@ def jump():
     move()
     turn_left()
    
-move()
 jump()
-move()
 jump()
-move()
 jump()
-move()
 jump()
-move()
 jump()
-move()
 jump()
