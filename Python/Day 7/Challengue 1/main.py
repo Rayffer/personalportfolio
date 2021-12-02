@@ -1,5 +1,5 @@
 import random
-import re
+
 word_list = ["ardvarkl", "baboon", "camel"]
 
 word_to_guess = random.choice(word_list)
