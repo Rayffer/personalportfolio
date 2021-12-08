@@ -1,3 +1,5 @@
+import math
+
 def convert_to_float(input):
     try:
         return float(input)
@@ -6,7 +8,7 @@ def convert_to_float(input):
         return ""
 
 def calculate_required_paint_cans( width: float, height: float, coverage_per_can:float):
-    return int(width * height // coverage_per_can + (width * height % coverage_per_can > 0))
+    return math.ceil(width * height / coverage_per_can)
 
 print("Welcome to the Paint Area Calculator")
 width = ""
