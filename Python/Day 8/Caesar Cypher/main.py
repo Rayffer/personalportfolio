@@ -6,9 +6,19 @@ def encrypt(text: str, shift: int):
         encoded_text += alphabet[(alphabet.index(letter) + shift) % len(alphabet)]
     print(f"The encoded text is {encoded_text}")
 
+def decrypt(text: str, shift: int):
+    encoded_text = ""
+    for letter in text:
+        encoded_text += alphabet[(alphabet.index(letter) - shift) % len(alphabet)]
+    print(f"The encoded text is {encoded_text}")
+
 print("Welcome to the Caesar Cypher")
 
+direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n").lower()
 text = input("Type your message:\n").lower()
 shift = int(input("Type the shift number:\n"))
 
-encrypt(text, shift)
+if (direction == "encode"):
+    encrypt(text, shift)
+elif (direction == "decode"):
+    decrypt(text, shift)
