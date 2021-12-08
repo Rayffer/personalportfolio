@@ -6,7 +6,7 @@ def caesar(text_to_process: str, shift: int, direction:str):
     result_text = ""
     shift_to_apply = (shift if direction == "encode" else -shift)
     for letter in text_to_process:
-        result_text += alphabet[(alphabet.index(letter) + shift_to_apply) % len(alphabet)] if (letter in alphabet) else letter
+        result_text += alphabet[(alphabet.index(letter) + shift_to_apply) % len(alphabet)] if (letter in alphabet) else
     print(f'The {direction}d text is {result_text}')
 
 print(logo)
