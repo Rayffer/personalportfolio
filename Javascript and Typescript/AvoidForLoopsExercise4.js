@@ -1,4 +1,3 @@
-{
     const patients = [
         {
             id: 1,
@@ -62,23 +61,19 @@
         }
     ];
 
-    let computedPatients = { pediatricsPatients: 0, generalMedicinePatients: 0 };
-    let computedGeneralMedicinePatients = patients.reduce(
-        (computedPatients, patient) => {
-            switch (patient.specialty) {
-                case "general medicine":
-                    computedPatients.generalMedicinePatients++;
-                    break;
+    function groupBySpecialty(acumulator, currentPatient) {
+        if (!acumulator[currentPatient.specialty]) {
+            acumulator[currentPatient.specialty] = 0;
+        }
+        return {
+            ...acumulator,
+            [currentPatient.specialty]: (acumulator[currentPatient.specialty] | 0) + 1
+        };
+    }
 
-                case "pediatrics":
-                    computedPatients.pediatricsPatients++;
-                    break;
-            }
-
-            return computedPatients;
-        },
-        computedPatients
+    const computedPatients = patients.reduce(
+        (acumulator, patient) => groupBySpecialty(acumulator, patient),
+        {}
     );
 
     console.log(computedPatients);
-}
