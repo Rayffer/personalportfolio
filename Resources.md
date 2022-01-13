@@ -30,3 +30,5 @@ https://caniuse.com/
 ### Specificity
 This page is a tool to acknowledge the spceifity of a CSS style.
 https://specificity.keegan.st/
+### CSS Flexbox Guide
+https://css-tricks.com/snippets/css/a-guide-to-flexbox/
