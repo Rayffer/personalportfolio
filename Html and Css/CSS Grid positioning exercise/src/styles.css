@@ -1,0 +1,30 @@
+body {
+  font-family: sans-serif;
+  font-size: 150%;
+}
+
+.grid-container {
+  display: grid;
+  height: 100vh;
+  grid-template-columns: 150px 25px 1fr;
+  grid-template-rows: 100px 1fr 100px;
+}
+
+header {
+  background-color: indianred;
+  grid-column: 1/-1;
+}
+
+main {
+  background-color: skyblue;
+  grid-column: 3 /-1;
+}
+
+nav {
+  background-color: goldenrod;
+}
+
+footer {
+  background-color: blue;
+  grid-column: 1/-1;
+}
