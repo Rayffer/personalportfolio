@@ -1,0 +1,15 @@
+body {
+  font-family: sans-serif;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  align-items: center;
+  justify-items: center;
+}
+
+img {
+  width: 150px;
+}
