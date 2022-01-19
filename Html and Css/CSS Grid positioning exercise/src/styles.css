@@ -8,23 +8,28 @@ body {
   height: 100vh;
   grid-template-columns: 150px 25px 1fr;
   grid-template-rows: 100px 1fr 100px;
+  grid-template-areas:
+    "header header header"
+    "menu . body"
+    "footer footer footer";
 }
 
 header {
+  grid-area: header;
   background-color: indianred;
-  grid-column: 1/-1;
 }
 
 main {
   background-color: skyblue;
-  grid-column: 3 /-1;
+  grid-area: body;
 }
 
 nav {
   background-color: goldenrod;
+  grid-area: menu;
 }
 
 footer {
   background-color: blue;
-  grid-column: 1/-1;
+  grid-area: footer;
 }
