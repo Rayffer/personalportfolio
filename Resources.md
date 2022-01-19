@@ -32,3 +32,7 @@ This page is a tool to acknowledge the spceifity of a CSS style.
 https://specificity.keegan.st/
 ### CSS Flexbox Guide
 https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+### CSS flexbox demos
+* https://flexboxfroggy.com/
+* http://www.flexboxdefense.com/
+* https://mastery.games/post/flexboxzombies2/
