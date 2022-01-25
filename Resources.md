@@ -36,3 +36,5 @@ https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 * https://flexboxfroggy.com/
 * http://www.flexboxdefense.com/
 * https://mastery.games/post/flexboxzombies2/
+### React
+https://www.basefactor.com/react-class-components-pitfalls
