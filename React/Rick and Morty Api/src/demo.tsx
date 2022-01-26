@@ -2,19 +2,19 @@ import React from "react";
 
 export const MyComponent = () => {
   const [filter, setFilter] = React.useState("");
-  const [userCollection, setUserCollection] = React.useState({results: []});
+  const [userCollection, setUserCollection] = React.useState([]);
 
   React.useEffect(() => {
-    fetch(`https://rickandmortyapi.com/api/character`)
+    fetch(`https://rickandmortyapi.com/api/character${filter === "" ? "" : `?name=${filter}`}`)
       .then((response) => response.json())
-      .then((json) => setUserCollection(json));
+      .then((json) => setUserCollection(json["results"]));
   }, [filter]);
   
   return (
     <div>
       <input value={filter} onChange={(e) => setFilter(e.target.value)} />
       <div className="character-list">
-        {userCollection.results.filter((user) => user.name.toLowerCase().includes(filter.toLowerCase())).map((user) => (
+        {userCollection.map((user) => (
             <>
                 <div className="character-container">
                     <img src={user.image} />
