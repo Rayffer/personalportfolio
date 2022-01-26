@@ -6,7 +6,17 @@ export const MyComponent = () => {
 
   React.useEffect(() => {
     fetch(`https://rickandmortyapi.com/api/character${filter === "" ? "" : `?name=${filter}`}`)
-      .then((response) => response.json())
+      .then((response) => 
+      {
+        if (response.status === 404) 
+        {
+          return setUserCollection([]);
+        }
+        else
+        {
+          return response.json();
+        }
+      })
       .then((json) => setUserCollection(json["results"]));
   }, [filter]);
   
