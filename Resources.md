@@ -38,3 +38,5 @@ https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 * https://mastery.games/post/flexboxzombies2/
 ### React
 https://www.basefactor.com/react-class-components-pitfalls
+https://usehooks.com/
+https://es.reactjs.org/docs/error-boundaries.html
