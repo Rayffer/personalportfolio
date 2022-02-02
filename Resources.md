@@ -40,3 +40,5 @@ https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 https://www.basefactor.com/react-class-components-pitfalls
 https://usehooks.com/
 https://es.reactjs.org/docs/error-boundaries.html
+https://webpack.js.org/
+https://create-react-app.dev/docs/getting-started/
