@@ -15,7 +15,7 @@ const useLoginHook = () => {
                 setUserProfile({ username: username });
                 navigate(routes.list);
             } else {
-                alert("User / password not valid, psst... admin / test");
+                alert("User / password not valid, psst... admin / admin");
             }
         })
     };
