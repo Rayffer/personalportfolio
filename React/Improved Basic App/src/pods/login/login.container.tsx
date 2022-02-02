@@ -1,30 +1,31 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { routes, ProfileContext } from "../../core";
+import { Link, useNavigate } from "react-router-dom";
 import { LoginComponent } from "./login.component";
 import { doLogin } from "./login.api";
+import { Login } from "./login.vm";
+import { ProfileContext, routes } from "../../core";
 
 const useLoginHook = () => {
-    const navigate = useNavigate();
-    const { setUserProfile } = React.useContext(ProfileContext);
+  const navigate = useNavigate();
+  const { setUserProfile } = React.useContext(ProfileContext);
 
-    const handleLogin = (username: string, password: string) => {
-        doLogin(username, password).then(result => {
+  const handleLogin = (login: Login) => {
+    const { username, password } = login;
+    doLogin(username, password).then((result) => {
+      if (result) {
+        setUserProfile({ username: username });
+        navigate(routes.list);
+      } else {
+        alert("User / password not valid, psst... admin / test");
+      }
+    });
+  };
 
-            if (result) {
-                setUserProfile({ username: username });
-                navigate(routes.list);
-            } else {
-                alert("User / password not valid, psst... admin / admin");
-            }
-        })
-    };
-
-    return { handleLogin};
+  return { handleLogin };
 };
 
 export const LoginContainer: React.FC = () => {
-    const {handleLogin} = useLoginHook();
+  const { handleLogin } = useLoginHook();
 
-    return <LoginComponent onLogin={handleLogin} />;
+  return <LoginComponent onLogin={handleLogin} />;
 };
